@@ -1,6 +1,12 @@
 import React from "react";
 
 const FormLogin: React.FC = () => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
+  const handleReset = () => {};
+
   return (
     <div className="flex flex-col bg-[#00487B] w-[874px] py-[16px] px-[32px] rounded-[20px]">
       <h2 className="font-semibold text-[20px] text-white mx-auto">
@@ -8,7 +14,7 @@ const FormLogin: React.FC = () => {
       </h2>
       <div className="flex flex-row mt-[40px]">
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-[16px]">
               <label
                 className="block text-sm text-white mb-[9px] px-[14px]"
@@ -19,8 +25,10 @@ const FormLogin: React.FC = () => {
               <input
                 className="border rounded-[18px] py-[4px] px-[16px] w-[300px] text-sm"
                 id="userID"
-                type="userID"
+                type="text"
+                name="userID"
                 placeholder="Masukan User ID Anda"
+                autoComplete="username"
               />
             </div>
             <div className="mb-[22px]">
@@ -33,20 +41,23 @@ const FormLogin: React.FC = () => {
               <input
                 className="border rounded-[18px] py-[4px] px-[16px] w-[300px] text-sm"
                 id="pin"
-                type="pin"
+                type="password"
+                name="pin"
                 placeholder="Masukan Pin Internet Banking Anda"
+                autoComplete="current-password"
               />
             </div>
             <div className="flex justify-between items-center">
               <button
                 className="bg-primary-dark-blue text-sm text-white font-medium py-[4px] px-[32px] rounded-[16px] w-[125px]"
-                type="button"
+                type="submit"
               >
                 Masuk
               </button>
               <button
                 className="bg-secondary-red text-sm text-white font-medium py-[4px] px-[16px] rounded-[16px] w-[125px]"
                 type="button"
+                onClick={handleReset}
               >
                 Reset
               </button>
@@ -54,7 +65,7 @@ const FormLogin: React.FC = () => {
           </form>
           <div className="flex gap-[21px] mt-[35px] justify-center">
             <div className="flex items-center gap-[7px]">
-              <button type="button">
+              <button type="button" aria-label="Lupa User ID">
                 <div className="bg-white p-[8px] rounded-[8px]">
                   <img src="/Profil.svg" alt="Lupa User ID" />
                 </div>
@@ -64,12 +75,14 @@ const FormLogin: React.FC = () => {
               </p>
             </div>
             <div className="flex items-center gap-[7px]">
-              <button type="button">
+              <button type="button" aria-label="Lupa Pin">
                 <div className="bg-white p-[8px] rounded-[8px]">
-                  <img src="/ForgotPIN.svg" alt="LupaPin" />
+                  <img src="/ForgotPIN.svg" alt="Lupa Pin" />
                 </div>
               </button>
-              <p className="text-xs font-bold text-white underline">Lupa Pin?</p>
+              <p className="text-xs font-bold text-white underline">
+                Lupa Pin?
+              </p>
             </div>
           </div>
         </div>
@@ -107,7 +120,7 @@ const FormLogin: React.FC = () => {
               </div>
             </div>
             <div className="w-[80px]">
-              <img src="/digicert.png" alt="" />
+              <img src="/digicert.png" alt="Digicert Logo" />
             </div>
           </div>
         </div>
