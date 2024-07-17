@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
+import UnderMaintenance from "./pages/UnderMaintenance";
 import "./index.css";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/maintenance" element={<UnderMaintenance />} />
       </Routes>
     </Router>
   );
