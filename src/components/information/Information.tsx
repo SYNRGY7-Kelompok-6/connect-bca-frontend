@@ -11,6 +11,7 @@ const Information: React.FC = () => {
           <button
             type="button"
             className="flex flex-row items-center gap-[7px]"
+            aria-label="Tombol Lanjut ke Page FAQ"
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/FAQ.svg" alt="FAQ" />
@@ -20,6 +21,7 @@ const Information: React.FC = () => {
           <button
             type="button"
             className="flex flex-row items-center gap-[7px]"
+            aria-label="Tombol Lanjut ke Page Tutorial Video Demo"
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/VideoDemo.svg" alt="Video Demo" />
@@ -29,6 +31,7 @@ const Information: React.FC = () => {
           <button
             type="button"
             className="flex flex-row items-center gap-[7px]"
+            aria-label="Tombol Lanjut ke Page Syarat & ketentuan"
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/S&K.svg" alt="Syarat & Ketentuan" />
@@ -43,6 +46,7 @@ const Information: React.FC = () => {
           <button
             type="button"
             className="flex flex-row items-center gap-[7px]"
+            aria-label="Tombol Meminta Bantuan Lewat Call Halo BCA"
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/Call.svg" alt="Cari Halo BCA" />
@@ -52,6 +56,7 @@ const Information: React.FC = () => {
           <button
             type="button"
             className="flex flex-row items-center gap-[7px]"
+            aria-label="Tombol Meminta Bantuan Lewat Email Halo BCA"
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/Email.svg" alt="Email Halo BCA" />
@@ -61,6 +66,7 @@ const Information: React.FC = () => {
           <button
             type="button"
             className="flex flex-row items-center gap-[7px]"
+            aria-label="Tombol Meminta Bantuan Lewat Whatsapp Call BCA"
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/Whatsapp.svg" alt="Whatsapp Call BCA" />

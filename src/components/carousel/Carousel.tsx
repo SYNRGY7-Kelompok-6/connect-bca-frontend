@@ -24,7 +24,6 @@ const Carousel: React.FC = () => {
         className="relative w-full"
         data-carousel="slide"
       >
-        {/* Carousel wrapper */}
         <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
           {images.map((imageUrl, index) => (
             <div
@@ -64,6 +63,7 @@ const Carousel: React.FC = () => {
           className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
           data-carousel-prev
           onClick={handlePrev}
+          aria-label="Tombol Swipe Banner"
         >
           <img src="/SwipeBannerLeft.svg" alt="Previous Swipe" />
             <span className="sr-only">Previous</span>
@@ -74,6 +74,7 @@ const Carousel: React.FC = () => {
           className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
           data-carousel-next
           onClick={handleNext}
+          aria-label="Tombol Swipe Banner"
         >
           <img src="/SwipeBanner.svg" alt="Next Swipe" />
           <span className="sr-only">Next</span>

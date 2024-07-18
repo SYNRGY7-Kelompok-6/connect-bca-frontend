@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import Popup from "../popup";
 
 const FormLogin: React.FC = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, error } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false); 
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      await login(username, password);
+      alert("Login successful");
+      navigate("/beranda");
+    } catch (error) {
+      setShowErrorPopup(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleReset = () => {};
+  const handleReset = () => {
+    setUsername("");
+    setPassword("");
+  };
+
+  const handleClosePopup = () => {
+    setShowErrorPopup(false);
+  };
 
   return (
     <div className="flex flex-col bg-[#00487B] w-[874px] py-[16px] px-[32px] rounded-[20px]">
@@ -26,9 +53,12 @@ const FormLogin: React.FC = () => {
                 className="border rounded-[18px] py-[4px] px-[16px] w-[300px] text-sm"
                 id="userID"
                 type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 name="userID"
                 placeholder="Masukan User ID Anda"
                 autoComplete="username"
+                aria-describedby="Kolom Masukkan USER ID"
               />
             </div>
             <div className="mb-[22px]">
@@ -36,54 +66,69 @@ const FormLogin: React.FC = () => {
                 className="block text-sm text-white mb-[9px] px-[14px]"
                 htmlFor="pin"
               >
-                Pin Internet Banking
+                Password
               </label>
               <input
                 className="border rounded-[18px] py-[4px] px-[16px] w-[300px] text-sm"
-                id="pin"
+                id="password"
                 type="password"
-                name="pin"
-                placeholder="Masukan Pin Internet Banking Anda"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Masukan Pasword Anda"
                 autoComplete="current-password"
+                aria-describedby="Kolom Password"
               />
             </div>
             <div className="flex justify-between items-center">
               <button
-                className="bg-primary-dark-blue text-sm text-white font-medium py-[4px] px-[32px] rounded-[16px] w-[125px]"
+                className="bg-primary-dark-blue text-sm text-white font-medium py-[4px] px-[32px] rounded-[16px] w-[125px] flex items-center justify-center"
                 type="submit"
+                disabled={isLoading}
+                aria-label="Tombol masuk akun"
               >
-                Masuk
+                {isLoading ? (
+                  <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
+                ) : (
+                  "Masuk"
+                )}
               </button>
               <button
                 className="bg-secondary-red text-sm text-white font-medium py-[4px] px-[16px] rounded-[16px] w-[125px]"
                 type="button"
                 onClick={handleReset}
+                aria-label="Tombol menghapus semua isian di kolom"
               >
                 Reset
               </button>
             </div>
           </form>
           <div className="flex gap-[21px] mt-[35px] justify-center">
-            <div className="flex items-center gap-[7px]">
-              <button type="button" aria-label="Lupa User ID">
-                <div className="bg-white p-[8px] rounded-[8px]">
-                  <img src="/Profil.svg" alt="Lupa User ID" />
-                </div>
-              </button>
+            <button
+              type="button"
+              aria-label="Tombol lupa User ID"
+              className="flex items-center gap-[7px]"
+            >
+              <div className="bg-white p-[8px] rounded-[8px]">
+                <img src="/Profil.svg" alt="Tombol lupa User ID" />
+              </div>
               <p className="text-xs font-bold text-white underline">
-                Lupa User ID?
+                Lupa UserID ?
               </p>
-            </div>
-            <div className="flex items-center gap-[7px]">
-              <button type="button" aria-label="Lupa Pin">
-                <div className="bg-white p-[8px] rounded-[8px]">
-                  <img src="/ForgotPIN.svg" alt="Lupa Pin" />
-                </div>
-              </button>
+            </button>
+
+            <button
+              type="button"
+              aria-label="Tombol lupa pin"
+              className="flex items-center gap-[7px]"
+            >
+              <div className="bg-white p-[8px] rounded-[8px]">
+                <img src="/ForgotPIN.svg" alt="Tombol lupa pin" />
+              </div>
               <p className="text-xs font-bold text-white underline">
                 Lupa Pin?
               </p>
-            </div>
+            </button>
           </div>
         </div>
         <div className="flex flex-col ml-[90px]">
@@ -99,19 +144,31 @@ const FormLogin: React.FC = () => {
             <div>
               <h2 className="text-md text-white font-semibold">Fast Menu</h2>
               <div className="flex gap-[40px] mt-[10px]">
-                <button type="button" className="flex flex-col items-center">
+                <button
+                  type="button"
+                  aria-label="Tombol transfer"
+                  className="flex flex-col items-center"
+                >
                   <div className="bg-white p-[8px] rounded-[8px]">
                     <img src="/Transfer.svg" alt="Transfer" />
                   </div>
                   <p className="text-xs text-white font-semibold">Transfer</p>
                 </button>
-                <button type="button" className="flex flex-col items-center">
+                <button
+                  type="button"
+                  aria-label="Tombol Menampilkan QRIS Bayar"
+                  className="flex flex-col items-center"
+                >
                   <div className="bg-white p-[8px] rounded-[8px]">
                     <img src="/QRIS.svg" alt="QRIS Bayar" />
                   </div>
                   <p className="text-xs text-white font-semibold">QRIS Bayar</p>
                 </button>
-                <button type="button" className="flex flex-col items-center">
+                <button
+                  type="button"
+                  aria-label="Tombol Menampilkan Saldo Pada Rekening"
+                  className="flex flex-col items-center"
+                >
                   <div className="bg-white p-[8px] rounded-[8px]">
                     <img src="/InfoSaldo.svg" alt="Info Saldo" />
                   </div>
@@ -125,6 +182,17 @@ const FormLogin: React.FC = () => {
           </div>
         </div>
       </div>
+      {showErrorPopup && (
+        <Popup
+          message={error || "Terjadi kesalahan saat melakukan permintaan."}
+          svgSrc="/ForgotUserID.svg" 
+          svgAlt="Error Icon"
+          labelPopup="Pop up salah user id/kata sandi"
+          labelButton="Tombol kembali dan mengisi ulang user id/kata sandi"
+          buttonText="Ulangi"
+          onButtonClick={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

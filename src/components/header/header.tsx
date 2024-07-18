@@ -3,7 +3,7 @@ import React from "react";
 const Header: React.FC = () => {
   return (
     <>
-      <section className="container mx-auto pt-10 mb-8">
+      <div className="container mx-auto pt-10 mb-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <img src="/LogoBCA.png" alt="Logo Connect by BCA" />
@@ -16,7 +16,7 @@ const Header: React.FC = () => {
             <h2>Internet Banking</h2>
           </div>
         </div>
-      </section>
+      </div>
       <div className="bg-white h-6 w-full"></div>
     </>
   );

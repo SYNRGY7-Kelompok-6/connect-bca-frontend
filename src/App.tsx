@@ -1,15 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import UnderMaintenance from "./pages/UnderMaintenance";
+import { AuthProvider } from "./contexts/AuthContext";
 import "./index.css";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/maintenance" element={<UnderMaintenance />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/maintenance" element={<UnderMaintenance />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
