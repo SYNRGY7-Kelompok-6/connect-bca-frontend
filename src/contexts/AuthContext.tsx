@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import axios, { AxiosError } from 'axios';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface ErrorResponse {
   detail?: string;
 }
@@ -25,7 +27,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (username: string, password: string): Promise<void> => {
     try {
       const response = await axios.post<{ accessToken: string }>(
-        "https://banking-apps-d159984f6ed7.herokuapp.com/api/v1.0/auth/login",
+        `${apiUrl}/api/v1.0/auth/login`,
         {
           username,
           password,

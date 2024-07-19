@@ -10,6 +10,14 @@ const FormLogin: React.FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false); 
+  const [isPopupVisible, setPopupVisible] = useState(false);
+
+  const showPopup = () => {
+    setPopupVisible(true);
+  };
+  const hidePopup = () => {
+    setPopupVisible(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,6 +116,7 @@ const FormLogin: React.FC = () => {
               type="button"
               aria-label="Tombol lupa User ID"
               className="flex items-center gap-[7px]"
+              onClick={showPopup}
             >
               <div className="bg-white p-[8px] rounded-[8px]">
                 <img src="/Profil.svg" alt="Tombol lupa User ID" />
@@ -121,6 +130,7 @@ const FormLogin: React.FC = () => {
               type="button"
               aria-label="Tombol lupa pin"
               className="flex items-center gap-[7px]"
+              onClick={showPopup}
             >
               <div className="bg-white p-[8px] rounded-[8px]">
                 <img src="/ForgotPIN.svg" alt="Tombol lupa pin" />
@@ -191,6 +201,17 @@ const FormLogin: React.FC = () => {
           labelButton="Tombol kembali dan mengisi ulang user id/kata sandi"
           buttonText="Ulangi"
           onButtonClick={handleClosePopup}
+        />
+      )}
+      {isPopupVisible && (
+        <Popup
+          message="Segera perbarui User ID / Kata Sandi melalui layanan bank terdekat atau hubungi customer service kami melalui email halobca@bca.co.id"
+          svgSrc="/ForgotUserID.svg"
+          svgAlt="Logo Lupa User Id"
+          labelButton="Tombol kembali mengisi form login"
+          labelPopup="Pop Up Lupa USER ID & Kata Sandi Internet Banking"
+          buttonText="Kembali"
+          onButtonClick={hidePopup}
         />
       )}
     </div>

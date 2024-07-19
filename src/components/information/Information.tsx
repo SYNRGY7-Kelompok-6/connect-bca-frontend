@@ -1,6 +1,12 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Information: React.FC = () => {
+  const navigate = useNavigate();
+
+  const goToMainternancePage = () => {
+    navigate('/maintenance')
+  };
   return (
     <div className="flex flex-row gap-[27px] mb-10">
       <div className="flex flex-col bg-[#00487B] w-[874px] py-[16px] px-[32px] rounded-[20px] items-center">
@@ -12,6 +18,7 @@ const Information: React.FC = () => {
             type="button"
             className="flex flex-row items-center gap-[7px]"
             aria-label="Tombol Lanjut ke Page FAQ"
+            onClick={goToMainternancePage}
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/FAQ.svg" alt="FAQ" />
@@ -22,6 +29,7 @@ const Information: React.FC = () => {
             type="button"
             className="flex flex-row items-center gap-[7px]"
             aria-label="Tombol Lanjut ke Page Tutorial Video Demo"
+            onClick={goToMainternancePage}
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/VideoDemo.svg" alt="Video Demo" />
@@ -32,6 +40,7 @@ const Information: React.FC = () => {
             type="button"
             className="flex flex-row items-center gap-[7px]"
             aria-label="Tombol Lanjut ke Page Syarat & ketentuan"
+            onClick={goToMainternancePage}
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/S&K.svg" alt="Syarat & Ketentuan" />
@@ -47,6 +56,7 @@ const Information: React.FC = () => {
             type="button"
             className="flex flex-row items-center gap-[7px]"
             aria-label="Tombol Meminta Bantuan Lewat Call Halo BCA"
+            onClick={goToMainternancePage}
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/Call.svg" alt="Cari Halo BCA" />
@@ -57,6 +67,7 @@ const Information: React.FC = () => {
             type="button"
             className="flex flex-row items-center gap-[7px]"
             aria-label="Tombol Meminta Bantuan Lewat Email Halo BCA"
+            onClick={goToMainternancePage}
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/Email.svg" alt="Email Halo BCA" />
@@ -67,6 +78,7 @@ const Information: React.FC = () => {
             type="button"
             className="flex flex-row items-center gap-[7px]"
             aria-label="Tombol Meminta Bantuan Lewat Whatsapp Call BCA"
+            onClick={goToMainternancePage}
           >
             <div className="bg-white p-[8px] rounded-[8px]">
               <img src="/Whatsapp.svg" alt="Whatsapp Call BCA" />

@@ -3,13 +3,7 @@ import React, { useState } from "react";
 const Carousel: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const images = ["/slidebar.png", "/slidebar.png", "/slidebar.png"];
-
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
+  const images = ["/slidebar.png", "/BCA1.jpg", "/BCA2.jpg"];
 
   const handleNext = () => {
     setActiveIndex((prevIndex) =>
@@ -48,7 +42,7 @@ const Carousel: React.FC = () => {
               key={index}
               type="button"
               className={`w-[8px] h-[8px] rounded-full ${
-                index === activeIndex ? "bg-primary-blue w-[40px]" : "bg-gray-300"
+                index === activeIndex ? "bg-primary-blue w-10" : "bg-gray-300"
               }`}
               aria-current={index === activeIndex ? "true" : "false"}
               aria-label={`Slide ${index + 1}`}
@@ -57,17 +51,6 @@ const Carousel: React.FC = () => {
             ></button>
           ))}
         </div>
-
-        <button
-          type="button"
-          className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-          data-carousel-prev
-          onClick={handlePrev}
-          aria-label="Tombol Swipe Banner"
-        >
-          <img src="/SwipeBannerLeft.svg" alt="Previous Swipe" />
-            <span className="sr-only">Previous</span>
-        </button>
 
         <button
           type="button"
