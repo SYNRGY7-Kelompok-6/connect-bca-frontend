@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import ButtonIcon from "../buttonicon";
+import ButtonIcon from "../../base/buttonicon";
 
 const Information: React.FC = () => {
   const navigate = useNavigate();

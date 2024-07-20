@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+/coverage/
+/src/pages/
+/src/contexts/
+/src/App.tsx
+

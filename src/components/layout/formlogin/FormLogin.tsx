@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import Popup from "../popup";
-import ButtonIcon from "../buttonicon";
-import Button from "../button";
+import { useAuth } from "../../../contexts/AuthContext";
+import Popup from "../../base/popup";
+import ButtonIcon from "../../base/buttonicon";
+import Button from "../../base/button";
 
 const FormLogin: React.FC = () => {
   const [username, setUsername] = useState("");

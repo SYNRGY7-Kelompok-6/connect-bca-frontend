@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonIcon from "../buttonicon";
+import ButtonIcon from "../../base/buttonicon";
 
 const FastMenu: React.FC = () => {
   return (
