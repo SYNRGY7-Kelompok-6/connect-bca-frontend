@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/header";
 import { useNavigate } from "react-router-dom";
+import Button from "../components/button";
 
 const UnderMaintenance: React.FC = () => {
   const navigate = useNavigate();
@@ -17,14 +18,16 @@ const UnderMaintenance: React.FC = () => {
             Fitur Yang Ingin Anda Akses Masih Belum Tersedia
           </h1>
           <img src="/MaintenanceLogo.svg" alt="Under Maintenance" />
-          <button
-            className="bg-primary-dark-blue text-lg text-white font-bold rounded-[16px] w-[497px] h-[87px]"
-            type="button"
-            onClick={goToLogin}
-            aria-label="Tombol ke halaman login"
-          >
-            Kembali ke Laman Login
-          </button>
+          <Button
+          type="button"
+          onClick={goToLogin}
+          ariaLabel="Tombol ke halaman login"
+          variant="puffy"
+          colorScheme="primary"
+          state="active"
+        >
+          Kembali ke Laman Login
+        </Button>
         </div>
       </section>
     </body>

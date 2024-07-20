@@ -42,7 +42,7 @@ const Carousel: React.FC = () => {
               key={index}
               type="button"
               className={`w-[8px] h-[8px] rounded-full ${
-                index === activeIndex ? "bg-primary-blue w-10" : "bg-gray-300"
+                index === activeIndex ? "bg-primary-blue w-[40px]" : "bg-gray-300"
               }`}
               aria-current={index === activeIndex ? "true" : "false"}
               aria-label={`Slide ${index + 1}`}

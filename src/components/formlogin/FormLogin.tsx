@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import Popup from "../popup";
+import ButtonIcon from "../buttonicon";
+import Button from "../button";
 
 const FormLogin: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -9,8 +11,12 @@ const FormLogin: React.FC = () => {
   const { login, error } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [showErrorPopup, setShowErrorPopup] = useState(false); 
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [isPopupVisible, setPopupVisible] = useState(false);
+  const [errors, setErrors] = React.useState<{
+    username?: string;
+    password?: string;
+  }>({});
 
   const showPopup = () => {
     setPopupVisible(true);
@@ -21,6 +27,20 @@ const FormLogin: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
+    const newErrors: { username?: string; password?: string } = {};
+    if (!username) {
+      newErrors.username = "User ID tidak boleh kosong.";
+    }
+    if (!password) {
+      newErrors.password = "Password harus lebih dari 8 karakter.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     setIsLoading(true);
     try {
       await login(username, password);
@@ -36,6 +56,7 @@ const FormLogin: React.FC = () => {
   const handleReset = () => {
     setUsername("");
     setPassword("");
+    setErrors({});
   };
 
   const handleClosePopup = () => {
@@ -68,6 +89,9 @@ const FormLogin: React.FC = () => {
                 autoComplete="username"
                 aria-describedby="Kolom Masukkan USER ID"
               />
+              {errors.username && (
+                <p className="text-red-500 text-xs mt-1">{errors.username}</p>
+              )}
             </div>
             <div className="mb-[22px]">
               <label
@@ -87,58 +111,58 @@ const FormLogin: React.FC = () => {
                 autoComplete="current-password"
                 aria-describedby="Kolom Password"
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
             <div className="flex justify-between items-center">
-              <button
-                className="bg-primary-dark-blue text-sm text-white font-medium py-[4px] px-[32px] rounded-[16px] w-[125px] flex items-center justify-center"
+              <Button
                 type="submit"
-                disabled={isLoading}
-                aria-label="Tombol masuk akun"
+                ariaLabel="Tombol masuk akun"
+                variant="micro"
+                colorScheme="primary"
+                state="active"
+                isLoading={isLoading}
               >
                 {isLoading ? (
                   <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
                 ) : (
                   "Masuk"
                 )}
-              </button>
-              <button
-                className="bg-secondary-red text-sm text-white font-medium py-[4px] px-[16px] rounded-[16px] w-[125px]"
+              </Button>
+
+              <Button
                 type="button"
                 onClick={handleReset}
-                aria-label="Tombol menghapus semua isian di kolom"
+                ariaLabel="Tombol menghapus semua isian di kolom"
+                variant="micro"
+                colorScheme="reset"
+                state="active"
               >
                 Reset
-              </button>
+              </Button>
             </div>
           </form>
           <div className="flex gap-[21px] mt-[35px] justify-center">
-            <button
-              type="button"
-              aria-label="Tombol lupa User ID"
-              className="flex items-center gap-[7px]"
+            <ButtonIcon
+              ariaLabel="Tombol lupa User ID"
               onClick={showPopup}
-            >
-              <div className="bg-white p-[8px] rounded-[8px]">
-                <img src="/Profil.svg" alt="Tombol lupa User ID" />
-              </div>
-              <p className="text-xs font-bold text-white underline">
-                Lupa UserID ?
-              </p>
-            </button>
+              imgSrc="/Profil.svg"
+              imgAlt="Tombol lupa User ID"
+              text="Lupa UserID ?"
+              textClassName="underline"
+              containerClassName=""
+            />
 
-            <button
-              type="button"
-              aria-label="Tombol lupa pin"
-              className="flex items-center gap-[7px]"
+            <ButtonIcon
+              ariaLabel="Tombol lupa pin"
               onClick={showPopup}
-            >
-              <div className="bg-white p-[8px] rounded-[8px]">
-                <img src="/ForgotPIN.svg" alt="Tombol lupa pin" />
-              </div>
-              <p className="text-xs font-bold text-white underline">
-                Lupa Pin?
-              </p>
-            </button>
+              imgSrc="/ForgotPIN.svg"
+              imgAlt="Tombol lupa pin"
+              text="Lupa Pin?"
+              textClassName="underline"
+              containerClassName=""
+            />
           </div>
         </div>
         <div className="flex flex-col ml-[90px]">
@@ -150,40 +174,39 @@ const FormLogin: React.FC = () => {
             <br />
             Untuk informasi lebih lanjut hubungi Halo BCA 1500888.
           </p>
-          <div className="flex mt-[40px] justify-between">
-            <div>
+          <div className="flex mt-[30px] justify-between">
+            <div className="flex flex-col gap-2">
               <h2 className="text-md text-white font-semibold">Fast Menu</h2>
               <div className="flex gap-[40px] mt-[10px]">
-                <button
-                  type="button"
-                  aria-label="Tombol transfer"
-                  className="flex flex-col items-center"
-                >
-                  <div className="bg-white p-[8px] rounded-[8px]">
-                    <img src="/Transfer.svg" alt="Transfer" />
-                  </div>
-                  <p className="text-xs text-white font-semibold">Transfer</p>
-                </button>
-                <button
-                  type="button"
-                  aria-label="Tombol Menampilkan QRIS Bayar"
-                  className="flex flex-col items-center"
-                >
-                  <div className="bg-white p-[8px] rounded-[8px]">
-                    <img src="/QRIS.svg" alt="QRIS Bayar" />
-                  </div>
-                  <p className="text-xs text-white font-semibold">QRIS Bayar</p>
-                </button>
-                <button
-                  type="button"
-                  aria-label="Tombol Menampilkan Saldo Pada Rekening"
-                  className="flex flex-col items-center"
-                >
-                  <div className="bg-white p-[8px] rounded-[8px]">
-                    <img src="/InfoSaldo.svg" alt="Info Saldo" />
-                  </div>
-                  <p className="text-xs text-white font-semibold">Info Saldo</p>
-                </button>
+                <ButtonIcon
+                  ariaLabel="Tombol transfer"
+                  onClick={showPopup}
+                  imgSrc="/Transfer.svg"
+                  imgAlt="Transfer"
+                  text="Transfer"
+                  textClassName=""
+                  containerClassName="flex-col"
+                />
+
+                <ButtonIcon
+                  ariaLabel="Tombol Menampilkan QRIS Bayar"
+                  onClick={showPopup}
+                  imgSrc="/QRIS.svg"
+                  imgAlt="QRIS Bayar"
+                  text="QRIS Bayar"
+                  textClassName=""
+                  containerClassName="flex-col"
+                />
+
+                <ButtonIcon
+                  ariaLabel="Tombol Menampilkan Saldo Pada Rekening"
+                  onClick={showPopup}
+                  imgSrc="/InfoSaldo.svg"
+                  imgAlt="Info Saldo"
+                  text="Info Saldo"
+                  textClassName=""
+                  containerClassName="flex-col"
+                />
               </div>
             </div>
             <div className="w-[80px]">
@@ -195,7 +218,7 @@ const FormLogin: React.FC = () => {
       {showErrorPopup && (
         <Popup
           message={error || "Terjadi kesalahan saat melakukan permintaan."}
-          svgSrc="/ForgotUserID.svg" 
+          svgSrc="/ForgotUserID.svg"
           svgAlt="Error Icon"
           labelPopup="Pop up salah user id/kata sandi"
           labelButton="Tombol kembali dan mengisi ulang user id/kata sandi"
