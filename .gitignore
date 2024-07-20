@@ -23,8 +23,3 @@ dist-ssr
 *.sln
 *.sw?
 
-/coverage/
-/src/pages/
-/src/contexts/
-/src/App.tsx
-
