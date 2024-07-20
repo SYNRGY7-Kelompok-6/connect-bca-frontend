@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../contexts/AuthContext";
+import useAuth from "../../../contexts/useAuth";
 import Popup from "../../base/popup";
 import ButtonIcon from "../../base/buttonicon";
 import Button from "../../base/button";
