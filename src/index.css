@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+tbody:before {
+  line-height:9px;
+  content:"-";
+  color:transparent; /* to hide text */
+  display:block;
+}
+tbody:after {
+  line-height:9px;
+  content:"-";
+  color:transparent; /* to hide text */
+  display:block;
+}

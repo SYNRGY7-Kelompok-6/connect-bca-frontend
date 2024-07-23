@@ -5,6 +5,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Beranda from "./pages/Beranda";
 
 import "./index.css";
+import MutasiRekening from "./pages/MutasiRekening";
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/saldo-mutasi" element={<MutasiRekening />} >
+            <Route path="mutasi-rekening" element={<MutasiRekening />} />
+          </Route>
           <Route path="/maintenance" element={<UnderMaintenance />} />
           <Route path="/" element={<Beranda />} />
         </Routes>
