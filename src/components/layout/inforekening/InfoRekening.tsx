@@ -1,8 +1,16 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import InfoCVV from "../infocvv";
+import InfoAkun from "../infoakun/InfoAkun";
 
-const InfoRekening: React.FC = () => {
+interface InfoRekeningProps {
+  showInfoCVV?: boolean;
+  showInfoAkun?: boolean;
+}
 
+const InfoRekening: React.FC<InfoRekeningProps> = ({
+  showInfoCVV = false,
+  showInfoAkun = false,
+}) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(false);
   const balance = "IDR 1,000,000";
 
@@ -22,6 +30,7 @@ const InfoRekening: React.FC = () => {
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible(!isBalanceVisible);
   };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <h1 className="text-lg text-white font-bold">Informasi Rekening</h1>
@@ -52,6 +61,9 @@ const InfoRekening: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {showInfoCVV && <InfoCVV />}
+      {showInfoAkun && <InfoAkun />}
     </div>
   );
 };
