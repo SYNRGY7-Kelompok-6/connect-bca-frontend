@@ -83,7 +83,7 @@ const mutasiData = [
 
 function InfoMutasiRekening() {
   return (
-    <div id='main-saldo' className='col-span-9 flex flex-col gap-3 ml-12'>
+    <div id='main-saldo' className='col-span-9 col-start-4 flex flex-col gap-3 ml-12'>
       <div id='table' className='w-full flex flex-col gap-3'>
         <div className='flex justify-between'>
           <div className='flex flex-col gap-2'>
