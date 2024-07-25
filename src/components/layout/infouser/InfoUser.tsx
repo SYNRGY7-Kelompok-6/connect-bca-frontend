@@ -1,6 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../../contexts/useAuth";
 
 const InfoUser: React.FC = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <div className="flex bg-fill1 h-[128px]">
       <div className="container mx-auto my-auto flex justify-between">
@@ -16,12 +26,12 @@ const InfoUser: React.FC = () => {
           </div>
         </div>
         <div>
-          <a
-            href="/logout"
+          <button
+            onClick={handleLogout}
             className="text-white text-sm font-medium underline"
           >
             Logout
-          </a>
+          </button>
         </div>
       </div>
     </div>
