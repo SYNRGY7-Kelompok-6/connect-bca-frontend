@@ -44,8 +44,7 @@ const FormLogin: React.FC = () => {
     setIsLoading(true);
     try {
       await login(username, password);
-      alert("Login successful");
-      navigate("/beranda");
+      navigate("/");
     } catch (error) {
       setShowErrorPopup(true);
     } finally {
