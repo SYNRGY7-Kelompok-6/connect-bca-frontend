@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode } from "react";
 import axios, { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -22,6 +23,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const accessToken = localStorage.getItem("accessToken");
   const [error, setError] = React.useState<string | null>(null);
+  const navigate = useNavigate();
 
   const login = async (userID: string, password: string): Promise<void> => {
     try {
@@ -33,6 +35,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (token) {
         localStorage.setItem("accessToken", token);
         setError(null);
+        navigate("/");
       } else {
         console.error("Token is undefined");
         setError("Failed to retrieve access token");
