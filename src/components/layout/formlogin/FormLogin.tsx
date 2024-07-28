@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useAuth from "../../../contexts/useAuth";
 import Popup from "../../base/popup";
 import ButtonIcon from "../../base/buttonicon";
@@ -9,7 +8,6 @@ const FormLogin: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login, error } = useAuth();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -44,7 +42,6 @@ const FormLogin: React.FC = () => {
     setIsLoading(true);
     try {
       await login(username, password);
-      navigate("/");
     } catch (error) {
       setShowErrorPopup(true);
     } finally {
