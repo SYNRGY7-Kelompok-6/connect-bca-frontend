@@ -7,6 +7,10 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { BankStatementProvider } from "./contexts/BankStatementContext";
 import Beranda from "./pages/Beranda";
 import PrivateRoute from "./routes/PrivateRoutes";
+import Transaksi from "./pages/transaksi";
+import QrisBayar from "./pages/qrisbayar";
+import QrisTransfer from "./pages/qristransfer";
+import ScanQris from "./pages/scanqris";
 
 import "./index.css";
 
@@ -47,6 +51,47 @@ function App() {
                 element={
                   <PrivateRoute>
                     <InfoSaldo />
+                  </PrivateRoute>
+                }
+              />
+            </Route>
+            <Route
+              path="/transaksi"
+              element={
+                <PrivateRoute>
+                  <Transaksi />
+                </PrivateRoute>
+              }
+            >
+              <Route
+                path="transfer"
+                element={
+                  <PrivateRoute>
+                    <InfoSaldo />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="qris-bayar"
+                element={
+                  <PrivateRoute>
+                    <QrisBayar />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="qris-transfer"
+                element={
+                  <PrivateRoute>
+                    <QrisTransfer />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="scan-qris"
+                element={
+                  <PrivateRoute>
+                    <ScanQris />
                   </PrivateRoute>
                 }
               />
