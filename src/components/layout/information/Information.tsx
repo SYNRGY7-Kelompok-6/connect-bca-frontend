@@ -21,7 +21,7 @@ const Information: React.FC = () => {
             imgSrc="/FAQ.svg"
             imgAlt="FAQ"
             text="FAQ"
-            textClassName=""
+            textClassName="text-white"
             containerClassName=""
           />
 
@@ -31,7 +31,7 @@ const Information: React.FC = () => {
             imgSrc="/VideoDemo.svg"
             imgAlt="Video Demo"
             text="Video Demo"
-            textClassName=""
+            textClassName="text-white"
             containerClassName=""
           />
 
@@ -41,7 +41,7 @@ const Information: React.FC = () => {
             imgSrc="/S&K.svg"
             imgAlt="Syarat & Ketentuan"
             text="Syarat & Ketentuan"
-            textClassName=""
+            textClassName="text-white"
             containerClassName=""
           />
         </div>
@@ -53,9 +53,9 @@ const Information: React.FC = () => {
             ariaLabel="Tombol Meminta Bantuan Lewat Call Halo BCA"
             onClick={goToMainternancePage}
             imgSrc="/Call.svg"
-            imgAlt="Cari Halo BCA"
-            text="Cari Halo BCA"
-            textClassName=""
+            imgAlt="Call Halo BCA"
+            text="Call Halo BCA"
+            textClassName="text-white"
             containerClassName=""
           />
 
@@ -65,7 +65,7 @@ const Information: React.FC = () => {
             imgSrc="/Email.svg"
             imgAlt="Email Halo BCA"
             text="Email Halo BCA"
-            textClassName=""
+            textClassName="text-white"
             containerClassName=""
           />
 
@@ -75,7 +75,7 @@ const Information: React.FC = () => {
             imgSrc="/Whatsapp.svg"
             imgAlt="Whatsapp Call BCA"
             text="Whatsapp Call BCA"
-            textClassName=""
+            textClassName="text-white"
             containerClassName=""
           />
         </div>
