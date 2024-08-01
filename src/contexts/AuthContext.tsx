@@ -8,10 +8,22 @@ interface ErrorResponse {
   message?: string;
 }
 
+interface LoginAttemp {
+  timestamp: string;
+  location: string;
+}
+
+interface LoginInfo {
+  lastSuccessfullLoginAttempt: LoginAttemp;
+  failedLoginAttempt: LoginAttemp;
+}
+
 export interface AuthContextType {
   accessToken: string | null;
   login: (userID: string, password: string) => Promise<void>;
   logout: () => void;
+  fetchLoginInfo: () => Promise<void>;
+  loginInfo: LoginInfo | null;
   error: string | null;
 }
 
@@ -22,6 +34,7 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const accessToken = localStorage.getItem("accessToken");
+  const [loginInfo, setLoginInfo] = React.useState<LoginInfo | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -68,12 +81,31 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const fetchLoginInfo = async (): Promise<void> => {
+    if (!accessToken) {
+      setError("No access token available");
+      return;
+    }
+    try {
+      const response = await axios.get<{ data: LoginInfo }>(`${apiUrl}/api/v1.0/auth/login-info`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
+      setLoginInfo(response.data.data);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching login info:", error);
+      setError("Failed to fetch login information");
+    }
+  };
+
   const logout = (): void => {
     localStorage.removeItem("accessToken");
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, login, logout, error }}>
+    <AuthContext.Provider value={{ accessToken, login, logout, fetchLoginInfo, loginInfo, error }}>
       {children}
     </AuthContext.Provider>
   );

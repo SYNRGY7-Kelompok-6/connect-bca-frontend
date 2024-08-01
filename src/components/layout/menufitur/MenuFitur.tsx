@@ -26,7 +26,7 @@ const MenuFitur: React.FC = () => {
                   : "text-white"
               }`}
               type="button"
-              aria-label={`Tombol untuk ${button.name}`}
+              aria-label={`Tombol Navigasi ${button.name}`}
             >
               {button.name}
             </button>

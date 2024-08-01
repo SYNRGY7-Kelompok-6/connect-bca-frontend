@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface IconButtonProps {
   ariaLabel: string;
@@ -6,9 +6,10 @@ interface IconButtonProps {
   imgSrc: string;
   imgAlt: string;
   text: string;
-  imgClassName?:string;
+  imgClassName?: string;
   textClassName?: string;
   containerClassName?: string;
+  backgroundClassName?: string;
 }
 
 const ButtonIcon: React.FC<IconButtonProps> = ({
@@ -18,8 +19,9 @@ const ButtonIcon: React.FC<IconButtonProps> = ({
   imgAlt,
   text,
   imgClassName,
-  textClassName = '',
-  containerClassName = '',
+  textClassName = "",
+  containerClassName = "",
+  backgroundClassName = "",
 }) => {
   return (
     <button
@@ -28,12 +30,10 @@ const ButtonIcon: React.FC<IconButtonProps> = ({
       className={`flex items-center gap-[7px] ${containerClassName}`}
       onClick={onClick}
     >
-      <div className="bg-white p-[8px] rounded-[8px]">
+      <div className={`bg-white p-[8px] rounded-[8px] ${backgroundClassName}`}>
         <img src={imgSrc} alt={imgAlt} className={imgClassName} />
       </div>
-      <p className={`text-xs font-bold text-white ${textClassName}`}>
-        {text}
-      </p>
+      <p className={`text-xs font-bold ${textClassName}`}>{text}</p>
     </button>
   );
 };

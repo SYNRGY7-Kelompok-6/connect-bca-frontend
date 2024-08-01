@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import useAuth from "../contexts/useAuth";
+import { useAuth } from "../contexts/useAuth";
 
 interface PrivateRouteProps {
   children: React.ReactElement;
@@ -11,7 +11,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const location = useLocation();
 
   return accessToken ? (
-    children 
+    children
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
   );
