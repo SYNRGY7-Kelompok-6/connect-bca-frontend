@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import Dropdown from "../dropdown"
 
 const navList = [
