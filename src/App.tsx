@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
+import SaldoMutasi from "./pages/saldomutasi";
+import InfoSaldo from "./pages/InfoSaldo";
 import UnderMaintenance from "./pages/UnderMaintenance";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BankStatementProvider } from "./contexts/BankStatementContext";
@@ -26,6 +28,31 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              <Route
+                path="/saldo-mutasi"
+                element={
+                  <PrivateRoute>
+                    <SaldoMutasi />
+                  </PrivateRoute>
+                }
+              >
+                <Route
+                  path="informasi-saldo-rekening"
+                  element={
+                    <PrivateRoute>
+                      <InfoSaldo />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="mutasi-rekening"
+                  element={
+                    <PrivateRoute>
+                      <InfoSaldo />
+                    </PrivateRoute>
+                  }
+                />
+              </Route>
             </Routes>
           </LoadingProvider>
         </BankStatementProvider>

@@ -1,84 +1,103 @@
-import React from "react";
-import Button from "../../base/button";
+import React, { useState, useEffect } from "react";
+import DropdownMonth from "../../base/dropdownmonth/DropdownMonth";
+import useBankStatement from "../../../contexts/useBankStatement";
 
 const LaporanKeuangan: React.FC = () => {
+  const { monthlyBankStatement, fetchAccountMonthly } = useBankStatement();
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    new Date().getMonth() + 1
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await fetchAccountMonthly(selectedMonth);
+      } catch (error) {
+        console.error("Error fetching monthly bank statement:", error);
+      }
+    };
+
+    fetchData();
+  }, [fetchAccountMonthly, selectedMonth]);
+
+  const handleSelectMonth = (month: number) => {
+    setSelectedMonth(month);
+  };
+
+  const monthlyIncome = Number(monthlyBankStatement?.monthlyIncome.value ?? 0);
+  const monthlyOutcome = Number(
+    monthlyBankStatement?.monthlyOutcome.value ?? 0
+  );
+  const selisih = monthlyIncome - monthlyOutcome;
+
   return (
-    <>
-      <div className="flex flex-col gap-[20px] w-[500px]">
-        <h1 className="text-lg text-white font-bold">
-          Laporan Keunagan Rekening
+    <section
+      className="flex flex-col gap-[20px] w-[500px]"
+      aria-labelledby="financial-report-heading"
+    >
+      <header>
+        <h1
+          id="financial-report-heading"
+          className="text-lg text-white font-bold"
+        >
+          Laporan Keuangan Rekening
         </h1>
-        <div className="flex bg-[#1C1C1E] px-[32px] py-[32px] justify-between items-center rounded-[20px]">
-          <div>
-            <p className="text-sm text-white font-medium">
-              Siklus Laporan Keuangan Saat Ini
-            </p>
-            <p className="text-sm text-white font-medium">
-              1 Jun 2024 - 30 Jun 2024
-            </p>
-          </div>
-          <div>
-            <Button
-              type="button"
-              // onClick={handleReset}
-              ariaLabel="Tombol menghapus semua isian di kolom"
-              variant="micro"
-              colorScheme="primary"
-              state="active"
-            >
-              Ubah siklus
-            </Button>
-          </div>
+      </header>
+      <div
+        className="flex flex-col gap-8 bg-primary-light-blue p-8 justify-center items-center rounded-[20px]"
+        aria-labelledby="financial-report-details"
+      >
+        <div className="inline-flex rounded-md shadow-sm w-full">
+          <DropdownMonth onSelectMonth={handleSelectMonth} />
         </div>
-        <div className="flex flex-col gap-5 bg-[#1C1C1E] px-[32px] py-[32px] justify-center items-center rounded-[20px]">
-          <div className="inline-flex rounded-md shadow-sm">
-            <a
-              href="#"
-              aria-current="page"
-              className="px-8 py-2 text-sm font-medium border border-white rounded-s-lg hover:bg-primary-blue text-white"
-            >
-              Bulan Ini
-            </a>
-            <a
-              href="#"
-              className="px-8 py-2 text-sm font-medium border-t border-b border-white hover:bg-primary-blue text-white"
-            >
-              Bulan Lalu
-            </a>
-            <a
-              href="#"
-              className="px-8 py-2 text-sm font-medium border border-white rounded-e-lg hover:bg-primary-blue text-white"
-            >
-              3 Bulan
-            </a>
-          </div>
-          <div className="flex flex-col gap-1 items-center">
-            <p className="text-white font-medium text-sm">Selisih</p>
-            <h3 className="text-white font-bold text-lg">Rp 636.800</h3>
-          </div>
-          <div className="flex justify-center gap-10">
-            <div className="flex flex-col items-center">
-              <div className="flex gap-2">
-                <img src="/ArrowPemasukan.svg" alt="" />
-                <p className="text-white font-medium text-sm">Pemasukan</p>
-              </div>
-              <h3 className="text-secondary-green text-lg font-bold">
-                Rp 1.560.000
-              </h3>
+        <div
+          className="flex flex-col gap-1 items-center"
+          aria-labelledby="balance-difference"
+        >
+          <p className="text-neutral-9 font-medium text-sm">Selisih</p>
+          <h3 className="text-neutral-9 font-bold text-lg">
+            Rp {selisih.toLocaleString()}
+          </h3>
+        </div>
+        <div
+          className="flex justify-center gap-10"
+          aria-labelledby="income-expense-details"
+        >
+          <div
+            className="flex flex-col items-center"
+            aria-labelledby="income-details"
+          >
+            <div className="flex gap-2">
+              <img
+                src="/ArrowPemasukan.svg"
+                alt="Ikon Pemasukan"
+                aria-label="Ikon Pemasukan"
+              />
+              <p className="text-neutral-9 font-medium text-sm">Pemasukan</p>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="flex gap-2">
-                <img src="/ArrowPengeluaran.svg" alt="" />
-                <p className="text-white font-medium text-sm">Pengeluaran</p>
-              </div>
-              <h3 className="text-secondary-red text-lg font-bold">
-                Rp 1.560.000
-              </h3>
+            <h3 className="text-secondary-green text-lg font-bold">
+              Rp {monthlyIncome.toLocaleString()}
+            </h3>
+          </div>
+          <div
+            className="flex flex-col items-center"
+            aria-labelledby="expense-details"
+          >
+            <div className="flex gap-2">
+              <img
+                src="/ArrowPengeluaran.svg"
+                alt="Ikon Pengeluaran"
+                aria-label="Ikon Pengeluaran"
+              />
+              <p className="text-neutral-9 font-medium text-sm">Pengeluaran</p>
             </div>
+            <h3 className="text-secondary-red text-lg font-bold">
+              Rp {monthlyOutcome.toLocaleString()}
+            </h3>
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

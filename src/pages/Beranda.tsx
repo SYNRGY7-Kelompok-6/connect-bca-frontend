@@ -4,10 +4,10 @@ import InfoRekening from "../components/layout/inforekening";
 import InfoUser from "../components/layout/infouser";
 import MenuFitur from "../components/layout/menufitur";
 import FastMenu from "../components/layout/fastmenu";
+import Preloading from "../components/base/preloading/preloading";
 import { useLoading } from "../contexts/useLoading";
 import { useAuth } from "../contexts/useAuth";
 import useBankStatement from "../contexts/useBankStatement";
-import Preloading from "../components/base/preloading/preloading";
 
 const Beranda: React.FC = () => {
   const { loading, setLoading } = useLoading();
