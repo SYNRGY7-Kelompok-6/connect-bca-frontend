@@ -1,31 +1,56 @@
 import React from "react";
 import { useState } from "react";
+import useBankStatement from "../../../contexts/useBankStatement";
 
 const InfoCVV: React.FC = () => {
+  const { bankStatement } = useBankStatement();
+
   const [isCVVVisible, setIsCVVVisible] = useState(false);
-  const CVV = "111";
+  const CVV = bankStatement?.accountInfo.cvv;
 
   const toggleCVVVisibility = () => {
     setIsCVVVisible(!isCVVVisible);
   };
+
+  const milliseconds = bankStatement?.accountInfo.accountCardExp;
+  const date = milliseconds ? new Date(milliseconds) : new Date(); 
+
+  const formattedDate = date.toLocaleDateString("id-ID", {
+    month: "2-digit", 
+    year: "2-digit",
+  });
+
   return (
     <>
-      {/* Info Rekening CVV */}
-      <div className="bg-primary-blue rounded-5 flex flex-col w-[400px] rounded-[20px] p-5 gap-[10px]">
-        <div className="flex flex-col gap-1">
-          <p className="text-white text-sm">Masa Berlaku</p>
-          <h2 className="text-md text-white font-semibold">07/2028</h2>
+      <div className="bg-primary-light-blue rounded-5 flex flex-col w-[416px] rounded-[20px] p-[18px] gap-3">
+        <div className="flex gap-2 justify-between">
+          <p className="text-primary-dark-blue text-sm font-semibold">
+            Masa Berlaku
+          </p>
+          <h2 className="text-base text-primary-dark-blue font-semibold">
+            {formattedDate}
+          </h2>
         </div>
-        <div className="flex flex-col gap-1">
-          <p className="text-white text-sm">Kode CVV</p>
+        <div className="flex gap-2 justify-between">
+          <p className="text-primary-dark-blue text-sm font-semibold">
+            Jenis Kartu
+          </p>
+          <h2 className="text-base text-primary-dark-blue font-semibold">
+            {bankStatement?.accountInfo.accountType}
+          </h2>
+        </div>
+        <div className="flex flex-col gap-2">
+          <p className="text-primary-dark-blue text-sm font-semibold">
+            Kode CVV
+          </p>
           <div className="flex justify-between items-center">
-            <h2 className="text-md text-white font-semibold">
+            <h2 className="text-md text-primary-dark-blue font-semibold">
               {isCVVVisible ? CVV : "***"}
             </h2>
             <button type="button" onClick={toggleCVVVisibility}>
               <img
-                src={isCVVVisible ? "/VisibilityOff.svg" : "/VisibilityOn.svg"}
-                alt={isCVVVisible ? "Hide CVV" : "Show CVV"}
+                src={isCVVVisible ? "/VisibilityOn.svg" : "/VisibilityOff.svg"}
+                alt={isCVVVisible ? "Show CVV" : "Hide CVV"}
               />
             </button>
           </div>

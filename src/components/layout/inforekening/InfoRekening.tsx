@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import InfoCVV from "../infocvv";
 import InfoAkun from "../infoakun/InfoAkun";
+import useBankStatement from "../../../contexts/useBankStatement";
 
 export interface InfoRekeningProps {
   showInfoCVV?: boolean;
@@ -11,10 +12,18 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
   showInfoCVV = false,
   showInfoAkun = false,
 }) => {
-  const [isBalanceVisible, setIsBalanceVisible] = useState(false);
-  const balance = "IDR 1,000,000";
+  const { bankStatement } = useBankStatement();
+  const [isBalanceVisible, setIsBalanceVisible] = React.useState(false);
 
-  const [textToCopy] = useState("145 267 389 5162");
+  const balanceValue =
+    bankStatement?.accountInfo?.accountBalance?.availableBalance?.value || 0;
+  const balance = balanceValue.toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
+
+  const accountNo = bankStatement?.accountInfo?.accountNo || "";
+  const textToCopy = accountNo;
 
   const handleCopy = () => {
     navigator.clipboard
@@ -32,30 +41,44 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-[20px]">
-      <h1 className="text-lg text-white font-bold">Informasi Rekening</h1>
-      <div className="bg-primary-blue rounded-5 flex flex-col w-[400px] rounded-[20px] p-5 gap-[10px]">
-        <div className="flex flex-col gap-1">
-          <p className="text-white text-sm">Rekening</p>
-          <div className="flex justify-between">
-            <h2 className="text-md text-white font-semibold">{textToCopy}</h2>
-            <button type="button" onClick={handleCopy}>
-              <img src="/IconCopy.svg" alt="" />
+    <section className="flex flex-col gap-6" aria-labelledby="rekening-info-heading">
+      <header>
+        <h1 id="rekening-info-heading" className="text-lg text-white font-bold">
+          Informasi Rekening
+        </h1>
+      </header>
+      <div className="bg-primary-light-blue rounded-[20px] flex flex-col w-[416px] p-[18px] gap-[18px]">
+        <div className="flex flex-col gap-2">
+          <p className="text-primary-dark-blue text-sm font-semibold">Rekening</p>
+          <div className="flex justify-between" aria-label="Nomor Rekening">
+            <h2 className="text-md text-primary-dark-blue font-semibold">
+              {textToCopy}
+            </h2>
+            <button
+              type="button"
+              onClick={handleCopy}
+              aria-label="Salin nomor rekening"
+            >
+              <img src="/IconCopy.svg" alt="Salin nomor rekening" />
             </button>
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <p className="text-white text-sm">Saldo</p>
-          <div className="flex justify-between items-center">
-            <h2 className="text-md text-white font-semibold">
+        <div className="flex flex-col gap-2">
+          <p className="text-primary-dark-blue text-sm font-semibold">Saldo</p>
+          <div className="flex justify-between items-center" aria-label="Saldo Rekening">
+            <h2 className="text-md text-primary-dark-blue font-semibold">
               {isBalanceVisible ? balance : "IDR ********"}
             </h2>
-            <button type="button" onClick={toggleBalanceVisibility}>
+            <button
+              type="button"
+              onClick={toggleBalanceVisibility}
+              aria-label={isBalanceVisible ? "Sembunyikan Saldo" : "Tampilkan Saldo"}
+            >
               <img
                 src={
-                  isBalanceVisible ? "/VisibilityOff.svg" : "/VisibilityOn.svg"
+                  isBalanceVisible ? "/VisibilityOn.svg" : "/VisibilityOff.svg"
                 }
-                alt={isBalanceVisible ? "Hide Balance" : "Show Balance"}
+                alt={isBalanceVisible ? "Sembunyikan saldo" : "Tampilkan saldo"}
               />
             </button>
           </div>
@@ -64,7 +87,7 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
 
       {showInfoCVV && <InfoCVV />}
       {showInfoAkun && <InfoAkun />}
-    </div>
+    </section>
   );
 };
 
