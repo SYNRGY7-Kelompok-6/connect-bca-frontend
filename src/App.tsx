@@ -10,6 +10,7 @@ import Beranda from "./pages/Beranda";
 import PrivateRoute from "./routes/PrivateRoutes";
 
 import "./index.css";
+import MutasiRekening from "./pages/MutasiRekening";
 
 function App() {
   return (
@@ -48,7 +49,7 @@ function App() {
                   path="mutasi-rekening"
                   element={
                     <PrivateRoute>
-                      <InfoSaldo />
+                      <MutasiRekening />
                     </PrivateRoute>
                   }
                 />

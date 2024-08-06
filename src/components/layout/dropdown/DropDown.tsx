@@ -17,7 +17,7 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   const handleItemClick = (href: string) => {
     navigate(href);
-    setIsOpen(true); 
+    setIsOpen(true);
   };
 
   return (

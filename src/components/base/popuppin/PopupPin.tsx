@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../button";
+import PinInput from "../pininput";
 
 interface PopupProps {
   message?: string;
@@ -10,10 +11,14 @@ interface PopupProps {
   labelPopup?: string;
   buttonText?: string;
   className?: string;
+  propsFunc?: {
+    setPinSubmitted?: (submitted: boolean) => void;
+    setPopupVisible?: (submitted: boolean) => void;
+  };
   onButtonClick?: () => void;
 }
 
-const Popup: React.FC<PopupProps> = ({
+const DatePicker: React.FC<PopupProps> = ({
   message,
   svgSrc,
   labelButton = '',
@@ -22,8 +27,16 @@ const Popup: React.FC<PopupProps> = ({
   button = true,
   buttonText,
   className,
+  propsFunc,
   onButtonClick,
 }) => {
+
+  const handlePinSubmit = async () => {
+    if (propsFunc?.setPinSubmitted && propsFunc?.setPopupVisible) {
+      propsFunc.setPopupVisible(false);
+      propsFunc.setPinSubmitted(true);
+    }
+  };
 
   return (
     <div
@@ -37,6 +50,7 @@ const Popup: React.FC<PopupProps> = ({
         {
           svgSrc && <img src={svgSrc} alt={svgAlt} width="78" height="80" />
         }
+        <PinInput length={6} onPinSubmit={handlePinSubmit} />
         {
           button && <Button
           type="button"
@@ -54,4 +68,4 @@ const Popup: React.FC<PopupProps> = ({
   );
 };
 
-export default Popup;
+export default DatePicker;
