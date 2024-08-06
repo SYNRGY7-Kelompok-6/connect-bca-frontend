@@ -21,6 +21,7 @@ interface LoginInfo {
 export interface AuthContextType {
   accessToken: string | null;
   login: (userID: string, password: string) => Promise<void>;
+  validatePin: (pin: string) => Promise<void>;
   logout: () => void;
   fetchLoginInfo: () => Promise<void>;
   loginInfo: LoginInfo | null;
@@ -61,6 +62,37 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setError("Login failed");
       }
       throw new Error("Login failed");
+    }
+  };
+
+  const validatePin = async (pin: string): Promise<void> => {
+    try {
+      const response = await axios.post<{ data: { pinToken: string } }>(
+        `${apiUrl}/api/v1.0/auth/validate-pin`,
+        { pin },
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        }
+      );
+      const pinToken = response.data.data.pinToken;
+      if (pinToken) {
+        localStorage.setItem("pinToken", pinToken);
+        console.log(localStorage.getItem('pinToken'))
+        setError(null);
+      } else {
+        console.error("Pin Token is undefined");
+        setError("Failed to retrieve Pin token");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        handleLoginError(error);
+      } else {
+        console.error("Verify failed:", error);
+        setError("Verify failed");
+      }
+      throw new Error("Verify failed");
     }
   };
 
@@ -105,7 +137,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, login, logout, fetchLoginInfo, loginInfo, error }}>
+    <AuthContext.Provider value={{ accessToken, login, validatePin, logout, fetchLoginInfo, loginInfo, error }}>
       {children}
     </AuthContext.Provider>
   );

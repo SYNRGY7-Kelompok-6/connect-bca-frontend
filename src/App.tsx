@@ -9,7 +9,8 @@ import { LoadingProvider } from './contexts/LoadingContext';
 import Beranda from './pages/Beranda';
 import PrivateRoute from './routes/PrivateRoutes';
 
-import './index.css';
+import "./index.css";
+import MutasiRekening from "./pages/MutasiRekening";
 import Transaksi from './pages/Transaksi';
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
                   path="mutasi-rekening"
                   element={
                     <PrivateRoute>
-                      <InfoSaldo />
+                      <MutasiRekening />
                     </PrivateRoute>
                   }
                 />

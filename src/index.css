@@ -1,3 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+tbody:before {
+  line-height:9px;
+  content:"-";
+  color:transparent;
+  display:block;
+}
+*/
+/*
+tbody:after {
+  line-height:9px;
+  content:"-";
+  color:transparent;
+  display:block;
+} */
+
+@media print {
+  .hidden-print {
+    display: block !important; /* Ensure the table is shown during printing */
+  }
+}
+
+@media screen {
+  .hidden-print {
+    display: none; /* Hide the table on the screen */
+  }
+}
+
+.react-calendar button {
+  border-radius: 99999px;
+  width: 24px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
