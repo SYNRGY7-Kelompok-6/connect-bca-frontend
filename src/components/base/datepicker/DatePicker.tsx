@@ -26,7 +26,7 @@ const DatePicker: React.FC<PopupProps> = ({
   handleSubmit,
   // value:
 }) => {
-  const [value, setValue] = useState<Value>(new Date())
+  const [value, setValue] = useState<Value | any>(new Date())
 
   return (
     <div

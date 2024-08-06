@@ -20,7 +20,7 @@ function MutasiLayout() {
     startDate: new Date(),
     endDate: new Date(),
   });
-  const [accInfo, setAccInfo] = useState({
+  const [accInfo] = useState({
     name: bankStatement?.accountInfo.name,
     accNo: bankStatement?.accountInfo.accountNo
   })
