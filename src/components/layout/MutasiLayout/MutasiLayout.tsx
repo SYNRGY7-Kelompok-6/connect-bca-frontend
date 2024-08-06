@@ -20,6 +20,10 @@ function MutasiLayout() {
     startDate: new Date(),
     endDate: new Date(),
   });
+  const [accInfo, setAccInfo] = useState({
+    name: bankStatement?.accountInfo.name,
+    accNo: bankStatement?.accountInfo.accountNo
+  })
   const [noAccount, setNoAccount] = useState<string>('');
   const [selectedFilter, setSelectedFilter] = useState<string>('');
   const [showDatePicker, setShowDatePicker] = useState(false)
@@ -216,10 +220,10 @@ function MutasiLayout() {
             <div className="flex flex-row gap-[60px]">
               <div className="flex flex-col gap-[18px]">
                 <div className="font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                  <label htmlFor="rekening" className="whitespace-nowrap">Ke Rekening</label>
+                  <label htmlFor="rekening" className="whitespace-nowrap">Rekening</label>
                 </div>
                 <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                  <input type="radio" onChange={handleFilterChange} name="filter-group" id="period" value='period' className="h-5 w-5 border-primary-dark-blue" />
+                  <input type="radio" checked aria-checked onChange={handleFilterChange} name="filter-group" id="period" value='period' className="h-5 w-5 border-primary-dark-blue" />
                   <label htmlFor="periodselect" className="whitespace-nowrap">Periode</label>
                 </div>
                 <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
@@ -231,7 +235,7 @@ function MutasiLayout() {
                 </div>
               </div>
               <div className="flex flex-col gap-[18px] w-full">
-                <Input id="rekening" type="number" onChange={handleNoAccountChange} />
+                <Input ariaLabel="input-rekening" id="rekening" value={`${accInfo.name} - ${accInfo.accNo}`} type="text" onChange={handleNoAccountChange} />
                 <div className="relative flex flex-row items-center justify-end">
                   <img src='/Down1.svg' alt="arrow-icon" className='absolute pointer-events-none mr-3' />
                   <select name="input-component" id="periodselect" onChange={handlePeriodChange} className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full" >
