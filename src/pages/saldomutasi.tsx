@@ -11,6 +11,7 @@ import MutasiRekening from "./MutasiRekening";
 import InfoSaldo from "./InfoSaldo";
 import Preloading from "../components/base/preloading/preloading";
 
+
 const SaldoMutasi: React.FC = () => {
   const location = useLocation();
   const { loading, setLoading } = useLoading();
