@@ -55,11 +55,6 @@ export interface MonthlyBankStatementData {
   monthlyOutcome: Currency;
 }
 
-    value: number;
-    currency: string;
-    remainingBalance?: number;
-  }
-  
   export interface AccountInfo {
     accountNo: string;
     accountType: string;
