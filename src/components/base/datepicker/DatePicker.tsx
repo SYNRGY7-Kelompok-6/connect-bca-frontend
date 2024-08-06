@@ -12,6 +12,10 @@ interface PopupProps {
   handleSubmit: (value: Date) => void;
 }
 
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 const DatePicker: React.FC<PopupProps> = ({
   message,
   svgSrc,
@@ -22,7 +26,7 @@ const DatePicker: React.FC<PopupProps> = ({
   handleSubmit,
   // value:
 }) => {
-  const [value, onChange] = useState(new Date())
+  const [value, setValue] = useState<Value>(new Date())
 
   return (
     <div
@@ -36,7 +40,7 @@ const DatePicker: React.FC<PopupProps> = ({
         {
           svgSrc && <img src={svgSrc} alt={svgAlt} width="78" height="80" />
         }
-        <Calendar onChange={onChange} value={value} className='w-full border-none !font-sans' />
+        <Calendar onChange={setValue} value={value} className='w-full border-none !font-sans' />
         <div className="w-full flex gap-1 p-[18px] justify-end">
           <button
             type="button"

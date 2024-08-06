@@ -12,8 +12,8 @@ interface DateRange {
 }
 
 function MutasiLayout() {
-  const { bankStatement, accountMonthly, fetchBankStatement } = useBankStatement()
-  const componentRef = useRef();
+  const { bankStatement, accountMonthly } = useBankStatement()
+  const componentRef = useRef<HTMLDivElement>(null);
   const [period, setPeriod] = useState<DateRange>(getDateRange('1month'));
 
   const [datePicker, setDatePicker] = useState<DateRange>({
@@ -89,7 +89,7 @@ function MutasiLayout() {
     setShowDatePicker1(false)
   }
 
-  const handleSubmitCalendar1 = (value: Date) =>{
+  const handleSubmitCalendar1 = (value: Date ) =>{
     setDatePicker(prevState => ({
       ...prevState,
       endDate: value
@@ -156,13 +156,13 @@ function MutasiLayout() {
     return newDate;
   };
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount: number | undefined) => {
     // Mengonversi angka menjadi string dan memformat dengan pemisah ribuan
-    return amount.toLocaleString('id-ID'); // Menggunakan lokal 'id-ID' untuk format Indonesia
+    return amount?.toLocaleString('id-ID'); // Menggunakan lokal 'id-ID' untuk format Indonesia
   };
 
   async function handleSearch() {
-    console.log('Selected filter:', selectedFilter)
+    console.log(filteredData)
     if (selectedFilter === 'period') {
       const fromDate = period.startDate
       const toDate = period.endDate
@@ -206,7 +206,7 @@ function MutasiLayout() {
               <p aria-label="Mutasi Rekening" className='text-white text-2xl font-bold'>Mutasi Rekening</p>
             </div>
             <div className='flex gap-5 items-end'>
-              <button onClick={handlePrint} className='flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
+              <button aria-label="Unduh Mutasi" onClick={handlePrint} className='flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
                 Unduh Mutasi
               </button>
             </div>
@@ -241,10 +241,10 @@ function MutasiLayout() {
                     <option value="1week">1 Minggu</option>
                   </select>
                 </div>
-                <Input placeholder="dd/mm/yyyy" onFocus={handleFocus} value={formatDateToString(datePicker.startDate)} onChange={handleInputChange} id="tanggal-awal" iconSrc="/Calendar2.svg" />
-                <Input placeholder="dd/mm/yyyy" onFocus={handleFocus1} value={formatDateToString(datePicker.endDate)} onChange={handleInputChange} id="tanggal-akhir" iconSrc="/Calendar2.svg" />
+                <Input placeholder="dd/mm/yyyy" onFocus={handleFocus} value={formatDateToString(datePicker.startDate)} onChange={handleInputChange} id="tanggal-awal" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
+                <Input placeholder="dd/mm/yyyy" onFocus={handleFocus1} value={formatDateToString(datePicker.endDate)} onChange={handleInputChange} id="tanggal-akhir" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
                 <div className="flex flex-col gap-[18px] items-end">
-                  <span className="font-medium text-sm text-primary-dark-blue">Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir.</span>
+                  <span aria-description="Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir." className="font-medium text-sm text-primary-dark-blue">Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir.</span>
                   <button onClick={handleSearch} className='w-[179px] justify-center flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
                     Cari
                   </button>
@@ -253,17 +253,17 @@ function MutasiLayout() {
             </div>
             {
               showDatePicker && (
-                <DatePicker handleClose={handleCloseCalendar} handleSubmit={handleSubmitCalendar} />
+                <DatePicker labelPopup="Popup Pilih tanggal kalender" handleClose={handleCloseCalendar} handleSubmit={handleSubmitCalendar} />
               )
             }
             {
               showDatePicker1 && (
-                <DatePicker handleClose={handleCloseCalendar1} handleSubmit={handleSubmitCalendar1} />
+                <DatePicker labelPopup="Popup Pilih tanggal kalender" handleClose={handleCloseCalendar1} handleSubmit={handleSubmitCalendar1} />
               )
             }
           </div>
               {
-                bankStatement?.mutations.length !== 0 ? (
+                filteredData?.length !== 0 ? (
                   <table id="table" className="border border-primary-dark-blue border-collapse table-auto bg-primary-light-blue w-full rounded-t-[20px] rounded-b-[20px]">
                     <thead className='bg-primary-blue text-primary-light-blue'>
                       <tr className="h-11">
@@ -297,7 +297,7 @@ function MutasiLayout() {
                 )
               }
           <div className="hidden">
-            <TablePrint ref={componentRef}/>
+            <TablePrint ref={componentRef || undefined}/>
           </div>
         </div>
         <div className='flex justify-between'>
@@ -307,16 +307,16 @@ function MutasiLayout() {
                 accountMonthly ? (
                   <>
                     <div className="flex flex-col w-full font-semibold">
-                      <span>Saldo Awal</span>
-                      <span>Mutasi Kredit</span>
-                      <span>Mutasi Debit</span>
-                      <span>Saldo Akhir</span>
+                      <span aria-label="Saldo Awal" >Saldo Awal</span>
+                      <span aria-label="Mutasi Kredit">Mutasi Kredit</span>
+                      <span aria-label="Mutasi Debit">Mutasi Debit</span>
+                      <span aria-label="Saldo Akhir">Saldo Akhir</span>
                     </div>
                     <div className="flex flex-col w-full font-normal">
-                      <span>: Rp. {formatCurrency(bankStatement?.accountBalance?.startingBalance?.value) ?? 'N/A'}</span>
-                      <span>: Rp. {formatCurrency(accountMonthly?.monthlyIncome?.value)}</span>
-                      <span>: Rp. {formatCurrency(accountMonthly?.monthlyOutcome?.value)}</span>
-                      <span>: Rp. {formatCurrency(bankStatement?.accountBalance?.endingBalance?.value) ?? 'N/A'}</span>
+                      <span aria-label="Jumlah Saldo Awal">: Rp. {formatCurrency(bankStatement?.accountBalance?.startingBalance?.value) ?? 'N/A'}</span>
+                      <span aria-label="Jumlah Mutasi Kredit">: Rp. {formatCurrency(accountMonthly?.monthlyIncome?.value)}</span>
+                      <span aria-label="Jumlah Mutasi Debit">: Rp. {formatCurrency(accountMonthly?.monthlyOutcome?.value)}</span>
+                      <span aria-label="Jumlah Saldo Akhir">: Rp. {formatCurrency(bankStatement?.accountBalance?.endingBalance?.value) ?? 'N/A'}</span>
                     </div>
                   </>
                 ) : (
