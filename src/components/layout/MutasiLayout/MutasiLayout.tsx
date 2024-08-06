@@ -241,8 +241,8 @@ function MutasiLayout() {
                     <option value="1week">1 Minggu</option>
                   </select>
                 </div>
-                <Input placeholder="dd/mm/yyyy" onFocus={handleFocus} value={formatDateToString(datePicker.startDate)} onChange={handleInputChange} id="tanggal-awal" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
-                <Input placeholder="dd/mm/yyyy" onFocus={handleFocus1} value={formatDateToString(datePicker.endDate)} onChange={handleInputChange} id="tanggal-akhir" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
+                <Input placeholder="dd/mm/yyyy" onClick={handleFocus} value={formatDateToString(datePicker.startDate)} onChange={handleInputChange} id="tanggal-awal" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
+                <Input placeholder="dd/mm/yyyy" onClick={handleFocus1} value={formatDateToString(datePicker.endDate)} onChange={handleInputChange} id="tanggal-akhir" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
                 <div className="flex flex-col gap-[18px] items-end">
                   <span aria-description="Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir." className="font-medium text-sm text-primary-dark-blue">Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir.</span>
                   <button onClick={handleSearch} className='w-[179px] justify-center flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>

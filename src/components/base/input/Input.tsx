@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from 'react'
+import { ChangeEventHandler, MouseEventHandler } from 'react'
 
 interface InputComponentProps {
   id?: string;
@@ -11,6 +11,7 @@ interface InputComponentProps {
   ariaLabel?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: ChangeEventHandler<HTMLInputElement>;
+  onClick?: MouseEventHandler<HTMLInputElement>;
   value?: string;
 }
 
@@ -23,6 +24,7 @@ function Input ({
   disabled = false,
   onChange,
   onFocus,
+  onClick,
   type = 'text',
   value,
 }: Readonly<InputComponentProps>) {
@@ -37,7 +39,7 @@ function Input ({
       {
         iconSrc && <img src={iconSrc} alt={iconAlt} className='absolute pointer-events-none mr-3' />
       }
-      <input id={id} value={value} onChange={onChange} onFocus={onFocus} type={type} placeholder={placeholder} aria-placeholder={placeholder} className={`bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full ${iconPosition === 'left' ? (
+      <input onClick={onClick} id={id} value={value} onChange={onChange} onFocus={onFocus} type={type} placeholder={placeholder} aria-placeholder={placeholder} className={`bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full ${iconPosition === 'left' ? (
         'pl-10'
       ) : (
         'pr-10'
