@@ -12,7 +12,7 @@ interface DateRange {
 }
 
 function MutasiLayout() {
-  const { bankStatement, accountMonthly } = useBankStatement()
+  const { bankStatement, monthlyBankStatement } = useBankStatement()
   const componentRef = useRef<HTMLDivElement>(null);
   const [period, setPeriod] = useState<DateRange>(getDateRange('1month'));
 
@@ -304,7 +304,7 @@ function MutasiLayout() {
           <div>
             <div className='flex flex-row bg-primary-light-blue rounded-[10px] p-4 text-primary-blue text-base w-[286px] gap-[24px]'>
               {
-                accountMonthly ? (
+                monthlyBankStatement ? (
                   <>
                     <div className="flex flex-col w-full font-semibold">
                       <span aria-label="Saldo Awal" >Saldo Awal</span>
@@ -314,8 +314,8 @@ function MutasiLayout() {
                     </div>
                     <div className="flex flex-col w-full font-normal">
                       <span aria-label="Jumlah Saldo Awal">: Rp. {formatCurrency(bankStatement?.accountBalance?.startingBalance?.value) ?? 'N/A'}</span>
-                      <span aria-label="Jumlah Mutasi Kredit">: Rp. {formatCurrency(accountMonthly?.monthlyIncome?.value)}</span>
-                      <span aria-label="Jumlah Mutasi Debit">: Rp. {formatCurrency(accountMonthly?.monthlyOutcome?.value)}</span>
+                      <span aria-label="Jumlah Mutasi Kredit">: Rp. {formatCurrency(monthlyBankStatement?.monthlyIncome?.value)}</span>
+                      <span aria-label="Jumlah Mutasi Debit">: Rp. {formatCurrency(monthlyBankStatement?.monthlyOutcome?.value)}</span>
                       <span aria-label="Jumlah Saldo Akhir">: Rp. {formatCurrency(bankStatement?.accountBalance?.endingBalance?.value) ?? 'N/A'}</span>
                     </div>
                   </>

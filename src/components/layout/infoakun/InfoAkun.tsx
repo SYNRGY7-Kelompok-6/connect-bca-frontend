@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import { useAuth } from "../../../contexts/useAuth";
 import useBankStatement from "../../../contexts/useBankStatement";
 
@@ -8,7 +8,9 @@ const InfoAkun: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-[20px]">
-      <h1 className="text-lg text-white font-bold" aria-label="informasi akun">Informasi Akun</h1>
+      <h1 className="text-lg text-white font-bold" aria-label="informasi akun">
+        Informasi Akun
+      </h1>
       {!loginInfo || !bankStatement ? (
         <div className="text-white">No data available</div>
       ) : (

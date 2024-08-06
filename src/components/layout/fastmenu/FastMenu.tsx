@@ -25,7 +25,7 @@ const FastMenu: React.FC = () => {
             ariaLabel="Tombol transfer"
             onClick={handleTransferClick}
             imgSrc="/Transfer.svg"
-            imgAlt="Transfer"
+            imgAlt="Tombol transfer"
             text="Transfer"
             imgClassName="w-[40px]"
             textClassName="text-primary-dark-blue"
@@ -33,10 +33,10 @@ const FastMenu: React.FC = () => {
             backgroundClassName="bg-fill4"
           />
           <ButtonIcon
-            ariaLabel="Tombol QRIS"
+            ariaLabel="Tombol QRIS Bayar"
             onClick={handleQrisClick}
             imgSrc="/QRIS.svg"
-            imgAlt="QRIS Bayar"
+            imgAlt="Tombol QRIS Bayar"
             text="QRIS Bayar"
             imgClassName="w-[40px]"
             textClassName="text-primary-dark-blue"
@@ -47,7 +47,7 @@ const FastMenu: React.FC = () => {
             ariaLabel="Tombol Mutasi Rekening"
             onClick={handleInfoSaldoClick}
             imgSrc="/Calendar.svg"
-            imgAlt="Mutasi Rekening"
+            imgAlt="Tombol Mutasi Rekening"
             text="Mutasi"
             imgClassName="w-[40px]"
             textClassName="text-primary-dark-blue"

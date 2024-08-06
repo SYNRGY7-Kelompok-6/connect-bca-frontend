@@ -41,7 +41,7 @@ const DatePicker: React.FC<PopupProps> = ({
         {
           svgSrc && <img src={svgSrc} alt={svgAlt} width="78" height="80" />
         }
-        <Calendar onChange={setValue} value={value} className='w-full border-none !font-sans' />
+        <Calendar onChange={setValue} value={value} className='border-none !font-sans' />
         <div className="w-full flex gap-1 p-[18px] justify-end">
           <button
             aria-label="tombol keluar popup"
