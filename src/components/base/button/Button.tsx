@@ -5,7 +5,7 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   ariaLabel: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   variant?: "micro" | "general" | "puffy";
   colorScheme?: "primary" | "secondary" | "reset";

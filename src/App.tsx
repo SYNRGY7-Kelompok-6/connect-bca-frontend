@@ -9,6 +9,7 @@ import PrivateRoute from "./routes/PrivateRoutes";
 
 import "./index.css";
 import MutasiRekening from "./pages/MutasiRekening";
+import SaldoMutasi from "./pages/SaldoMutasi";
 
 function App() {
   return (
@@ -27,6 +28,31 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              <Route
+                path="/saldo-mutasi"
+                element={
+                  <PrivateRoute>
+                    <SaldoMutasi />
+                  </PrivateRoute>
+                }
+              >
+                <Route
+                  path="informasi-saldo-rekening"
+                  element={
+                    <PrivateRoute>
+                      <MutasiRekening />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="mutasi-rekening"
+                  element={
+                    <PrivateRoute>
+                      <MutasiRekening />
+                    </PrivateRoute>
+                  }
+                />
+              </Route>
             </Routes>
           </LoadingProvider>
         </BankStatementProvider>

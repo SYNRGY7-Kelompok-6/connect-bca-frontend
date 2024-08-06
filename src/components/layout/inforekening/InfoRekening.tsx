@@ -15,8 +15,6 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
   const { bankStatement } = useBankStatement();
   const [isBalanceVisible, setIsBalanceVisible] = React.useState(false);
 
-  
-
   const balanceValue =
     bankStatement?.accountInfo?.accountBalance?.availableBalance?.value || 0;
   const balance = balanceValue.toLocaleString("id-ID", {

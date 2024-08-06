@@ -1,45 +1,50 @@
-import { useState } from 'react';
-import Popup from '../components/base/popup';
-import Header from '../components/layout/header'
-import InfoMutasiRekening from '../components/layout/infoMutasiRekening';
-import InfoUser from '../components/layout/infouser'
-import MenuFitur from '../components/layout/menufitur'
-import MenuInfoSaldo from '../components/layout/menuInfoSaldo';
-
-
-
-// console.log(location)
-console.log(location.pathname === '/saldo-mutasi/mutasi-rekening')
+import { useEffect, useState } from 'react';
+import MutasiLayout from '../components/layout/MutasiLayout';
+import useBankStatement from '../contexts/useBankStatement';
+import { useLoading } from '../contexts/useLoading';
+import Preloading from "../components/base/preloading/preloading";
 
 function MutasiRekening() {
-  const [isPopupVisible, setIsPopupVisible] = useState(false)
+  // const [isPopupVisible, setIsPopupVisible] = useState(false)
+  const { bankStatement, accountMonthly, fetchBankStatement, fetchMutation, fetchAccountMonthly } = useBankStatement();
+  const { loading, setLoading } = useLoading();
+  const [hasFetchedData, setHasFetchedData] = useState(false);
 
-  function handleButtonClick () {
-    setIsPopupVisible(true)
-  }
+  useEffect(() => {
+    if (!hasFetchedData) {
+      const fetchData = async () => {
+        setLoading(true)
+        try {
+          const currentDate = new Date();
+          if (!bankStatement) {
+            await fetchBankStatement()
+          }
+          if (!accountMonthly) {
+            await fetchAccountMonthly(currentDate.getMonth() + 1)
+          }
+          setHasFetchedData(true)
+        } catch (error) {
+          console.log('unexpected error occured')
+        } finally {
+          setLoading(false)
+        }
+      }
 
-  function handleClosePopup () {
-    setIsPopupVisible(false)
-  }
+      fetchData()
+
+    }
+  }, [hasFetchedData, setLoading, fetchMutation, bankStatement, accountMonthly, fetchBankStatement, fetchAccountMonthly])
 
   return (
-    <div className="bg-primary-dark-blue font-sans">
-      <Header />
-      <InfoUser />
-      <MenuFitur />
-      <section className="container mx-auto mt-[50px] pb-[50px]">
-        <div className="grid grid-cols-12 grid-flow-row mb-[50px] gap-[2.5rem]">
-            <MenuInfoSaldo />
-            <InfoMutasiRekening />
-            <button onClick={handleButtonClick}>Show Popup</button>
-            {
-              isPopupVisible && (
-                <Popup message={'tws'} svgSrc={''} svgAlt={''} labelButton={''} labelPopup={''} buttonText={'tes'} onButtonClick={handleClosePopup} />
-              )
-            }
-        </div>
-      </section>
-    </div>
+    <>
+      {
+        loading ? (
+          <Preloading />
+        ) : (
+          <MutasiLayout />
+        )
+      }
+    </>
   )
 }
 
