@@ -15,7 +15,7 @@ const SaldoMutasi: React.FC = () => {
   const location = useLocation();
   const { loading, setLoading } = useLoading();
   const { fetchLoginInfo } = useAuth();
-  const { fetchBankStatement, fetchAccountMonthly } =
+  const { fetchBankStatement, bankStatement, fetchAccountMonthly } =
     useBankStatement();
 
   const [hasFetchedData, setHasFetchedData] = useState(false);
@@ -27,7 +27,7 @@ const SaldoMutasi: React.FC = () => {
         try {
           await Promise.all([
             fetchLoginInfo(),
-            fetchBankStatement(),
+            fetchBankStatement('05-08-2024', '05-08-2024'),
             fetchAccountMonthly(8),
           ]);
           setHasFetchedData(true);
@@ -35,6 +35,7 @@ const SaldoMutasi: React.FC = () => {
           console.error("Error fetching data", err);
         } finally {
           setLoading(false);
+          console.log(bankStatement)
         }
       };
 

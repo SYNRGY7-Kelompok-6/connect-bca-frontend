@@ -69,6 +69,7 @@ const BankStatementProvider: React.FC<{ children: ReactNode }> = ({
         }
       );
       setBankStatement(response.data.data);
+      console.log(response.data.data)
       setError(null);
     } catch (err) {
       if (axios.isAxiosError(err)) {

@@ -25,7 +25,7 @@ function MutasiLayout() {
     accNo: bankStatement?.accountInfo.accountNo
   })
   const [noAccount, setNoAccount] = useState<string>('');
-  const [selectedFilter, setSelectedFilter] = useState<string>('');
+  const [selectedFilter, setSelectedFilter] = useState<string>('period');
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [showDatePicker1, setShowDatePicker1] = useState(false)
   const mutation = bankStatement?.mutations
@@ -166,7 +166,6 @@ function MutasiLayout() {
   };
 
   async function handleSearch() {
-    console.log(filteredData)
     if (selectedFilter === 'period') {
       const fromDate = period.startDate
       const toDate = period.endDate
@@ -175,19 +174,18 @@ function MutasiLayout() {
         return itemDate >= fromDate && itemDate <= toDate;
       });
       setFilteredData(filtered || [])
+      console.log(selectedFilter)
       console.log(filteredData)
       // await fetchBankStatement(fromDate, toDate)
     } else if (selectedFilter === 'datepicker') {
       const fromDate = datePicker.startDate
       const toDate = datePicker.endDate
-      console.log('from:', fromDate)
-      console.log('to:', toDate)
       const filtered = bankStatement?.mutations.filter(item => {
         const itemDate = parseISODate(item.transactionDate);
-        console.log('itemDate:', itemDate)
         return itemDate >= fromDate && itemDate <= toDate;
       });
       setFilteredData(filtered || [])
+      console.log(selectedFilter)
       console.log(filteredData)
       // await fetchBankStatement(fromDate, toDate)
     } else if (noAccount) {
@@ -198,6 +196,7 @@ function MutasiLayout() {
       console.log('no',filtered)
     } else {
       setFilteredData(bankStatement?.mutations || [])
+      console.log(selectedFilter)
       console.log(bankStatement)
     }
   }
@@ -223,11 +222,11 @@ function MutasiLayout() {
                   <label htmlFor="rekening" className="whitespace-nowrap">Rekening</label>
                 </div>
                 <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                  <input type="radio" checked aria-checked onChange={handleFilterChange} name="filter-group" id="period" value='period' className="h-5 w-5 border-primary-dark-blue" />
+                  <input type="radio" checked={selectedFilter === 'period'} onChange={handleFilterChange} name="filter-group" id="period" value='period' className="h-5 w-5 border-primary-dark-blue" />
                   <label htmlFor="periodselect" className="whitespace-nowrap">Periode</label>
                 </div>
                 <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                  <input type="radio" onChange={handleFilterChange} name="filter-group" id="datepicker" value='datepicker' className="h-5 w-5" />
+                  <input type="radio" checked={selectedFilter === 'datepicker'}  onChange={handleFilterChange} name="filter-group" id="datepicker" value='datepicker' className="h-5 w-5" />
                   <label htmlFor="tanggal-awal" className="whitespace-nowrap">Tanggal Awal (dd/mm/yy)</label>
                 </div>
                 <div className="flex items-center justify-end gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
