@@ -1,12 +1,12 @@
 import React from "react";
-import InfoRekening from "../components/layout/inforekening";
+import QrisTransfer from "../components/layout/qristransfer";
 
-const Qris: React.FC = () => {
+const Qristransfer: React.FC = () => {
   return (
     <body className="bg-primary-dark-blue font-sans">
-          <InfoRekening/>
+          <QrisTransfer/>
     </body>
   );
 };
 
-export default Qris;
+export default Qristransfer;

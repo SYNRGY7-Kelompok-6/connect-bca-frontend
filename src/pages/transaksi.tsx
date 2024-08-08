@@ -5,11 +5,10 @@ import InfoUser from "../components/layout/infouser";
 import MenuFitur from "../components/layout/menufitur";
 import Dropdowntransfer from "../components/layout/dropdowntransfer";
 // import MutasiRekening from "./MutasiRekening";
-import QrisBayar from "./qrisbayar"
-import QrisTransfer from "./qristransfer"
-import ScanQris from "./scanqris"
+import QrisBayar from "./qrisbayar";
+import QrisTransfer from "./qristransfer";
 
-const SaldoMutasi: React.FC = () => {
+const Transaksi: React.FC = () => {
   const location = useLocation();
 
   const renderContent = () => {
@@ -18,10 +17,8 @@ const SaldoMutasi: React.FC = () => {
         return <QrisBayar />;
       case "/transaksi/qris-bayar":
         return <QrisBayar />;
-      case "/transaksi/qris-transer":
+      case "/transaksi/qris-transfer":
         return <QrisTransfer />;
-      case "/transaksi/scan-qris":
-        return <ScanQris />;
       default:
         return <QrisBayar />;
     }
@@ -59,10 +56,6 @@ const SaldoMutasi: React.FC = () => {
                   label: "Qris Transfer",
                   href: "/transaksi/qris-transfer",
                 },
-                {
-                  label: "Scan Qris",
-                  href: "/transaksi/scan-qris",
-                },
               ]}
             />
           </div>
@@ -73,4 +66,4 @@ const SaldoMutasi: React.FC = () => {
   );
 };
 
-export default SaldoMutasi;
+export default Transaksi;
