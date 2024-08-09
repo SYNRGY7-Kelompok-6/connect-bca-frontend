@@ -9,13 +9,10 @@ export interface Currency {
     accountType: string;
     accountCardExp: string;
     name: string;
+    cvv: string;
     accountBalance: {
       availableBalance: Currency;
       holdAmount: Currency;
-    };
-    accountMonthly: {
-      monthlyIncome: Currency;
-      monthlyOutcome: Currency;
     };
     pinExpiredTimeLeft: number;
   }
@@ -42,7 +39,7 @@ export interface Currency {
     amount: Currency;
     transactionDate: string;
     remark: string;
-    type: 'CREDIT' | 'DEBIT';
+    type: "CREDIT" | "DEBIT";
     beneficiaryAccount: BeneficiaryAccount;
     sourceAccount: BeneficiaryAccount;
   }
@@ -53,3 +50,82 @@ export interface Currency {
     mutations: Mutation[];
   }
   
+  export interface MonthlyBankStatementData {
+    monthlyIncome: Currency;
+    monthlyOutcome: Currency;
+  }
+  
+    export interface AccountInfo {
+      accountNo: string;
+      accountType: string;
+      accountCardExp: string;
+      name: string;
+      accountBalance: {
+        availableBalance: Currency;
+        holdAmount: Currency;
+      };
+      accountMonthly: AccountMonthly;
+      pinExpiredTimeLeft: number;
+    }
+  
+    export interface AccountBalance {
+      startingBalance: {
+        value: number;
+        currency: string;
+        dateTime: string;
+      };
+      endingBalance: {
+        value: number;
+        currency: string;
+        dateTime: string;
+      };
+    }
+  
+    export interface AccountMonthly {
+      monthlyIncome: Currency;
+      monthlyOutcome: Currency;
+    }
+  
+    export interface BeneficiaryAccount {
+      beneficiaryAccountNumber: string;
+      beneficiaryAccountName: string;
+    }
+    
+    export interface Mutation {
+      transactionId: string;
+      amount: Currency;
+      desc: string;
+      transactionDate: string;
+      remark: string;
+      type: 'CREDIT' | 'DEBIT';
+      beneficiaryAccount: BeneficiaryAccount;
+      sourceAccount: BeneficiaryAccount;
+    }
+    
+  
+    export interface MutationData {
+      status: string;
+      message: string;
+      data: {
+        mutations: Mutation[];
+      };
+    }
+  
+    export interface AccountMonthlyData {
+      data: {
+        monthlyIncome: {
+          value: number;
+          currency: string;
+        };
+        monthlyOutcome: {
+          value: number;
+          currency: string;
+        };
+      }
+    }
+  
+    export interface BankStatementData {
+      accountInfo: AccountInfo;
+      accountBalance: AccountBalance;
+      mutations: Mutation[];
+    }

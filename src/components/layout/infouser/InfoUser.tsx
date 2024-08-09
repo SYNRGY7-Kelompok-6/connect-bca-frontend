@@ -1,28 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../contexts/useAuth";
+import { useAuth } from "../../../contexts/useAuth";
 import useBankStatement from "../../../contexts/useBankStatement";
-import Skeleton from "../../base/skeletonloading";
 
 const InfoUser: React.FC = () => {
-  const { bankStatement, fetchBankStatement } = useBankStatement();
-  const { loginInfo, fetchLoginInfo, logout } = useAuth();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Promise.all([fetchLoginInfo(), fetchBankStatement()]);
-      } catch (err) {
-        console.error("Error fetching data", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [fetchLoginInfo, fetchBankStatement]);
-
+  const { bankStatement } = useBankStatement();
+  const { loginInfo, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -32,39 +15,29 @@ const InfoUser: React.FC = () => {
 
   return (
     <div className="flex bg-fill1 h-[128px]">
-      <div className="container mx-auto my-auto flex justify-between">
+      <div className="container mx-auto my-auto flex justify-between" aria-live="polite">
         <div className="flex flex-col gap-[13px]">
-          {loading ? (
-            <>
-              <Skeleton className="h-6 w-48" />
-              <div className="flex flex-row gap-4">
-                <Skeleton className="h-5 w-40" />
-              </div>
-            </>
-          ) : (
-            <>
-              {bankStatement && (
-                <h1 className="text-white text-md font-semibold">
-                  Selamat Datang {bankStatement.accountInfo.name}
-                </h1>
-              )}
-              <div className="flex flex-row gap-4">
-                {loginInfo && (
-                  <p className="text-white text-sm font-medium">
-                    Login Terakhir:{" "}
-                    {new Date(
-                      loginInfo.lastSuccessfullLoginAttempt.timestamp
-                    ).toLocaleDateString()}
-                  </p>
-                )}
-              </div>
-            </>
+          {bankStatement && (
+            <h1 className="text-white text-md font-semibold">
+              Selamat Datang, <span aria-label="Nama Akun">{bankStatement.accountInfo.name}</span>
+            </h1>
           )}
+          <div className="flex flex-row gap-4">
+            {loginInfo && (
+              <p className="text-white text-sm font-medium">
+                Login Terakhir:{" "}
+                <span aria-label="Waktu Login">
+                  {new Date(loginInfo.lastSuccessfullLoginAttempt.timestamp).toLocaleDateString()}
+                </span>
+              </p>
+            )}
+          </div>
         </div>
         <div>
           <button
             onClick={handleLogout}
             className="text-white text-sm font-medium underline"
+            aria-label="Logout dari akun"
           >
             Logout
           </button>

@@ -7,13 +7,62 @@ import logoDownload from "../../../../public/download.svg";
 import logoRefresh from "../../../../public/refresh.svg";
 import useBankStatement from "../../../contexts/useBankStatement";
 import Skeleton from "../../base/skeletonloading";
+import axios from "axios";
 
 const QrisTransfer: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [nominal, setNominal] = useState("");
-  const [buttonText, setButtonText] = useState("Tambah Detail QRIS"); 
+  const [price, setPrice] = useState<number>(0);
+  const [qrImage, setQrImage] = useState("");
+  const [nominal, setNominal] = useState<string>("");
+  const [buttonText, setButtonText] = useState("Tambah Detail QRIS");
   const { bankStatement, fetchBankStatement } = useBankStatement();
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchQrisTransfer = async () => {
+    try {
+      const response = await axios.post<{ data: { qrImage: string, expiresAt: number } }>(
+        'https://connect-bca.fly.dev/api/v1.0/qr/qr-transfer',
+        {
+          amount: {
+            value: price,
+            currency: 'IDR',
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+      console.log(response);
+      setQrImage(response.data.data.qrImage)
+      setError(null);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data.message || "Failed to qris transfer"
+        );
+      } else {
+        setError("An unexpected error occurred");
+        console.log({error});
+        
+      }
+    }
+  };
+
+  const handleQrisTransfer = async () => {
+    setButtonText(formatToIDR(price));
+    setModalOpen(false);
+    await fetchQrisTransfer();
+  };
+
+  const handleRefresh = async () => {
+    setNominal("");
+    setPrice(0); 
+    setButtonText("Tambah Detail QRIS");
+    await fetchQrisTransfer();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,32 +86,35 @@ const QrisTransfer: React.FC = () => {
     setModalOpen(false);
   };
 
-  const handleSave = () => {
-    setButtonText(formatToIDR(nominal));
-    setModalOpen(false);
+  const formatToIDR = (value: number) => {
+    return `Rp.${value.toLocaleString("id-ID")}.00`;
   };
 
-  const handleRefresh = () => {
-    setNominal("");
-    setButtonText("Tambah Detail QRIS");
-  };
-
-  const formatToIDR = (value: string) => {
-    const numberValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
-    if (isNaN(numberValue)) return "Tambah Detail QRIS";
-    return `Rp.${numberValue.toLocaleString("id-ID")}.00`;
+  const formatNumber = (value: number) => {
+    return value.toLocaleString("id-ID");
   };
 
   const handleNominalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const cleanedValue = value.replace(/[^0-9]/g, "");
-    if (cleanedValue.length <= 10) {
-      setNominal(cleanedValue);
+    if (cleanedValue === "") {
+      setNominal("");
+      setPrice(0);
+    } else {
+      const numberValue = parseFloat(cleanedValue);
+      
+      if (!isNaN(numberValue)) {
+        setPrice(numberValue);
+        setNominal(formatNumber(numberValue)); 
+      } else {
+        setNominal(cleanedValue);
+        setPrice(0); 
+      }
     }
   };
 
   return (
-    <div className="bg-primary-light-blue-2 rounded-[20px] rounded flex flex-col w-96 p-5 gap-2.5">
+    <div className="bg-primary-light-blue rounded-[20px] rounded flex flex-col w-96 p-5 gap-2.5">
       <div className="flex justify-between h-14 border-b border-primary-dark-blue">
         <img src={logoQris} alt="logoQris" />
         <img src={logoBca} alt="logoBca" />
@@ -88,7 +140,7 @@ const QrisTransfer: React.FC = () => {
               </>
             )}
             <img
-              src={logoQris}
+              src={qrImage}
               className="mt-[28px]"
               style={{ width: '150px', height: '150px' }}
               alt="logoQrisTransfer"
@@ -110,8 +162,8 @@ const QrisTransfer: React.FC = () => {
               <img
                 src={logoRefresh}
                 alt="refreshQrisTf"
-                onClick={handleRefresh} 
-                style={{cursor:"pointer" }}
+                onClick={handleRefresh}
+                style={{ cursor: "pointer" }}
               />
             </div>
           </>
@@ -122,14 +174,14 @@ const QrisTransfer: React.FC = () => {
         <div
           className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
           <div
-            className="bg-primary-light-blue-2 rounded-[20px] rounded flex flex-col w-96 p-5 gap-2.5"
-            onClick={(e) => e.stopPropagation()} 
+            className="bg-primary-light-blue rounded-[20px] rounded flex flex-col w-96 p-5 gap-2.5"
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between h-14 border-b border-primary-dark-blue">
               <img src={logoBca} alt="logoBca" />
               <img
                 src={logoClose}
-                style={{ height: "30px", marginTop: "10px", cursor:"pointer" }}
+                style={{ height: "30px", marginTop: "10px", cursor: "pointer" }}
                 alt="close"
                 onClick={handleCloseModal}
               />
@@ -139,12 +191,12 @@ const QrisTransfer: React.FC = () => {
               <input
                 className="h-8 w-[200px]"
                 value={nominal}
-                type="text" 
+                type="text"
                 onChange={handleNominalChange}
               />
             </div>
             <button
-              onClick={handleSave}
+              onClick={handleQrisTransfer}
               className="text-sm text-primary-blue w-[100%] justify-between items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
             >
               Simpan

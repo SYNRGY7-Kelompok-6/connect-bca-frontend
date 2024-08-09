@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useAuth from "../../../contexts/useAuth";
+import { useAuth } from "../../../contexts/useAuth";
 import Popup from "../../base/popup";
 import ButtonIcon from "../../base/buttonicon";
 import Button from "../../base/button";
@@ -146,7 +146,7 @@ const FormLogin: React.FC = () => {
               imgSrc="/Profil.svg"
               imgAlt="Tombol lupa User ID"
               text="Lupa UserID ?"
-              textClassName="underline"
+              textClassName="underline text-white"
               containerClassName=""
             />
 
@@ -155,8 +155,8 @@ const FormLogin: React.FC = () => {
               onClick={showPopup}
               imgSrc="/ForgotPIN.svg"
               imgAlt="Tombol lupa pin"
-              text="Lupa Pin?"
-              textClassName="underline"
+              text="Lupa Kata Sandi?"
+              textClassName="underline text-white"
               containerClassName=""
             />
           </div>
@@ -170,45 +170,6 @@ const FormLogin: React.FC = () => {
             <br />
             Untuk informasi lebih lanjut hubungi Halo BCA 1500888.
           </p>
-          <div className="flex mt-[30px] justify-between">
-            <div className="flex flex-col gap-2">
-              <h2 className="text-md text-white font-semibold">Fast Menu</h2>
-              <div className="flex gap-[40px] mt-[10px]">
-                <ButtonIcon
-                  ariaLabel="Tombol transfer"
-                  onClick={showPopup}
-                  imgSrc="/Transfer.svg"
-                  imgAlt="Transfer"
-                  text="Transfer"
-                  textClassName=""
-                  containerClassName="flex-col"
-                />
-
-                <ButtonIcon
-                  ariaLabel="Tombol Menampilkan QRIS Bayar"
-                  onClick={showPopup}
-                  imgSrc="/QRIS.svg"
-                  imgAlt="QRIS Bayar"
-                  text="QRIS Bayar"
-                  textClassName=""
-                  containerClassName="flex-col"
-                />
-
-                <ButtonIcon
-                  ariaLabel="Tombol Menampilkan Saldo Pada Rekening"
-                  onClick={showPopup}
-                  imgSrc="/InfoSaldo.svg"
-                  imgAlt="Info Saldo"
-                  text="Info Saldo"
-                  textClassName=""
-                  containerClassName="flex-col"
-                />
-              </div>
-            </div>
-            <div className="w-[80px]">
-              <img src="/digicert.png" alt="Digicert Logo" />
-            </div>
-          </div>
         </div>
       </div>
       {showErrorPopup && (

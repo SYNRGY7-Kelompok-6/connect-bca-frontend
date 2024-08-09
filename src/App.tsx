@@ -11,6 +11,9 @@ import PrivateRoute from "./routes/PrivateRoutes";
 
 import "./index.css";
 import MutasiRekening from "./pages/MutasiRekening";
+import Transaksi from "./pages/transaksi";
+import QrisBayar from "./pages/qrisbayar";
+import QrisTransfer from "./pages/qristransfer";
 
 function App() {
   return (
@@ -53,7 +56,42 @@ function App() {
                     </PrivateRoute>
                   }
                 />
+                
               </Route>
+
+              <Route
+              path="/transaksi"
+              element={
+                <PrivateRoute>
+                  <Transaksi />
+                </PrivateRoute>
+              }
+            >
+              <Route
+                path="transfer"
+                element={
+                  <PrivateRoute>
+                    <InfoSaldo />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="qris-bayar"
+                element={
+                  <PrivateRoute>
+                    <QrisBayar />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="qris-transfer"
+                element={
+                  <PrivateRoute>
+                    <QrisTransfer />
+                  </PrivateRoute>
+                }
+              />
+            </Route>
             </Routes>
           </LoadingProvider>
         </BankStatementProvider>

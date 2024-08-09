@@ -17,14 +17,14 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   const handleItemClick = (href: string) => {
     navigate(href);
-    setIsOpen(true); 
+    setIsOpen(true);
   };
 
   return (
     <div className="relative inline-block text-left w-[262px]">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-blue-600 text-white font-semibold text-base rounded-t-[10px]"
+        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-primary-blue text-white font-semibold text-base rounded-t-[10px]"
       >
         <img
           src={isOpen ? "/DropDownClose.svg" : "/DropDownOpen.svg"}
