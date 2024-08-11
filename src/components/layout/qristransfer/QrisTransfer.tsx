@@ -9,6 +9,8 @@ import useBankStatement from "../../../contexts/useBankStatement";
 import Skeleton from "../../base/skeletonloading";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL_2;
+
 const QrisTransfer: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -21,15 +23,13 @@ const QrisTransfer: React.FC = () => {
 
   const fetchQrisTransfer = async () => {
     try {
-      const response = await axios.post<{ data: { qrImage: string, expiresAt: number } }>(
-        'https://connect-bca.fly.dev/api/v1.0/qr/qr-transfer',
+      const response = await axios.get<{ data: { qrImage: string, expiresAt: number } }>(
+        `${apiUrl}/api/v1.0/qr/qr-transfer`, 
         {
-          amount: {
-            value: price,
+          params: {
+            amount: price,
             currency: 'IDR',
           },
-        },
-        {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -68,6 +68,7 @@ const QrisTransfer: React.FC = () => {
     const fetchData = async () => {
       try {
         await Promise.all([fetchBankStatement()]);
+        await fetchQrisTransfer();
       } catch (err) {
         console.error("Error fetching data", err);
       } finally {

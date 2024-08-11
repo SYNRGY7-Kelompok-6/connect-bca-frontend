@@ -15,10 +15,10 @@ const Transaksi: React.FC = () => {
     switch (location.pathname) {
       case "/transaksi/transfer":
         return <QrisBayar />;
-      case "/transaksi/qris-bayar":
-        return <QrisBayar />;
       case "/transaksi/qris-transfer":
         return <QrisTransfer />;
+      case "/transaksi/qris-bayar":
+        return <QrisBayar />;
       default:
         return <QrisBayar />;
     }
@@ -49,12 +49,12 @@ const Transaksi: React.FC = () => {
               activeItem2={location.pathname}
               items2={[
                 {
-                  label: "Qris Bayar",
-                  href: "/transaksi/qris-bayar",
-                },
-                {
                   label: "Qris Transfer",
                   href: "/transaksi/qris-transfer",
+                },
+                {
+                  label: "Qris Bayar",
+                  href: "/transaksi/qris-bayar",
                 },
               ]}
             />
