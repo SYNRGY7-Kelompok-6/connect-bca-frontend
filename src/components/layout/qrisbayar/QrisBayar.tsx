@@ -9,13 +9,25 @@ import wrongPin from "../../../../public/WrongPin.svg";
 const apiUrl2 = import.meta.env.VITE_API_URL_2;
 const apiUrl1 = import.meta.env.VITE_API_URL;
 
+interface qrisBayar {
+  data: {
+    qrImage: string,
+    expiresAt: number
+  }
+}
+
+interface pinConnect {
+  data: {
+    pinToken: string
+  }
+}
+
 const QrisBayar: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalQrisOpen, setModalQrisOpen] = useState(false);
   const [modalWrongPin, setModalWrongPin] = useState(false);
   const [modalHandlePin, setModalHandlePin] = useState(false);
-  const [invalidPin, setInvalidPin] = useState(false);
   const [price, setPrice] = useState<number>(1000);
   const [qrImage, setQrImage] = useState("");
   const [qrExpires, setQrExpires] = useState<number>(0);
@@ -24,12 +36,11 @@ const QrisBayar: React.FC = () => {
   const { bankStatement, fetchBankStatement } = useBankStatement();
   const [error, setError] = useState<string | null>(null);
   const [pin, setPin] = useState<string[]>(["", "", "", "", "", ""]);
-  const [pinForQris, setPinForQris] = useState<string>("");
   const [timeLeft, setTimeLeft] = useState<string>('');
 
   const fetchQrisBayar = async (pinToken: string) => {
     try {
-      const response = await axios.post<{ data: { qrImage: string, expiresAt: number } }>(
+      const response = await axios.post<qrisBayar>(
         `${apiUrl2}/api/v1.0/qr/qr-pay`,
         {
           amount: {
@@ -83,7 +94,7 @@ const QrisBayar: React.FC = () => {
 
   const fetchPin = async (pinAuth: string): Promise<string> => {
     try {
-      const response = await axios.post<{ data: { pinToken: string } }>(
+      const response = await axios.post<pinConnect>(
         `${apiUrl1}/api/v1.0/auth/validate-pin`,
         { pin: pinAuth },
         {
@@ -93,7 +104,6 @@ const QrisBayar: React.FC = () => {
           },
         }
       );
-      setPinForQris(response.data.data.pinToken);
       console.log(response.data.data.pinToken);
       setError(null);
       return response.data.data.pinToken
@@ -164,20 +174,20 @@ const QrisBayar: React.FC = () => {
     const pinFinal = pin.join("");
     const hasil = await fetchPin(pinFinal);
     console.log(hasil);
-    if (pinFinal.length === 6 && hasil !=="pinSalah") {
+    if (pinFinal.length === 6 && hasil !== "pinSalah") {
       setModalHandlePin(false);
       await fetchQrisBayar(hasil);
       setButtonText(false);
       setModalOpen(false);
     }
-    else if (pinFinal.length === 6 && hasil ==="pinSalah"){
+    else if (pinFinal.length === 6 && hasil === "pinSalah") {
       setModalWrongPin(true);
       setModalOpen(false);
     }
     else {
       setModalHandlePin(true);
     }
-    setPin(["","","","","",""]);
+    setPin(["", "", "", "", "", ""]);
   };
 
   const handleTryAgain = () => {
@@ -235,6 +245,7 @@ const QrisBayar: React.FC = () => {
             onClick={handleStartQrisPay}
             className="text-[18px] text-white bg-primary-blue w-[100%] justify-between items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
             style={{ fontFamily: 'Outfit, sans-serif' }}
+            aria-label="Tombol Lanjutkan"
           >
             Lanjutkan
           </button>) : (
@@ -269,6 +280,7 @@ const QrisBayar: React.FC = () => {
                   className="mt-[12px] mb-[24px]"
                   style={{ width: '300px', height: '300px' }}
                   alt="logoQrisTransfer"
+                  aria-label="Barcode Qris"
                 />
                 <div className="text-base text-primary-blue">
                   Masa Berlaku : {timeLeft}
@@ -280,13 +292,13 @@ const QrisBayar: React.FC = () => {
       )}
 
       {modalOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50" aria-label="Pop up masukan pin">
           <div className="bg-primary-light-blue rounded-[20px] w-[511px] rounded p-[30px] flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}>
             <div className="text-center text-lg text-primary-dark-blue mb-[26px]">
               <strong>Masukan PIN Anda</strong>
             </div>
-            <div className="w-[460px] h-[50px] mb-[36px] flex justify-between px-2">
+            <div className="w-[460px] h-[50px] mb-[36px] flex justify-between px-2" aria-label="Kolom pin">
               {pin.map((digit, index) => (
                 <input
                   key={index}
@@ -314,6 +326,7 @@ const QrisBayar: React.FC = () => {
               onClick={handleConfirmPin}
               className="text-base text-white bg-primary-blue w-[203px] border rounded-[12px] border-primary-blue pt-[10px] pr-[60px] pb-[10px] pl-[60px]"
               style={{ fontFamily: 'Outfit, sans-serif' }}
+              aria-label="Tombol Konfirmasi"
             >
               Konfirmasi
             </button>

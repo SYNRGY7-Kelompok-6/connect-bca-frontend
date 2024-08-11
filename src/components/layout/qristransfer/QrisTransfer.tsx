@@ -6,48 +6,23 @@ import logoShare from "../../../../public/share.svg";
 import logoDownload from "../../../../public/download.svg";
 import logoRefresh from "../../../../public/refresh.svg";
 import useBankStatement from "../../../contexts/useBankStatement";
+import useQrisTransfer from '../../../../src/contexts/useQrisTransfer';
 import Skeleton from "../../base/skeletonloading";
-import axios from "axios";
-
-const apiUrl = import.meta.env.VITE_API_URL_2;
 
 const QrisTransfer: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [price, setPrice] = useState<number>(0);
-  const [qrImage, setQrImage] = useState("");
   const [nominal, setNominal] = useState<string>("");
   const [buttonText, setButtonText] = useState("Tambah Detail QRIS");
   const { bankStatement, fetchBankStatement } = useBankStatement();
-  const [error, setError] = useState<string | null>(null);
+  const { qrImage, expiresAt, generateQRIS, error } = useQrisTransfer();
 
   const fetchQrisTransfer = async () => {
     try {
-      const response = await axios.get<{ data: { qrImage: string, expiresAt: number } }>(
-        `${apiUrl}/api/v1.0/qr/qr-transfer`, 
-        {
-          params: {
-            amount: price,
-            currency: 'IDR',
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        }
-      );
-      console.log(response);
-      setQrImage(response.data.data.qrImage)
-      setError(null);
+      await generateQRIS(price, "IDR");
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(
-          err.response?.data.message || "Failed to qris transfer"
-        );
-      } else {
-        setError("An unexpected error occurred");
-        console.log({error});
-        
-      }
+      console.error('Error generating QRIS:', err);
     }
   };
 
@@ -59,7 +34,7 @@ const QrisTransfer: React.FC = () => {
 
   const handleRefresh = async () => {
     setNominal("");
-    setPrice(0); 
+    setPrice(0);
     setButtonText("Tambah Detail QRIS");
     await fetchQrisTransfer();
   };
@@ -103,13 +78,13 @@ const QrisTransfer: React.FC = () => {
       setPrice(0);
     } else {
       const numberValue = parseFloat(cleanedValue);
-      
+
       if (!isNaN(numberValue)) {
         setPrice(numberValue);
-        setNominal(formatNumber(numberValue)); 
+        setNominal(formatNumber(numberValue));
       } else {
         setNominal(cleanedValue);
-        setPrice(0); 
+        setPrice(0);
       }
     }
   };
@@ -141,14 +116,14 @@ const QrisTransfer: React.FC = () => {
               </>
             )}
             <img
-              src={qrImage}
+              src={qrImage  || undefined }
               className="mt-[28px]"
               style={{ width: '150px', height: '150px' }}
               alt="logoQrisTransfer"
             />
             <button
               onClick={handleOpenModal}
-              className="flex mt-[24px] text-sm text-primary-blue w-[170px] justify-center items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
+              className="flex mt-[24px] text-sm text-primary-blue w-[175px] justify-center items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
             >
               {buttonText}
             </button>
@@ -157,12 +132,13 @@ const QrisTransfer: React.FC = () => {
             </div>
             <div className="flex justify-between mt-[24px] w-[100%]">
               <div className="flex justify-between w-[98px]">
-                <img src={logoShare} alt="shareQrisTf" />
-                <img src={logoDownload} alt="downloadQrisTf" />
+                <img src={logoShare} aria-label="Tombol Bagikan Qris" alt="shareQrisTf" />
+                <img src={logoDownload} aria-label="Tombol Unduh Qris" alt="downloadQrisTf" />
               </div>
               <img
                 src={logoRefresh}
                 alt="refreshQrisTf"
+                aria-label="Tombol Segarkan Barcode Qris"
                 onClick={handleRefresh}
                 style={{ cursor: "pointer" }}
               />
@@ -193,6 +169,7 @@ const QrisTransfer: React.FC = () => {
                 className="h-8 w-[200px]"
                 value={nominal}
                 type="text"
+                maxLength={12}
                 onChange={handleNominalChange}
               />
             </div>
