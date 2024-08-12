@@ -12,7 +12,7 @@ const Carousel: React.FC = () => {
   };
 
   return (
-    <div className="w-[400px] relative">
+    <div className="w-[451px] relative">
       <div
         id="default-carousel"
         className="relative w-full"
