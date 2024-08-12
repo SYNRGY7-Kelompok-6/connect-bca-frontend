@@ -15,18 +15,23 @@ const MenuFitur: React.FC = () => {
   ];
 
   return (
-    <div className="bg-black h-[60px] flex items-center">
+    <div className="bg-primary-dark-blue h-[70px] flex items-center">
       <div className="container mx-auto flex justify-center gap-10">
         {buttons.map((button) => (
           <Link key={button.name} to={button.path}>
             <button
-              className={`text-base font-medium py-[4px] px-[16px] rounded-[16px] ${
+              className={`text-base font-medium py-1 px-8 rounded-xl ${
                 location.pathname === button.path
                   ? "bg-primary-blue text-white"
                   : "text-white"
               }`}
               type="button"
-              aria-label={`Tombol Navigasi ${button.name}`}
+              aria-label={
+                location.pathname === button.path
+                  ? `Anda berada di halaman ${button.name}.`
+                  : `Tombol Navigasi ${button.name}`
+              }
+              aria-current={location.pathname === button.path ? "page" : undefined}
             >
               {button.name}
             </button>
