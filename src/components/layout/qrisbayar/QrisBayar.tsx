@@ -211,7 +211,7 @@ const QrisBayar: React.FC = () => {
 
   return (
     <div className="flex gap-[80px]">
-      <div className="bg-primary-light-blue rounded-[20px] h-[422px] rounded flex flex-col p-5 gap-2.5">
+      <div className="bg-neutral-1 shadow-box h-[422px] rounded flex flex-col p-5 gap-2.5">
         <div className="text-base text-primary-blue mb-[18px]">
           Dari Rekening
         </div>
@@ -260,10 +260,9 @@ const QrisBayar: React.FC = () => {
 
       </div>
       {modalQrisOpen && (
-        <div className="bg-primary-light-blue rounded-[20px] rounded flex flex-col w-96 p-5">
-          <div className="flex justify-between h-14 border-b border-primary-dark-blue">
+        <div className="bg-neutral-1 shadow-box rounded flex flex-col w-96 p-10">
+          <div className="flex justify-between pb-2 border-b border-primary-dark-blue">
             <img src={logoQris} alt="logoQris" />
-            <img src={logoBca} alt="logoBca" />
           </div>
           <div className="flex flex-col justify-center text-center items-center">
             {loading ? (
@@ -293,7 +292,7 @@ const QrisBayar: React.FC = () => {
 
       {modalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50" aria-label="Pop up masukan pin">
-          <div className="bg-primary-light-blue rounded-[20px] w-[511px] rounded p-[30px] flex flex-col items-center"
+          <div className="bg-primary-light-blue w-[511px] rounded p-[30px] flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}>
             <div className="text-center text-lg text-primary-dark-blue mb-[26px]">
               <strong>Masukan PIN Anda</strong>
@@ -335,7 +334,7 @@ const QrisBayar: React.FC = () => {
       )}
       {modalWrongPin && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-[20px] h-[362px] w-[416px] rounded p-[36px] flex flex-col items-center">
+          <div className="bg-white h-[362px] w-[416px] rounded p-[36px] flex flex-col items-center">
             <img src={wrongPin} className="mb-[42.75px]" />
 
             <div className="text-center text-base w-[325px] mb-[24px]">

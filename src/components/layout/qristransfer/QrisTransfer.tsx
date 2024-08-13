@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import logoQris from "../../../../public/logo qris.svg";
 import logoClose from "../../../../public/closebutton.svg";
 import logoBca from "../../../../public/LogoBCA.png";
@@ -16,15 +16,15 @@ const QrisTransfer: React.FC = () => {
   const [nominal, setNominal] = useState<string>("");
   const [buttonText, setButtonText] = useState("Tambah Detail QRIS");
   const { bankStatement, fetchBankStatement } = useBankStatement();
-  const { qrImage, expiresAt, generateQRIS, error } = useQrisTransfer();
+  const { qrImage, generateQRIS } = useQrisTransfer();
 
-  const fetchQrisTransfer = async () => {
+  const fetchQrisTransfer = useCallback(async () => {
     try {
       await generateQRIS(price, "IDR");
     } catch (err) {
       console.error('Error generating QRIS:', err);
     }
-  };
+  }, [generateQRIS, price]);
 
   const handleQrisTransfer = async () => {
     setButtonText(formatToIDR(price));
@@ -52,7 +52,7 @@ const QrisTransfer: React.FC = () => {
     };
 
     fetchData();
-  }, [fetchBankStatement]);
+  }, [fetchBankStatement, fetchQrisTransfer]);
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -90,8 +90,8 @@ const QrisTransfer: React.FC = () => {
   };
 
   return (
-    <div className="bg-primary-light-blue rounded-[20px] rounded flex flex-col w-96 p-5 gap-2.5">
-      <div className="flex justify-between h-14 border-b border-primary-dark-blue">
+    <div className="bg-neutran-1 shadow-box rounded flex flex-col w-96 p-5 gap-2.5">
+      <div className="flex justify-between">
         <img src={logoQris} alt="logoQris" />
         <img src={logoBca} alt="logoBca" />
       </div>
@@ -151,7 +151,7 @@ const QrisTransfer: React.FC = () => {
         <div
           className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
           <div
-            className="bg-primary-light-blue rounded-[20px] rounded flex flex-col w-96 p-5 gap-2.5"
+            className="bg-primary-light-blue rounded flex flex-col w-96 p-5 gap-2.5"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between h-14 border-b border-primary-dark-blue">

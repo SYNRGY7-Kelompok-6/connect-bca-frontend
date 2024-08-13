@@ -18,31 +18,29 @@ const Dropdown: React.FC<DropdownProps> = ({
   buttonLabel2,
   activeItem2,
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [isOpen2, setIsOpen2] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); 
+  const [isOpen2, setIsOpen2] = useState(true); 
   const navigate = useNavigate();
 
   const handleItemClick = (href: string) => {
     navigate(href);
-    setIsOpen(true);
   };
-  const handleItemClick2 = (href: string) => {
-    navigate(href);
-    setIsOpen2(true);
+
+  const handleTransferClick = () => {
+    setIsOpen(!isOpen); 
+    if (isOpen2) setIsOpen2(false); 
   };
-  const handleTransferClick =()=>{
-    setIsOpen(!isOpen);
-    setIsOpen2(false);
+
+  const handleQrisClick = () => {
+    setIsOpen2(!isOpen2); 
+    if (isOpen) setIsOpen(false); 
   };
-  const handleQrisClick =()=>{
-    setIsOpen(false);
-    setIsOpen2(!isOpen2);
-  };
+
   return (
     <div className="relative inline-block text-left w-[262px]">
       <button
         onClick={handleTransferClick}
-        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-blue-600 text-white font-semibold text-base rounded-t-[10px]"
+        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-primary-dark-blue text-white font-semibold text-base rounded-t-[10px]"
       >
         <img
           src={isOpen ? "/DropDownClose.svg" : "/DropDownOpen.svg"}
@@ -62,10 +60,11 @@ const Dropdown: React.FC<DropdownProps> = ({
                 e.preventDefault();
                 handleItemClick(item.href);
               }}
-              className={`block px-3 py-[14px] font-semibold text-base ${activeItem === item.href
+              className={`block px-3 py-[14px] font-semibold text-base ${
+                activeItem === item.href
                   ? "text-white bg-primary-blue bg-fill4"
-                  : "text-primary-blue hover:text-white hover:bg-primary-blue hover:bg-fill4"
-                }`}
+                  : "text-neutral-9 hover:text-white hover:bg-primary-blue hover:bg-fill4"
+              }`}
             >
               {item.label}
             </a>
@@ -74,7 +73,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       )}
       <button
         onClick={handleQrisClick}
-        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-blue-600 text-white font-semibold text-base"
+        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-primary-dark-blue text-white font-semibold text-base"
       >
         <img
           src={isOpen2 ? "/DropDownClose.svg" : "/DropDownOpen.svg"}
@@ -91,12 +90,13 @@ const Dropdown: React.FC<DropdownProps> = ({
               href={item.href}
               onClick={(e) => {
                 e.preventDefault();
-                handleItemClick2(item.href);
+                handleItemClick(item.href);
               }}
-              className={`block px-3 py-[14px] font-semibold text-base ${activeItem2 === item.href
+              className={`block px-3 py-[14px] font-semibold text-base ${
+                activeItem2 === item.href
                   ? "text-white bg-primary-blue bg-fill4"
-                  : "text-primary-blue hover:text-white hover:bg-primary-blue hover:bg-fill4"
-                }`}
+                  : "text-neutral-9 hover:text-white hover:bg-primary-blue hover:bg-fill4"
+              }`}
             >
               {item.label}
             </a>

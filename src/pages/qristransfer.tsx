@@ -3,7 +3,7 @@ import QrisTransfer from "../components/layout/qristransfer";
 
 const Qristransfer: React.FC = () => {
   return (
-    <body className="bg-primary-dark-blue font-sans">
+    <body className="font-jakartasans">
           <QrisTransfer/>
     </body>
   );

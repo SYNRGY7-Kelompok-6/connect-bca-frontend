@@ -1,10 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import Header from "../components/layout/header";
 import InfoUser from "../components/layout/infouser";
 import MenuFitur from "../components/layout/menufitur";
 import Dropdowntransfer from "../components/layout/dropdowntransfer";
-// import MutasiRekening from "./MutasiRekening";
 import QrisBayar from "./qrisbayar";
 import QrisTransfer from "./qristransfer";
 
@@ -25,8 +23,7 @@ const Transaksi: React.FC = () => {
   };
 
   return (
-    <div className="bg-primary-dark-blue font-sans">
-      <Header />
+    <div className="bg-fill-0 font-jakartasans">
       <InfoUser />
       <MenuFitur />
       <section className="container mx-auto mt-[50px] pb-[50px]">
@@ -37,13 +34,9 @@ const Transaksi: React.FC = () => {
               activeItem={location.pathname}
               items={[
                 {
-                  label: "Informasi Saldo Rekening",
-                  href: "/saldo-mutasi/informasi-saldo-rekening",
-                },
-                {
-                  label: "Mutasi Rekening",
-                  href: "/saldo-mutasi/mutasi-rekening",
-                },
+                  label: "Transfer Antar Bank BCA",
+                  href: "/transfer",
+                }
               ]}
               buttonLabel2="Transaksi Qris"
               activeItem2={location.pathname}
