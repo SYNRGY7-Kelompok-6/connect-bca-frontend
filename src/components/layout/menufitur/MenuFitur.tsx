@@ -6,7 +6,7 @@ const MenuFitur: React.FC = () => {
 
   const buttons = [
     { name: "Beranda", path: "/" },
-    { name: "Saldo & Mutasi", path: "/saldo-mutasi" },
+    { name: "Saldo & Mutasi", path: "/saldo-mutasi/informasi-saldo-rekening" },
     { name: "Transaksi", path: "/transaksi" },
     { name: "Informasi Lainnya", path: "/informasi-lainnya" },
     { name: "Administrasi", path: "/administrasi" },

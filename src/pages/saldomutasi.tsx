@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Header from "../components/layout/header";
 import InfoUser from "../components/layout/infouser";
 import MenuFitur from "../components/layout/menufitur";
 import Dropdown from "../components/layout/dropdown/DropDown";
@@ -47,6 +46,7 @@ const SaldoMutasi: React.FC = () => {
     fetchBankStatement,
     fetchAccountMonthly,
     setLoading,
+    bankStatement
   ]);
 
   const renderContent = () => {
@@ -61,12 +61,11 @@ const SaldoMutasi: React.FC = () => {
   };
 
   return (
-    <div className="bg-primary-dark-blue font-sans">
+    <div className="bg-fill0 font-jakartasans">
       {loading ? (
         <Preloading />
       ) : (
         <>
-          <Header />
           <InfoUser />
           <MenuFitur />
           <section className="container mx-auto mt-[50px] pb-[50px]">
