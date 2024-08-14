@@ -1,7 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { SavedAccountsContext } from "../../../contexts/SavedAccountsContext";
 
 const DaftarRekening: React.FC = () => {
+  const navigate = useNavigate();
+
+  const { savedAccounts, fetchSavedAccounts, changeDestinationAccount } =
+    useContext(SavedAccountsContext);
+
+  useEffect(() => {
+    fetchSavedAccounts();
+  }, []);
+
   return (
     <section
       className="flex flex-col gap-6"
@@ -35,26 +45,20 @@ const DaftarRekening: React.FC = () => {
             Daftar Transfer
           </span>
           <div className="flex flex-col text-sm divide-y divide-slate-300">
-            <Link to="/transaksi/transfer">
-              <p className="px-3 py-2 transition cursor-pointer hover:bg-primary-blue hover:text-white">
-                54728974829482 - Stenafy Putri Santoso
-              </p>
-            </Link>
-            <Link to="/transaksi/transfer">
-              <p className="px-3 py-2 transition cursor-pointer hover:bg-primary-blue hover:text-white">
-                54728974829482 - Stenafy Putri Santoso
-              </p>
-            </Link>
-            <Link to="/transaksi/transfer">
-              <p className="px-3 py-2 transition cursor-pointer hover:bg-primary-blue hover:text-white">
-                54728974829482 - Stenafy Putri Santoso
-              </p>
-            </Link>
-            <Link to="/transaksi/transfer">
-              <p className="px-3 py-2 transition cursor-pointer hover:bg-primary-blue hover:text-white">
-                54728974829482 - Stenafy Putri Santoso
-              </p>
-            </Link>
+            {savedAccounts?.map((account) => {
+              return (
+                <button
+                  onClick={() => {
+                    changeDestinationAccount(account);
+                    navigate("/transaksi/transfer");
+                  }}
+                >
+                  <p className="px-3 py-2 transition cursor-pointer hover:bg-primary-blue hover:text-white">
+                    {`${account.beneficiaryAccountNumber} - ${account.beneficiaryAccountName}`}
+                  </p>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

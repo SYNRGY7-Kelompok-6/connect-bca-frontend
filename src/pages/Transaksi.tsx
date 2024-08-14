@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import Preloading from '../components/base/preloading';
-import Header from '../components/layout/header';
-import InfoUser from '../components/layout/infouser/InfoUser';
-import MenuFitur from '../components/layout/menufitur/MenuFitur';
-import Dropdown from '../components/layout/dropdown';
-import { useLoading } from '../contexts/useLoading';
-import { useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/useAuth';
-import useBankStatement from '../contexts/useBankStatement';
-import DaftarRekening from '../components/layout/daftarrekening';
-import RekeningBaru from '../components/layout/rekeningbaru';
-import TransferForm from '../components/layout/TransferForm';
-import TransferConfirmation from '../components/layout/TransferConfirmation';
+import React, { useEffect, useState } from "react";
+import Preloading from "../components/base/preloading";
+import Header from "../components/layout/header";
+import InfoUser from "../components/layout/infouser/InfoUser";
+import MenuFitur from "../components/layout/menufitur/MenuFitur";
+import Dropdown from "../components/layout/dropdown";
+import { useLoading } from "../contexts/useLoading";
+import { useLocation } from "react-router-dom";
+import { useAuth } from "../contexts/useAuth";
+import useBankStatement from "../contexts/useBankStatement";
+import DaftarRekening from "../components/layout/daftarrekening";
+import RekeningBaru from "../components/layout/rekeningbaru";
+import TransferForm from "../components/layout/TransferForm";
+import TransferConfirmation from "../components/layout/TransferConfirmation";
 
 const Transaksi: React.FC = () => {
   const location = useLocation();
@@ -33,7 +33,7 @@ const Transaksi: React.FC = () => {
           ]);
           setHasFetchedData(true);
         } catch (err) {
-          console.error('Error fetching data', err);
+          console.error("Error fetching data", err);
         } finally {
           setLoading(false);
         }
@@ -51,11 +51,11 @@ const Transaksi: React.FC = () => {
 
   const renderContent = () => {
     switch (location.pathname) {
-      case '/transaksi/rekening':
+      case "/transaksi/rekening":
         return <RekeningBaru />;
-      case '/transaksi/transfer':
+      case "/transaksi/transfer":
         return <TransferForm />;
-      case '/transaksi/transfer/confirmation':
+      case "/transaksi/transfer/confirmation":
         return <TransferConfirmation />;
       default:
         return <DaftarRekening />;
@@ -78,24 +78,24 @@ const Transaksi: React.FC = () => {
                 activeItem={location.pathname}
                 items={[
                   {
-                    label: 'Transfer Antar Rek. BCA',
-                    href: '/transaksi',
+                    label: "Transfer Antar Rek. BCA",
+                    href: "/transaksi",
                   },
                   {
-                    label: 'Transfer Antar Bank',
-                    href: '/transaksi/antar-bank',
+                    label: "Transfer Antar Bank",
+                    href: "/transaksi/antar-bank",
                   },
                   {
-                    label: 'Transfer RTGS',
-                    href: '/transaksi/rtgs',
+                    label: "Transfer RTGS",
+                    href: "/transaksi/rtgs",
                   },
                   {
-                    label: 'Transfer Kliring',
-                    href: '/transaksi/kliring',
+                    label: "Transfer Kliring",
+                    href: "/transaksi/kliring",
                   },
                   {
-                    label: 'Transfer Dana Pensiun',
-                    href: '/transaksi/dana-pensiun',
+                    label: "Transfer Dana Pensiun",
+                    href: "/transaksi/dana-pensiun",
                   },
                 ]}
               />

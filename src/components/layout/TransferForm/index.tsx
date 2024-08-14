@@ -1,8 +1,33 @@
-import React from 'react';
-import Button from '../../base/button';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import Button from "../../base/button";
+import { Link, useNavigate } from "react-router-dom";
+import { SavedAccountsContext } from "../../../contexts/SavedAccountsContext";
+import useBankStatement from "../../../contexts/useBankStatement";
+import {
+  TransferContext,
+  TransferIntrabank,
+} from "../../../contexts/TransferContext";
 
 const TransferForm: React.FC = () => {
+  const navigate = useNavigate();
+  const { destinationAccount } = useContext(SavedAccountsContext);
+  const { bankStatement } = useBankStatement();
+
+  const { changeTransferIntrabank } = useContext(TransferContext);
+
+  const [transferIntrabank, setTransferIntrabank] = useState<TransferIntrabank>(
+    {
+      beneficiaryAccountNumber:
+        destinationAccount?.beneficiaryAccountNumber || "",
+      remark: "Transfer",
+      desc: "",
+      amount: {
+        currency: "IDR",
+        value: 0,
+      },
+    }
+  );
+
   return (
     <section
       className="flex flex-col w-full gap-6"
@@ -20,9 +45,9 @@ const TransferForm: React.FC = () => {
             <label className="w-[300px] inline-block">Ke Rekening</label>
             <div className="w-full px-4 py-2 border rounded-lg border-primary-blue">
               <span className="font-bold text-primary-blue">
-                Budi Sudarsono -{' '}
+                {destinationAccount?.beneficiaryAccountName} -{" "}
               </span>
-              444999000111
+              {destinationAccount?.beneficiaryAccountNumber}
             </div>
           </div>
 
@@ -30,9 +55,9 @@ const TransferForm: React.FC = () => {
             <label className="w-[300px] inline-block">Dari Rekening</label>
             <div className="w-full px-4 py-2 border rounded-lg border-primary-blue">
               <span className="font-bold text-primary-blue">
-                145 267 389 5162 -{' '}
+                {bankStatement?.accountInfo.name} -{" "}
               </span>
-              Tahapan Xpesi - IDR
+              {bankStatement?.accountInfo.accountNo}
             </div>
           </div>
 
@@ -43,10 +68,20 @@ const TransferForm: React.FC = () => {
             <div className="w-full">
               <span className="pr-4">IDR</span>
               <input
-                type="text"
+                type="number"
                 id="mata-uang"
                 placeholder="20.000.000"
                 className="px-4 py-2 bg-transparent border-b border-primary-blue"
+                value={transferIntrabank?.amount.value}
+                onChange={(e) =>
+                  setTransferIntrabank({
+                    ...transferIntrabank,
+                    amount: {
+                      ...transferIntrabank.amount,
+                      value: parseInt(e.target.value),
+                    },
+                  })
+                }
               />
             </div>
           </div>
@@ -60,6 +95,13 @@ const TransferForm: React.FC = () => {
               id="berita"
               placeholder="Pembayaran"
               className="w-full px-4 py-2 bg-transparent border-b border-primary-blue"
+              value={transferIntrabank?.desc}
+              onChange={(e) =>
+                setTransferIntrabank({
+                  ...transferIntrabank,
+                  desc: e.target.value,
+                })
+              }
             />
           </div>
 
@@ -91,11 +133,16 @@ const TransferForm: React.FC = () => {
         </div>
 
         <div className="flex justify-end">
-          <Link to="/transaksi/transfer/confirmation">
+          <button
+            onClick={() => {
+              changeTransferIntrabank(transferIntrabank);
+              navigate("/transaksi/transfer/confirmation");
+            }}
+          >
             <Button ariaLabel="lanjut" variant="general" colorScheme="primary">
               Lanjut
             </Button>
-          </Link>
+          </button>
         </div>
       </div>
     </section>

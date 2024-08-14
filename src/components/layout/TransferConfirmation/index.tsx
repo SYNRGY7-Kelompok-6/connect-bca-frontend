@@ -1,7 +1,22 @@
-import React from 'react';
-import Button from '../../base/button';
+import React, { useContext } from "react";
+import Button from "../../base/button";
+import { TransferContext } from "../../../contexts/TransferContext";
+import useBankStatement from "../../../contexts/useBankStatement";
+import { SavedAccountsContext } from "../../../contexts/SavedAccountsContext";
 
 const TransferConfirmation: React.FC = () => {
+  const { transferIntrabank, transferIntrabankSubmit } =
+    useContext(TransferContext);
+
+  const { bankStatement } = useBankStatement();
+  const { destinationAccount } = useContext(SavedAccountsContext);
+
+  const handleTransferIntrabankSubmit = async () => {
+    if (transferIntrabank) {
+      await transferIntrabankSubmit(transferIntrabank);
+    }
+  };
+
   return (
     <section
       className="flex flex-col w-full gap-6"
@@ -21,9 +36,9 @@ const TransferConfirmation: React.FC = () => {
             </label>
             <div className="w-full px-4 py-2 border rounded-lg border-primary-blue">
               <span className="font-bold text-primary-blue">
-                Budi Sudarsono -{' '}
+                {destinationAccount?.beneficiaryAccountName} -{" "}
               </span>
-              444999000111
+              {destinationAccount?.beneficiaryAccountNumber}
             </div>
           </div>
 
@@ -33,9 +48,9 @@ const TransferConfirmation: React.FC = () => {
             </label>
             <div className="w-full px-4 py-2 border rounded-lg border-primary-blue">
               <span className="font-bold text-primary-blue">
-                145 267 389 5162 -{' '}
+                {bankStatement?.accountInfo.name} -{" "}
               </span>
-              Tahapan Xpesi - IDR
+              {bankStatement?.accountInfo.accountNo}
             </div>
           </div>
 
@@ -66,7 +81,14 @@ const TransferConfirmation: React.FC = () => {
             <input
               type="text"
               id="nominal-tujuan"
-              value="IDR 20.000.000,00"
+              value={
+                transferIntrabank
+                  ? new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(transferIntrabank.amount.value)
+                  : ""
+              }
               className="w-full px-4 py-2 font-semibold bg-transparent"
             />
           </div>
@@ -82,7 +104,7 @@ const TransferConfirmation: React.FC = () => {
             <input
               type="text"
               id="berita"
-              value="Pembayaran"
+              value={transferIntrabank?.desc}
               className="w-full px-4 py-2 font-semibold bg-transparent"
             />
           </div>
@@ -105,7 +127,12 @@ const TransferConfirmation: React.FC = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button ariaLabel="lanjut" variant="general" colorScheme="primary">
+          <Button
+            onClick={handleTransferIntrabankSubmit}
+            ariaLabel="lanjut"
+            variant="general"
+            colorScheme="primary"
+          >
             Lanjut
           </Button>
         </div>
