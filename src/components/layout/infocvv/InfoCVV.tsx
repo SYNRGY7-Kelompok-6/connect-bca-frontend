@@ -5,7 +5,7 @@ import useBankStatement from "../../../contexts/useBankStatement";
 const InfoCVV: React.FC = () => {
   const { bankStatement } = useBankStatement();
 
-  const [isCVVVisible, setIsCVVVisible] = useState(true);
+  const [isCVVVisible, setIsCVVVisible] = useState(false);
   const CVV = bankStatement?.accountInfo.cvv;
 
   const toggleCVVVisibility = () => {
