@@ -5,6 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import { TablePrint } from "../tableprint/TablePrint";
 import DatePicker from "../../base/datepicker";
 import { Mutation } from "../../../types/BankStatementTypes";
+import { formatCurrency, formatDateTable, formatDateToString, parseISODate } from "../../../utils/utils";
 
 interface DateRange {
   startDate: Date;
@@ -20,10 +21,12 @@ function MutasiLayout() {
     startDate: new Date(),
     endDate: new Date(),
   });
+
   const [accInfo] = useState({
     name: bankStatement?.accountInfo.name,
     accNo: bankStatement?.accountInfo.accountNo
   })
+
   const [noAccount, setNoAccount] = useState<string>('');
   const [selectedFilter, setSelectedFilter] = useState<string>('period');
   const [showDatePicker, setShowDatePicker] = useState(false)
@@ -71,10 +74,12 @@ function MutasiLayout() {
 
   const handleFocus = () => {
     setShowDatePicker(true)
+    console.log('run')
   }
 
   const handleCloseCalendar = () => {
     setShowDatePicker(false)
+    console.log('dd',showDatePicker)
   }
 
   const handleSubmitCalendar = (value: Date) =>{
@@ -124,47 +129,6 @@ function MutasiLayout() {
     return { startDate, endDate };
   }
 
-  function formatDateToString (date: Date): string {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
-
-  const formatDateTable = (timestamp: string): string => {
-    const date = new Date(timestamp);
-    // Format tanggal sesuai dengan lokal dan tanpa jam
-    return date.toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  };
-
-  // const formatDateFetch = (date: Date) => {
-  //   const day = date.getDate();
-  //   const month = date.getMonth() + 1; // Months are zero-based
-  //   const year = date.getFullYear();
-
-  //   // Format day and month to ensure two digits
-  //   const formattedDay = day < 10 ? `0${day}` : day;
-  //   const formattedMonth = month < 10 ? `0${month}` : month;
-
-  //   return `${formattedDay}-${formattedMonth}-${year}`;
-  // };
-
-  // Convert ISO date string to Date object
-  const parseISODate = (isoDateString: string) => {
-    const newDate = new Date(isoDateString)
-    newDate.setHours(0, 0, 0, 0)
-    return newDate;
-  };
-
-  const formatCurrency = (amount: number | undefined) => {
-    // Mengonversi angka menjadi string dan memformat dengan pemisah ribuan
-    return amount?.toLocaleString('id-ID'); // Menggunakan lokal 'id-ID' untuk format Indonesia
-  };
-
   async function handleSearch() {
     if (selectedFilter === 'period') {
       const fromDate = period.startDate
@@ -185,8 +149,6 @@ function MutasiLayout() {
         return itemDate >= fromDate && itemDate <= toDate;
       });
       setFilteredData(filtered || [])
-      console.log(selectedFilter)
-      console.log(filteredData)
       // await fetchBankStatement(fromDate, toDate)
     } else if (noAccount) {
       const filtered = bankStatement?.mutations.filter(item => {
@@ -234,7 +196,7 @@ function MutasiLayout() {
                 </div>
               </div>
               <div className="flex flex-col gap-[18px] w-full">
-                <Input ariaLabel="input-rekening" id="rekening" value={`${accInfo.name} - ${accInfo.accNo}`} type="text" onChange={handleNoAccountChange} />
+                <Input ariaLabel="input-rekening" id="rekening" value={`${accInfo.name} - ${accInfo.accNo}`} type="text" onChange={handleNoAccountChange} disabled />
                 <div className="relative flex flex-row items-center justify-end">
                   <img src='/Down1.svg' alt="arrow-icon" className='absolute pointer-events-none mr-3' />
                   <select name="input-component" id="periodselect" onChange={handlePeriodChange} className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full" >
@@ -244,8 +206,8 @@ function MutasiLayout() {
                     <option value="1week">1 Minggu</option>
                   </select>
                 </div>
-                <Input aria-haspopup='true' placeholder="dd/mm/yyyy" onFocus={handleFocus} value={formatDateToString(datePicker.startDate)} onChange={handleInputChange} id="tanggal-awal" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
-                <Input aria-haspopup='true' placeholder="dd/mm/yyyy" onFocus={handleFocus1} value={formatDateToString(datePicker.endDate)} onChange={handleInputChange} id="tanggal-akhir" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
+                <Input aria-haspopup='true' placeholder="dd/mm/yyyy" onClick={handleFocus} onKeyDown={handleFocus} value={formatDateToString(datePicker.startDate)} onChange={handleInputChange} id="tanggal-awal" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
+                <Input aria-haspopup='true' placeholder="dd/mm/yyyy" onClick={handleFocus1} onKeyDown={handleFocus1} value={formatDateToString(datePicker.endDate)} onChange={handleInputChange} id="tanggal-akhir" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
                 <div className="flex flex-col gap-[18px] items-end">
                   <span aria-description="Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir." className="font-medium text-sm text-primary-dark-blue">Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir.</span>
                   <button onClick={handleSearch} className='w-[179px] justify-center flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
@@ -254,16 +216,16 @@ function MutasiLayout() {
                 </div>
               </div>
             </div>
-            {
+            <DatePicker labelPopup="Popup Pilih tanggal kalender" isShow={showDatePicker} handleClose={handleCloseCalendar} handleSubmit={handleSubmitCalendar} />
+            <DatePicker labelPopup="Popup Pilih tanggal kalender" isShow={showDatePicker1} handleClose={handleCloseCalendar1} handleSubmit={handleSubmitCalendar1} />
+            {/* {
               showDatePicker && (
-                <DatePicker labelPopup="Popup Pilih tanggal kalender" handleClose={handleCloseCalendar} handleSubmit={handleSubmitCalendar} />
               )
             }
             {
               showDatePicker1 && (
-                <DatePicker labelPopup="Popup Pilih tanggal kalender" handleClose={handleCloseCalendar1} handleSubmit={handleSubmitCalendar1} />
               )
-            }
+            } */}
           </div>
               {
                 filteredData?.length !== 0 ? (
@@ -300,7 +262,7 @@ function MutasiLayout() {
                 )
               }
           <div className="hidden">
-            <TablePrint aria-hidden="true" ref={componentRef || undefined}/>
+            <TablePrint aria-hidden="true" periodInfo={period} data={filteredData} ref={componentRef || undefined}/>
           </div>
         </div>
         <div className='flex justify-between'>

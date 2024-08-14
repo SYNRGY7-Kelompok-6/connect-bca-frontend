@@ -27,7 +27,7 @@ const SaldoMutasi: React.FC = () => {
         try {
           await Promise.all([
             fetchLoginInfo(),
-            fetchBankStatement('05-08-2024', '05-08-2024'),
+            fetchBankStatement(),
             fetchAccountMonthly(8),
           ]);
           setHasFetchedData(true);
