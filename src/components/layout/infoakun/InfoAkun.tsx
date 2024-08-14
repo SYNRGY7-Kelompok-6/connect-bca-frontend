@@ -7,14 +7,14 @@ const InfoAkun: React.FC = () => {
   const { loginInfo } = useAuth();
 
   return (
-    <div className="flex flex-col gap-[20px]">
-      <h1 className="text-lg text-white font-bold" aria-label="informasi akun">
+    <div className="flex flex-col mt-10 shadow-box w-[416px]">
+      <h1 className="bg-primary-dark-blue w-[416px] p-[18px] text-md text-white font-bold rounded-t" aria-label="informasi akun">
         Informasi Akun
       </h1>
       {!loginInfo || !bankStatement ? (
         <div className="text-white">No data available</div>
       ) : (
-        <div className="bg-primary-light-blue flex flex-col w-[416px] rounded-[20px] p-[18px] gap-[7px]">
+        <div className="bg-neutral-1 flex flex-col rounded-b- p-[18px] gap-[7px]">
           <div className="flex gap-2">
             <p className="w-[215px] text-primary-dark-blue text-sm font-semibold">
               Masa Berlaku Pin (hari)

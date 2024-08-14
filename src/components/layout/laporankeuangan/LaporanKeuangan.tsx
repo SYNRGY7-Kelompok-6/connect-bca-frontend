@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DropdownMonth from "../../base/dropdownmonth/DropdownMonth";
 import useBankStatement from "../../../contexts/useBankStatement";
+import { PieChart } from "@mui/x-charts/PieChart";
 
 const LaporanKeuangan: React.FC = () => {
   const { monthlyBankStatement, fetchAccountMonthly } = useBankStatement();
@@ -30,70 +31,93 @@ const LaporanKeuangan: React.FC = () => {
   );
   const selisih = monthlyIncome - monthlyOutcome;
 
+  const pieData = [
+    { id: 0, label: "Pemasukan", value: monthlyIncome },
+    { id: 1, label: "Pengeluaran", value: monthlyOutcome },
+  ];
+
   return (
     <section
-      className="flex flex-col gap-[20px] w-[500px]"
+      className="flex flex-col w-[500px] shadow-box h-fit"
       aria-labelledby="financial-report-heading"
     >
-      <header>
-        <h1
-          id="financial-report-heading"
-          className="text-lg text-white font-bold"
-        >
-          Laporan Keuangan Rekening
-        </h1>
-      </header>
+      <h1
+        id="financial-report-heading"
+        className="text-md text-white font-bold bg-primary-dark-blue p-[18px]"
+      >
+        Laporan Keuangan Rekening
+      </h1>
       <div
-        className="flex flex-col gap-8 bg-primary-light-blue p-8 justify-center items-center rounded-[20px]"
+        className="flex flex-col bg-neutral-1 px-10 py-[18px] gap-[18px] justify-center items-center rounded"
         aria-labelledby="financial-report-details"
       >
-        <div className="inline-flex rounded-md shadow-sm w-full">
+        <div className="inline-flex rounded-md w-full">
+          <label htmlFor="month-select" className="sr-only">
+            Pilih Bulan
+          </label>
           <DropdownMonth onSelectMonth={handleSelectMonth} />
         </div>
-        <div
-          className="flex flex-col gap-1 items-center"
-          aria-labelledby="balance-difference"
-        >
-          <p className="text-neutral-9 font-medium text-sm">Selisih</p>
-          <h3 className="text-neutral-9 font-bold text-lg">
-            Rp {selisih.toLocaleString()}
-          </h3>
-        </div>
-        <div
-          className="flex justify-center gap-10"
-          aria-labelledby="income-expense-details"
-        >
-          <div
-            className="flex flex-col items-center"
-            aria-labelledby="income-details"
-          >
-            <div className="flex gap-2">
+        <div className="flex flex-row w-full items-center justify-between">
+          <div className="flex justify-center items-center">
+            <PieChart
+              aria-label="Grafik Pie yang menunjukkan perbandingan pemasukan dan pengeluaran"
+              width={185}
+              height={185}
+              series={[
+                {
+                  data: pieData.map((item) => ({
+                    id: item.id,
+                    value: item.value,
+                  })),
+                  cx: 90,
+                  innerRadius: 90,
+                },
+              ]}
+              colors={["#12D79C", "#CB3A31"]}
+            />
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <p className="text-base text-neutral-9">Selisih</p>
+              <h4
+                className="text-neutral-9 text-md font-bold"
+                aria-live="polite"
+              >
+                Rp {selisih.toLocaleString()}
+              </h4>
+            </div>
+            <div className="flex flex-row gap-2 items-center">
               <img
                 src="/ArrowPemasukan.svg"
-                alt="Ikon Pemasukan"
+                alt="Ikon panah ke atas untuk pemasukan"
                 aria-label="Ikon Pemasukan"
               />
-              <p className="text-neutral-9 font-medium text-sm">Pemasukan</p>
+              <div className="flex flex-col gap-1">
+                <p className="text-base text-neutral-9">Uang Masuk</p>
+                <h4
+                  className="text-neutral-9 text-md font-bold"
+                  aria-live="polite"
+                >
+                  Rp {monthlyIncome.toLocaleString()}
+                </h4>
+              </div>
             </div>
-            <h3 className="text-secondary-green text-lg font-bold">
-              Rp {monthlyIncome.toLocaleString()}
-            </h3>
-          </div>
-          <div
-            className="flex flex-col items-center"
-            aria-labelledby="expense-details"
-          >
-            <div className="flex gap-2">
+            <div className="flex flex-row gap-2 items-center">
               <img
                 src="/ArrowPengeluaran.svg"
-                alt="Ikon Pengeluaran"
+                alt="Ikon panah ke bawah untuk pengeluaran"
                 aria-label="Ikon Pengeluaran"
               />
-              <p className="text-neutral-9 font-medium text-sm">Pengeluaran</p>
+              <div className="flex flex-col gap-1">
+                <p className="text-base text-neutral-9">Uang Keluar</p>
+                <h4
+                  className="text-neutral-9 text-md font-bold"
+                  aria-live="polite"
+                >
+                  Rp {monthlyOutcome.toLocaleString()}
+                </h4>
+              </div>
             </div>
-            <h3 className="text-secondary-red text-lg font-bold">
-              Rp {monthlyOutcome.toLocaleString()}
-            </h3>
           </div>
         </div>
       </div>

@@ -13,9 +13,9 @@ interface DateRange {
 }
 
 function MutasiLayout() {
-  const { bankStatement, monthlyBankStatement } = useBankStatement()
+  const { bankStatement, monthlyBankStatement } = useBankStatement();
   const componentRef = useRef<HTMLDivElement>(null);
-  const [period, setPeriod] = useState<DateRange>(getDateRange('1month'));
+  const [period, setPeriod] = useState<DateRange>(getDateRange("1month"));
 
   const [datePicker, setDatePicker] = useState<DateRange>({
     startDate: new Date(),
@@ -38,7 +38,9 @@ function MutasiLayout() {
     content: () => componentRef.current ?? null,
   });
 
-  const handleNoAccountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNoAccountChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setNoAccount(event.target.value);
   };
 
@@ -48,25 +50,25 @@ function MutasiLayout() {
 
   const handlePeriodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
-    const dateRange = getDateRange(value)
-    setPeriod(dateRange)
+    const dateRange = getDateRange(value);
+    setPeriod(dateRange);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    if (selectedFilter === 'datepicker') {
-      if (id === 'start-date') {
-        setDatePicker(prevState => ({
+    if (selectedFilter === "datepicker") {
+      if (id === "start-date") {
+        setDatePicker((prevState) => ({
           ...prevState,
-          startDate: new Date(value)
-        }))
+          startDate: new Date(value),
+        }));
         // setStartDate(new Date(value))
       }
-      if (id === 'end-date') {
-        setDatePicker(prevState => ({
+      if (id === "end-date") {
+        setDatePicker((prevState) => ({
           ...prevState,
-          endDate: new Date(value)
-        }))
+          endDate: new Date(value),
+        }));
         // setEndDate(new Date(value))
       }
     }
@@ -74,52 +76,50 @@ function MutasiLayout() {
 
   const handleFocus = () => {
     setShowDatePicker(true)
-    console.log('run')
   }
 
   const handleCloseCalendar = () => {
     setShowDatePicker(false)
-    console.log('dd',showDatePicker)
   }
 
-  const handleSubmitCalendar = (value: Date) =>{
-    setDatePicker(prevState => ({
+  const handleSubmitCalendar = (value: Date) => {
+    setDatePicker((prevState) => ({
       ...prevState,
-      startDate: value
-    }))
-    setShowDatePicker(false)
-  }
+      startDate: value,
+    }));
+    setShowDatePicker(false);
+  };
 
   const handleFocus1 = () => {
-    setShowDatePicker1(true)
-  }
+    setShowDatePicker1(true);
+  };
 
   const handleCloseCalendar1 = () => {
-    setShowDatePicker1(false)
-  }
+    setShowDatePicker1(false);
+  };
 
-  const handleSubmitCalendar1 = (value: Date ) =>{
-    setDatePicker(prevState => ({
+  const handleSubmitCalendar1 = (value: Date) => {
+    setDatePicker((prevState) => ({
       ...prevState,
-      endDate: value
-    }))
-    setShowDatePicker1(false)
-  }
+      endDate: value,
+    }));
+    setShowDatePicker1(false);
+  };
 
   function getDateRange(period: string): DateRange {
     const endDate = new Date(); // Current date
     const startDate = new Date(); // Default to the current date
 
-    if (period === '1month') {
+    if (period === "1month") {
       startDate.setMonth(startDate.getMonth() - 1);
-    } else if (period === '1week') {
+    } else if (period === "1week") {
       startDate.setDate(startDate.getDate() - 7);
-    } else if (period === '2week') {
+    } else if (period === "2week") {
       startDate.setDate(startDate.getDate() - 14);
-    } else if (period === '3week') {
+    } else if (period === "3week") {
       startDate.setDate(startDate.getDate() - 21);
     } else {
-      throw new Error('Invalid period');
+      throw new Error("Invalid period");
     }
 
     // Normalize dates to the start of the day
@@ -130,36 +130,36 @@ function MutasiLayout() {
   }
 
   async function handleSearch() {
-    if (selectedFilter === 'period') {
-      const fromDate = period.startDate
-      const toDate = period.endDate
-      const filtered = bankStatement?.mutations.filter(item => {
+    if (selectedFilter === "period") {
+      const fromDate = period.startDate;
+      const toDate = period.endDate;
+      const filtered = bankStatement?.mutations.filter((item) => {
         const itemDate = parseISODate(item.transactionDate);
         return itemDate >= fromDate && itemDate <= toDate;
       });
-      setFilteredData(filtered || [])
-      console.log(selectedFilter)
-      console.log(filteredData)
+      setFilteredData(filtered || []);
+      console.log(selectedFilter);
+      console.log(filteredData);
       // await fetchBankStatement(fromDate, toDate)
-    } else if (selectedFilter === 'datepicker') {
-      const fromDate = datePicker.startDate
-      const toDate = datePicker.endDate
-      const filtered = bankStatement?.mutations.filter(item => {
+    } else if (selectedFilter === "datepicker") {
+      const fromDate = datePicker.startDate;
+      const toDate = datePicker.endDate;
+      const filtered = bankStatement?.mutations.filter((item) => {
         const itemDate = parseISODate(item.transactionDate);
         return itemDate >= fromDate && itemDate <= toDate;
       });
       setFilteredData(filtered || [])
       // await fetchBankStatement(fromDate, toDate)
     } else if (noAccount) {
-      const filtered = bankStatement?.mutations.filter(item => {
+      const filtered = bankStatement?.mutations.filter((item) => {
         return item.beneficiaryAccount.beneficiaryAccountNumber === noAccount;
       });
-      setFilteredData(filtered || [])
-      console.log('no',filtered)
+      setFilteredData(filtered || []);
+      console.log("no", filtered);
     } else {
-      setFilteredData(bankStatement?.mutations || [])
-      console.log(selectedFilter)
-      console.log(bankStatement)
+      setFilteredData(bankStatement?.mutations || []);
+      console.log(selectedFilter);
+      console.log(bankStatement);
     }
   }
 
@@ -218,14 +218,6 @@ function MutasiLayout() {
             </div>
             <DatePicker labelPopup="Popup Pilih tanggal kalender" isShow={showDatePicker} handleClose={handleCloseCalendar} handleSubmit={handleSubmitCalendar} />
             <DatePicker labelPopup="Popup Pilih tanggal kalender" isShow={showDatePicker1} handleClose={handleCloseCalendar1} handleSubmit={handleSubmitCalendar1} />
-            {/* {
-              showDatePicker && (
-              )
-            }
-            {
-              showDatePicker1 && (
-              )
-            } */}
           </div>
               {
                 filteredData?.length !== 0 ? (
@@ -296,7 +288,7 @@ function MutasiLayout() {
           </div>
         </div>
       </div>
-  )
+  );
 }
 
-export default MutasiLayout
+export default MutasiLayout;

@@ -11,6 +11,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@emotion/styled": "^11.13.0",
+    "@mui/styled-engine": "^5.16.6",
+    "@mui/x-charts": "^7.12.1",
     "@types/react-calendar": "^4.1.0",
     "axios": "^1.7.2",
     "focus-trap-react": "^10.2.3",

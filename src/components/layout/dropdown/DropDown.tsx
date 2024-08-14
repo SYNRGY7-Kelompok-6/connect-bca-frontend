@@ -24,7 +24,7 @@ const Dropdown: React.FC<DropdownProps> = ({
     <div className="relative inline-block text-left w-[262px]">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-primary-blue text-white font-semibold text-base rounded-t-[10px]"
+        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-primary-dark-blue text-white font-semibold text-base rounded-t-[10px]"
       >
         <img
           src={isOpen ? "/DropDownClose.svg" : "/DropDownOpen.svg"}
@@ -47,13 +47,13 @@ const Dropdown: React.FC<DropdownProps> = ({
               className={`block px-3 py-[14px] font-semibold text-base ${
                 activeItem === item.href
                   ? "text-white bg-primary-blue bg-fill4"
-                  : "text-primary-blue hover:text-white hover:bg-primary-blue hover:bg-fill4"
+                  : "text-neutral-9 hover:text-white hover:bg-primary-blue hover:bg-fill4"
               }`}
             >
               {item.label}
             </a>
           ))}
-          <div className="bg-primary-blue w-full h-5 rounded-b-[10px]"></div>
+          <div className="bg-primary-dark-blue w-full h-5 rounded-b-[10px]"></div>
         </div>
       )}
     </div>
