@@ -60,11 +60,11 @@ const FormLogin: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col bg-neutral-1 border border-neutral-3 w-[805px] py-10 px-10 rounded-[20px] shadow-box">
-      <h2 className="font-semibold text-[20px] text-neutral-9 text-center border-b-2 border-neutral-3 pb-3">
+    <div className="flex flex-col bg-neutral-1 border border-neutral-3 lg:w-[805px] w-full py-10 px-10 rounded-[20px] shadow-box order-2 lg:order-1">
+      <h2 className="font-semibold md:text-md text-[18px] text-neutral-9 text-center border-b-2 border-neutral-3 pb-3">
         Selamat Datang di Internet Banking Connect by BCA
       </h2>
-      <div className="flex flex-row mt-[40px] gap-[60px]">
+      <div className="flex md:flex-row flex-col mt-[40px] gap-[60px]">
         <div>
           <form onSubmit={handleSubmit}>
             <div className="mb-[16px]">
@@ -145,7 +145,7 @@ const FormLogin: React.FC = () => {
           </form>
         </div>
         <div className="flex flex-col">
-          <p className="text-sm font-medium text-neutral-9 text-justify w-[320px]">
+          <p className="text-sm font-medium text-neutral-9 text-justify lg:w-[320px]">
             Informasi :<br />
             USER ID dan PIN Internet Banking dapat diperoleh pada saat Anda
             melakukan Registrasi Internet melalui ATM BCA.
@@ -161,7 +161,7 @@ const FormLogin: React.FC = () => {
               imgAlt="Tombol lupa User ID"
               text="Lupa UserID ?"
               textClassName=""
-              containerClassName=""
+              containerClassName="w-full flex-col md:flex-row"
             />
 
             <ButtonIcon
@@ -171,7 +171,7 @@ const FormLogin: React.FC = () => {
               imgAlt="Tombol lupa pin"
               text="Lupa Kata Sandi?"
               textClassName=""
-              containerClassName=""
+              containerClassName="w-full flex-col md:flex-row"
             />
           </div>
         </div>
