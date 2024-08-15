@@ -10,13 +10,15 @@ const MenuFitur: React.FC = () => {
     () => [
       { name: "Beranda", path: "/" },
       {
-        name: "Saldo & Mutasi",
-        path: "/saldo-mutasi/informasi-saldo-rekening",
+        name: "Info Saldo",
+        path: "/informasi-saldo-rekening",
+      },
+      {
+        name: "Mutasi Rekening",
+        path: "/mutasi-rekening",
       },
       { name: "Transaksi", path: "/transaksi" },
-      { name: "Informasi Lainnya", path: "/informasi-lainnya" },
-      { name: "Administrasi", path: "/administrasi" },
-      { name: "E-Mail", path: "/e-mail" },
+      { name: "Qris", path: "/qris" },
       { name: "Profil", path: "/profil" },
     ],
     []
@@ -34,7 +36,7 @@ const MenuFitur: React.FC = () => {
   return (
     <div className="bg-primary-dark-blue h-[70px] flex items-center overflow-hidden">
       {/* Hamburger Menu Button for Mobile */}
-      <div className="lg:hidden flex items-center px-4 justify-between w-full">
+      <div className="md:hidden flex items-center px-4 justify-between w-full">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="text-white flex items-center gap-2"
@@ -52,9 +54,9 @@ const MenuFitur: React.FC = () => {
 
       {/* Desktop Menu */}
       <div
-        className={`container mx-auto flex-row hidden lg:flex ${
+        className={`container mx-auto flex-row hidden md:flex ${
           isMenuOpen ? "block" : "hidden"
-        } lg:flex lg:justify-between`}
+        } md:flex md:justify-center md:gap-10`}
       >
         {buttons.map((button) => (
           <Link key={button.name} to={button.path}>

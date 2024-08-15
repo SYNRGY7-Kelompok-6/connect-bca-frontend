@@ -219,7 +219,7 @@ function MutasiLayout() {
             <button
               aria-label="Unduh Mutasi"
               onClick={handlePrint}
-              className="flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold"
+              className="flex gap-4 bg-primary-blue px-3 py-2 md:px-[36.5px] md:py-[10px] rounded-xl text-white font-semibold"
             >
               Unduh Mutasi
             </button>
@@ -232,14 +232,23 @@ function MutasiLayout() {
           >
             Kriteria Pencarian
           </p>
-          <div className="flex flex-row gap-[60px]">
+          <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-[18px]">
-              <div className="font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                <label htmlFor="rekening" className="whitespace-nowrap">
+              <div className="flex md:flex-row flex-col items-center font-semibold text-base text-primary-dark-blue content-center w-full lg:gap-16 gap-3">
+                <label htmlFor="rekening" className="lg:w-[305px] md:w-[480px] w-full">
                   Rekening
                 </label>
+                <div className="w-full">
+                  <Input
+                    ariaLabel="input-rekening"
+                    id="rekening"
+                    value={`${accInfo.name} - ${accInfo.accNo}`}
+                    type="text"
+                    onChange={handleNoAccountChange}
+                  />
+                </div>
               </div>
-              <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
+              <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue content-center">
                 <input
                   type="radio"
                   checked={selectedFilter === "period"}
@@ -249,11 +258,31 @@ function MutasiLayout() {
                   value="period"
                   className="h-5 w-5 border-primary-dark-blue"
                 />
-                <label htmlFor="periodselect" className="whitespace-nowrap">
-                  Periode
-                </label>
+                <div className="flex md:flex-row flex-col items-center w-full md:gap-16 gap-3">
+                  <label htmlFor="periodselect" className="lg:w-[260px] md:w-[330px] w-full">
+                    Periode
+                  </label>
+                  <div className="relative flex flex-row items-center justify-end w-full">
+                    <img
+                      src="/Down1.svg"
+                      alt="arrow-icon"
+                      className="absolute pointer-events-none mr-3"
+                    />
+                    <select
+                      name="input-component"
+                      id="periodselect"
+                      onChange={handlePeriodChange}
+                      className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full"
+                    >
+                      <option value="1month">1 Bulan</option>
+                      <option value="3week">3 Minggu</option>
+                      <option value="2week">2 Minggu</option>
+                      <option value="1week">1 Minggu</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
+              <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue content-center">
                 <input
                   type="radio"
                   checked={selectedFilter === "datepicker"}
@@ -263,62 +292,43 @@ function MutasiLayout() {
                   value="datepicker"
                   className="h-5 w-5"
                 />
-                <label htmlFor="tanggal-awal" className="whitespace-nowrap">
-                  Tanggal Awal (dd/mm/yy)
-                </label>
+                <div className="flex md:flex-row flex-col md:items-center w-full md:gap-16 gap-3">
+                  <label htmlFor="tanggal-awal" className="whitespace-nowrap w-[215px]">
+                    Tanggal Awal (dd/mm/yy)
+                  </label>
+                  <div className="w-full">
+                    <Input
+                      aria-haspopup="true"
+                      placeholder="dd/mm/yyyy"
+                      onFocus={handleFocus}
+                      value={formatDateToString(datePicker.startDate)}
+                      onChange={handleInputChange}
+                      id="tanggal-awal"
+                      iconSrc="/Calendar2.svg"
+                      iconAlt="icon kalender"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center justify-end gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                <label htmlFor="tanggal-akhir" className="whitespace-nowrap">
+              <div className="flex md:flex-row flex-col md:items-center font-semibold text-base text-primary-dark-blue content-center md:gap-16 ml-7 md:ml-0 gap-3">
+                <label htmlFor="tanggal-akhir" className="whitespace-nowrap md:ml-7 w-[215px]">
                   Tanggal Akhir (dd/mm/yy)
                 </label>
+                <div className="w-full">
+                  <Input
+                    aria-haspopup="true"
+                    placeholder="dd/mm/yyyy"
+                    onFocus={handleFocus1}
+                    value={formatDateToString(datePicker.endDate)}
+                    onChange={handleInputChange}
+                    id="tanggal-akhir"
+                    iconSrc="/Calendar2.svg"
+                    iconAlt="icon kalender"
+                  />
+                </div>
               </div>
             </div>
             <div className="flex flex-col gap-[18px] w-full">
-              <Input
-                ariaLabel="input-rekening"
-                id="rekening"
-                value={`${accInfo.name} - ${accInfo.accNo}`}
-                type="text"
-                onChange={handleNoAccountChange}
-              />
-              <div className="relative flex flex-row items-center justify-end">
-                <img
-                  src="/Down1.svg"
-                  alt="arrow-icon"
-                  className="absolute pointer-events-none mr-3"
-                />
-                <select
-                  name="input-component"
-                  id="periodselect"
-                  onChange={handlePeriodChange}
-                  className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full"
-                >
-                  <option value="1month">1 Bulan</option>
-                  <option value="3week">3 Minggu</option>
-                  <option value="2week">2 Minggu</option>
-                  <option value="1week">1 Minggu</option>
-                </select>
-              </div>
-              <Input
-                aria-haspopup="true"
-                placeholder="dd/mm/yyyy"
-                onFocus={handleFocus}
-                value={formatDateToString(datePicker.startDate)}
-                onChange={handleInputChange}
-                id="tanggal-awal"
-                iconSrc="/Calendar2.svg"
-                iconAlt="icon kalender"
-              />
-              <Input
-                aria-haspopup="true"
-                placeholder="dd/mm/yyyy"
-                onFocus={handleFocus1}
-                value={formatDateToString(datePicker.endDate)}
-                onChange={handleInputChange}
-                id="tanggal-akhir"
-                iconSrc="/Calendar2.svg"
-                iconAlt="icon kalender"
-              />
               <div className="flex flex-col gap-[18px] items-end">
                 <span
                   aria-description="Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir."
