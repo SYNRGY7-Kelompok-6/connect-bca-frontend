@@ -90,7 +90,7 @@ const QrisTransfer: React.FC = () => {
   };
 
   return (
-    <div className="bg-neutran-1 shadow-box rounded flex flex-col w-96 p-5 gap-2.5">
+    <div className="bg-neutran-1 shadow-box rounded flex flex-col md:w-96 w-full p-5 gap-2.5 mt-16 md:mt-0">
       <div className="flex justify-between">
         <img src={logoQris} alt="logoQris" />
         <img src={logoBca} alt="logoBca" />

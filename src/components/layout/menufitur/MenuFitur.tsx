@@ -18,7 +18,7 @@ const MenuFitur: React.FC = () => {
         path: "/mutasi-rekening",
       },
       { name: "Transaksi", path: "/transaksi" },
-      { name: "Qris", path: "/qris" },
+      { name: "Qris", path: "/qris/qris-transfer" },
       { name: "Profil", path: "/profil" },
     ],
     []
@@ -56,12 +56,12 @@ const MenuFitur: React.FC = () => {
       <div
         className={`container mx-auto flex-row hidden md:flex ${
           isMenuOpen ? "block" : "hidden"
-        } md:flex md:justify-center md:gap-10`}
+        } md:flex md:justify-center md:gap-16`}
       >
         {buttons.map((button) => (
           <Link key={button.name} to={button.path}>
             <button
-              className={`text-base font-medium py-1 px-4 rounded-xl mx-2 ${
+              className={`text-base font-medium py-1 px-9 rounded-xl mx-2 ${
                 location.pathname === button.path
                   ? "bg-primary-blue text-white"
                   : "text-white"
