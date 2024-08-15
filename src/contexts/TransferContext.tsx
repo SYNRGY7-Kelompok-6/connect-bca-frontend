@@ -18,7 +18,7 @@ interface TransferContextType {
   transferIntrabankError: string | null;
   transferIntrabankLoading: boolean;
   transferIntrabankSuccess: boolean;
-  transferIntrabankSubmit: (data: TransferIntrabank) => Promise<void>;
+  transferIntrabankSubmit: (data: TransferIntrabank, pin: string) => Promise<void>;
 }
 
 export const TransferContext = createContext<TransferContextType>({
@@ -48,14 +48,14 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
     setTransferIntrabank(data);
   };
 
-  const transferIntrabankSubmit = async (data: TransferIntrabank) => {
+  const transferIntrabankSubmit = async (data: TransferIntrabank, pin: string) => {
     setTransferIntrabankLoading(true);
 
     try {
       const response = await axios.post(
         `${apiUrl}/api/v1.0/auth/validate-pin`,
         {
-          pin: "123456",
+          pin: pin,
         },
         {
           headers: {

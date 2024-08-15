@@ -1,19 +1,40 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../../base/button";
 import { TransferContext } from "../../../contexts/TransferContext";
 import useBankStatement from "../../../contexts/useBankStatement";
 import { SavedAccountsContext } from "../../../contexts/SavedAccountsContext";
 
 const TransferConfirmation: React.FC = () => {
-  const { transferIntrabank, transferIntrabankSubmit } =
+  const { transferIntrabank, transferIntrabankSubmit, transferIntrabankError } =
     useContext(TransferContext);
-
   const { bankStatement } = useBankStatement();
   const { destinationAccount } = useContext(SavedAccountsContext);
 
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
+  const [pinError, setPinError] = useState<string | null>(null);
+
+  const handlePinChange = (index: number, value: string) => {
+    if (value.length <= 1 && /^\d*$/.test(value)) {
+      const newPin = [...pin];
+      newPin[index] = value;
+      setPin(newPin);
+    }
+  };
+
   const handleTransferIntrabankSubmit = async () => {
-    if (transferIntrabank) {
-      await transferIntrabankSubmit(transferIntrabank);
+    if (pin.join('').length === 6 && transferIntrabank) {
+      setPinError(null); // Reset error sebelum mencoba
+      try {
+        await transferIntrabankSubmit(transferIntrabank, pin.join(''));
+        setShowPinModal(false);
+        setPin(['', '', '', '', '', '']); // Reset pin setelah berhasil
+      } catch (error) {
+        setPinError("PIN salah, harap masukkan ulang.");
+        setPin(['', '', '', '', '', '']); // Reset pin setelah gagal
+      }
+    } else {
+      setPinError("Masukkan 6 digit PIN.");
     }
   };
 
@@ -128,7 +149,7 @@ const TransferConfirmation: React.FC = () => {
 
         <div className="flex justify-end">
           <Button
-            onClick={handleTransferIntrabankSubmit}
+            onClick={() => setShowPinModal(true)}
             ariaLabel="lanjut"
             variant="general"
             colorScheme="primary"
@@ -137,6 +158,45 @@ const TransferConfirmation: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      {showPinModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 shadow-lg">
+            <h2 className="text-lg font-bold mb-4">Masukkan PIN Anda</h2>
+            {pinError && <p className="text-red-600 mb-2">{pinError}</p>}
+            <div className="flex space-x-2 mb-4">
+              {pin.map((digit, index) => (
+                <input
+                  key={index}
+                  type="password"
+                  value={digit}
+                  onChange={(e) => handlePinChange(index, e.target.value)}
+                  maxLength={1}
+                  className="w-10 h-10 text-center border rounded-lg"
+                />
+              ))}
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button
+                onClick={() => {
+                  setShowPinModal(false);
+                  setPinError(null); // Reset error saat menutup modal
+                  setPin(['', '', '', '', '', '']); // Reset pin saat menutup modal
+                } }
+                variant="general"
+                colorScheme="secondary" ariaLabel={""}              >
+                Batal
+              </Button>
+              <Button
+                onClick={handleTransferIntrabankSubmit}
+                variant="general"
+                colorScheme="primary" ariaLabel={""}              >
+                Konfirmasi
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
