@@ -27,11 +27,11 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
   };
 
   return (
-    <section className="flex flex-col" aria-labelledby="rekening-info-heading">
-      <div className="bg-neutral-1 flex flex-col w-[416px] shadow-box rounded">
+    <div className="flex flex-col order-2 md:order-1 w-full md:col-span-2 lg:col-span-1" aria-labelledby="rekening-info-heading">
+      <div className="bg-neutral-1 flex flex-col lg:w-[416px] w-full shadow-box rounded">
         <h1
           id="rekening-info-heading"
-          className="bg-primary-dark-blue w-[416px] p-[18px] text-md text-white font-bold rounded-t"
+          className="bg-primary-dark-blue w-full lg:w-[416px] p-[18px] text-md text-white font-bold rounded-t"
         >
           Informasi Rekening
         </h1>
@@ -82,7 +82,7 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
 
       {showInfoCVV && <InfoCVV />}
       {showInfoAkun && <InfoAkun />}
-    </section>
+    </div>
   );
 };
 
