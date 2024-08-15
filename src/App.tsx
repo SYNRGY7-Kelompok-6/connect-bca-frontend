@@ -12,7 +12,7 @@ import PrivateRoute from "./routes/PrivateRoutes";
 
 import "./index.css";
 import MutasiRekening from "./pages/MutasiRekening";
-import Transaksi from "./pages/transaksi";
+import Qris from "./pages/qris";
 import QrisBayar from "./pages/qrisbayar";
 import QrisTransfer from "./pages/qristransfer";
 
@@ -52,21 +52,13 @@ function App() {
                     }
                   />
                   <Route
-                    path="/transaksi"
+                    path="/qris"
                     element={
                       <PrivateRoute>
-                        <Transaksi />
+                        <Qris />
                       </PrivateRoute>
                     }
                   >
-                    <Route
-                      path="transfer"
-                      element={
-                        <PrivateRoute>
-                          <InfoSaldo />
-                        </PrivateRoute>
-                      }
-                    />
                     <Route
                       path="qris-bayar"
                       element={
