@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import useBankStatement from "../../../contexts/useBankStatement";
-import Input from "../../base/input";
 import { useReactToPrint } from "react-to-print";
 import { TablePrint } from "../tableprint/TablePrint";
-import DatePicker from "../../base/datepicker";
 import { Mutation } from "../../../types/BankStatementTypes";
-import { formatCurrency, formatDateTable, formatDateToString, parseISODate } from "../../../utils/utils";
+import { getDateRange, parseISODate } from "../../../utils/utils";
+import Table from "../table";
+import BalanceSummary from "../balancesummary";
+import SearchForm from "../searchformmutasi";
 
 interface DateRange {
   startDate: Date;
@@ -16,44 +17,34 @@ function MutasiLayout() {
   const { bankStatement, monthlyBankStatement } = useBankStatement();
   const componentRef = useRef<HTMLDivElement>(null);
   const [period, setPeriod] = useState<DateRange>(getDateRange("1month"));
+  const [selectedFilter, setSelectedFilter] = useState<string>('period');
+  const mutation = bankStatement?.mutations
+  const [filteredData, setFilteredData] = useState<Mutation[]>(mutation || []);
 
   const [datePicker, setDatePicker] = useState<DateRange>({
     startDate: new Date(),
     endDate: new Date(),
   });
 
-  const [accInfo] = useState({
-    name: bankStatement?.accountInfo.name,
-    accNo: bankStatement?.accountInfo.accountNo
+  const [datePickerState, setDatePickerState] = useState({
+    startDatePicker: false,
+    endDatePicker: false,
   })
-
-  const [noAccount, setNoAccount] = useState<string>('');
-  const [selectedFilter, setSelectedFilter] = useState<string>('period');
-  const [showDatePicker, setShowDatePicker] = useState(false)
-  const [showDatePicker1, setShowDatePicker1] = useState(false)
-  const mutation = bankStatement?.mutations
-  const [filteredData, setFilteredData] = useState<Mutation[]>(mutation || []);
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current ?? null,
   });
 
-  const handleNoAccountChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setNoAccount(event.target.value);
-  };
-
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFilter(event.target.value);
   };
-
+  
   const handlePeriodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
     const dateRange = getDateRange(value);
     setPeriod(dateRange);
   };
-
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     if (selectedFilter === "datepicker") {
@@ -62,72 +53,15 @@ function MutasiLayout() {
           ...prevState,
           startDate: new Date(value),
         }));
-        // setStartDate(new Date(value))
       }
       if (id === "end-date") {
         setDatePicker((prevState) => ({
           ...prevState,
           endDate: new Date(value),
         }));
-        // setEndDate(new Date(value))
       }
     }
   };
-
-  const handleFocus = () => {
-    setShowDatePicker(true)
-  }
-
-  const handleCloseCalendar = () => {
-    setShowDatePicker(false)
-  }
-
-  const handleSubmitCalendar = (value: Date) => {
-    setDatePicker((prevState) => ({
-      ...prevState,
-      startDate: value,
-    }));
-    setShowDatePicker(false);
-  };
-
-  const handleFocus1 = () => {
-    setShowDatePicker1(true);
-  };
-
-  const handleCloseCalendar1 = () => {
-    setShowDatePicker1(false);
-  };
-
-  const handleSubmitCalendar1 = (value: Date) => {
-    setDatePicker((prevState) => ({
-      ...prevState,
-      endDate: value,
-    }));
-    setShowDatePicker1(false);
-  };
-
-  function getDateRange(period: string): DateRange {
-    const endDate = new Date(); // Current date
-    const startDate = new Date(); // Default to the current date
-
-    if (period === "1month") {
-      startDate.setMonth(startDate.getMonth() - 1);
-    } else if (period === "1week") {
-      startDate.setDate(startDate.getDate() - 7);
-    } else if (period === "2week") {
-      startDate.setDate(startDate.getDate() - 14);
-    } else if (period === "3week") {
-      startDate.setDate(startDate.getDate() - 21);
-    } else {
-      throw new Error("Invalid period");
-    }
-
-    // Normalize dates to the start of the day
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(23, 59, 59, 999);
-
-    return { startDate, endDate };
-  }
 
   async function handleSearch() {
     if (selectedFilter === "period") {
@@ -138,8 +72,6 @@ function MutasiLayout() {
         return itemDate >= fromDate && itemDate <= toDate;
       });
       setFilteredData(filtered || []);
-      console.log(selectedFilter);
-      console.log(filteredData);
       // await fetchBankStatement(fromDate, toDate)
     } else if (selectedFilter === "datepicker") {
       const fromDate = datePicker.startDate;
@@ -150,16 +82,8 @@ function MutasiLayout() {
       });
       setFilteredData(filtered || [])
       // await fetchBankStatement(fromDate, toDate)
-    } else if (noAccount) {
-      const filtered = bankStatement?.mutations.filter((item) => {
-        return item.beneficiaryAccount.beneficiaryAccountNumber === noAccount;
-      });
-      setFilteredData(filtered || []);
-      console.log("no", filtered);
     } else {
       setFilteredData(bankStatement?.mutations || []);
-      console.log(selectedFilter);
-      console.log(bankStatement);
     }
   }
 
@@ -176,75 +100,10 @@ function MutasiLayout() {
               </button>
             </div>
           </div>
-          <div className="bg-primary-light-blue p-9 flex flex-col gap-[18px] rounded-[10px]">
-            <p aria-label="Kriteria Pencarian" className="text-primary-dark-blue font-semibold text-[20px]">Kriteria Pencarian</p>
-            <div className="flex flex-row gap-[60px]">
-              <div className="flex flex-col gap-[18px]">
-                <div className="font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                  <label htmlFor="rekening" className="whitespace-nowrap">Rekening</label>
-                </div>
-                <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                  <input type="radio" checked={selectedFilter === 'period'} onChange={handleFilterChange} name="filter-group" id="period" value='period' className="h-5 w-5 border-primary-dark-blue" />
-                  <label htmlFor="periodselect" className="whitespace-nowrap">Periode</label>
-                </div>
-                <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                  <input type="radio" checked={selectedFilter === 'datepicker'}  onChange={handleFilterChange} name="filter-group" id="datepicker" value='datepicker' className="h-5 w-5" />
-                  <label htmlFor="tanggal-awal" className="whitespace-nowrap">Tanggal Awal (dd/mm/yy)</label>
-                </div>
-                <div className="flex items-center justify-end gap-2 font-semibold text-base text-primary-dark-blue h-[46px] content-center">
-                  <label htmlFor="tanggal-akhir" className="whitespace-nowrap">Tanggal Akhir (dd/mm/yy)</label>
-                </div>
-              </div>
-              <div className="flex flex-col gap-[18px] w-full">
-                <Input ariaLabel="input-rekening" id="rekening" value={`${accInfo.name} - ${accInfo.accNo}`} type="text" onChange={handleNoAccountChange} disabled />
-                <div className="relative flex flex-row items-center justify-end">
-                  <img src='/Down1.svg' alt="arrow-icon" className='absolute pointer-events-none mr-3' />
-                  <select name="input-component" id="periodselect" onChange={handlePeriodChange} className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full" >
-                    <option value="1month">1 Bulan</option>
-                    <option value="3week">3 Minggu</option>
-                    <option value="2week">2 Minggu</option>
-                    <option value="1week">1 Minggu</option>
-                  </select>
-                </div>
-                <Input aria-haspopup='true' placeholder="dd/mm/yyyy" onClick={handleFocus} onKeyDown={handleFocus} value={formatDateToString(datePicker.startDate)} onChange={handleInputChange} id="tanggal-awal" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
-                <Input aria-haspopup='true' placeholder="dd/mm/yyyy" onClick={handleFocus1} onKeyDown={handleFocus1} value={formatDateToString(datePicker.endDate)} onChange={handleInputChange} id="tanggal-akhir" iconSrc="/Calendar2.svg" iconAlt="icon kalender" />
-                <div className="flex flex-col gap-[18px] items-end">
-                  <span aria-description="Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir." className="font-medium text-sm text-primary-dark-blue">Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir.</span>
-                  <button onClick={handleSearch} className='w-[179px] justify-center flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
-                    Cari
-                  </button>
-                </div>
-              </div>
-            </div>
-            <DatePicker labelPopup="Popup Pilih tanggal kalender" isShow={showDatePicker} handleClose={handleCloseCalendar} handleSubmit={handleSubmitCalendar} />
-            <DatePicker labelPopup="Popup Pilih tanggal kalender" isShow={showDatePicker1} handleClose={handleCloseCalendar1} handleSubmit={handleSubmitCalendar1} />
-          </div>
+        <SearchForm selectedFilter={selectedFilter} datePicker={datePicker} setDatePicker={setDatePicker} setDatePickerState={setDatePickerState} datePickerState={datePickerState} handleInputChange={handleInputChange} handleFilterChange={handleFilterChange} handlePeriodChange={handlePeriodChange} handleSearch={handleSearch} />
               {
                 filteredData?.length !== 0 ? (
-                  <table id="table" className="border border-primary-dark-blue border-collapse table-auto bg-primary-light-blue w-full rounded-t-[20px] rounded-b-[20px]">
-                    <thead className='bg-primary-blue text-primary-light-blue'>
-                      <tr className="h-11">
-                        <th className='first:rounded-ss-[10px] py-2 border border-primary-dark-blue border-collapse text-base font-semibold'>Tanggal</th>
-                        <th className="border border-primary-dark-blue border-collapse text-base font-semibold">Nama</th>
-                        <th className="border border-primary-dark-blue border-collapse text-base font-semibold">No Rekening</th>
-                        <th className="border border-primary-dark-blue border-collapse text-base font-semibold">Nominal</th>
-                        <th className="rounded-se-[10px] py-2 border border-primary-dark-blue border-collapse text-base font-semibold">Keterangan</th>
-                      </tr>
-                    </thead>
-                    <tbody className='text-primary-blue font-semibold text-base'>
-                      {
-                        filteredData?.map((data) => (
-                          <tr className='text-center h-11' key={data.transactionId}>
-                            <td className='py-1 border border-primary-dark-blue border-collapse p-[10px]'>{formatDateTable(data.transactionDate)}</td>
-                            <td className='border border-primary-dark-blue border-collapse p-[10px]'>{data.beneficiaryAccount.beneficiaryAccountName}</td>
-                            <td className="border border-primary-dark-blue border-collapse p-[10px]">{data.beneficiaryAccount.beneficiaryAccountNumber}</td>
-                            <td className="border border-primary-dark-blue border-collapse p-[10px]">Rp. {formatCurrency(data.amount.value)}</td>
-                            <td className="border border-primary-dark-blue border-collapse text-left p-[10px]">{data.desc}</td>
-                          </tr>
-                        ))
-                      }
-                    </tbody>
-                  </table>
+                  <Table data={filteredData} />
                 ) : (
                   <div className="flex justify-center bg-primary-light-blue rounded-[10px] p-4 text-primary-blue font-semibold text-md gap-[24px]">
                     <p aria-label="Tidak ada transaksi yang ditemukan">
@@ -257,36 +116,7 @@ function MutasiLayout() {
             <TablePrint aria-hidden="true" periodInfo={period} data={filteredData} ref={componentRef || undefined}/>
           </div>
         </div>
-        <div className='flex justify-between'>
-          <div>
-            <div className='flex flex-row bg-primary-light-blue rounded-[10px] p-4 text-primary-blue text-base w-[286px] gap-[24px]'>
-              {
-                monthlyBankStatement ? (
-                  <>
-                    <div className="flex flex-col w-full font-semibold">
-                      <span aria-label="Saldo Awal" >Saldo Awal</span>
-                      <span aria-label="Mutasi Kredit">Mutasi Kredit</span>
-                      <span aria-label="Mutasi Debit">Mutasi Debit</span>
-                      <span aria-label="Saldo Akhir">Saldo Akhir</span>
-                    </div>
-                    <div className="flex flex-col w-full font-normal">
-                      <span aria-label="Jumlah Saldo Awal">: Rp. {formatCurrency(bankStatement?.accountBalance?.startingBalance?.value) ?? 'N/A'}</span>
-                      <span aria-label="Jumlah Mutasi Kredit">: Rp. {formatCurrency(monthlyBankStatement?.monthlyIncome?.value)}</span>
-                      <span aria-label="Jumlah Mutasi Debit">: Rp. {formatCurrency(monthlyBankStatement?.monthlyOutcome?.value)}</span>
-                      <span aria-label="Jumlah Saldo Akhir">: Rp. {formatCurrency(bankStatement?.accountBalance?.endingBalance?.value) ?? 'N/A'}</span>
-                    </div>
-                  </>
-                ) : (
-                  <div>
-                    <p aria-label="Data tidak tersedia saat ini">
-                      Data tidak tersedia saat ini
-                    </p>
-                  </div>
-                )
-              }
-            </div>
-          </div>
-        </div>
+        <BalanceSummary bankStatement={bankStatement} monthlyBankStatement={monthlyBankStatement} />
       </div>
   );
 }

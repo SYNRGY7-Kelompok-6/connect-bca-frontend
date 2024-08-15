@@ -9,8 +9,9 @@ interface PopupProps {
   svgAlt?: string;
   labelPopup?: string;
   className?: string;
+  dateType: 'startDate' | 'endDate';
   handleClose?: () => void;
-  handleSubmit: (value: Date) => void;
+  handleSubmit: (key: "startDate" | "endDate", value: Date) => void;
   isShow: boolean
 }
 
@@ -23,6 +24,7 @@ const DatePicker: React.FC<PopupProps> = ({
   svgSrc,
   labelPopup,
   svgAlt,
+  dateType,
   className,
   handleClose,
   handleSubmit,
@@ -61,7 +63,7 @@ const DatePicker: React.FC<PopupProps> = ({
             <button
               aria-label="tombol submit popup"
               type="button"
-              onClick={() => handleSubmit(value)}
+              onClick={() => handleSubmit(dateType, value)}
               className="flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold hover:bg-primary-dark-blue"
               >
                 Pilih

@@ -1,3 +1,7 @@
+interface DateRange {
+  startDate: Date;
+  endDate: Date;
+}
 
 function formatDateToString (date: Date): string {
   const day = date.getDate().toString().padStart(2, '0');
@@ -40,10 +44,34 @@ const formatCurrency = (amount: number | undefined) => {
   return amount?.toLocaleString('id-ID'); // Menggunakan lokal 'id-ID' untuk format Indonesia
 };
 
+function getDateRange(period: string): DateRange {
+  const endDate = new Date(); // Current date
+  const startDate = new Date(); // Default to the current date
+
+  if (period === "1month") {
+    startDate.setMonth(startDate.getMonth() - 1);
+  } else if (period === "1week") {
+    startDate.setDate(startDate.getDate() - 7);
+  } else if (period === "2week") {
+    startDate.setDate(startDate.getDate() - 14);
+  } else if (period === "3week") {
+    startDate.setDate(startDate.getDate() - 21);
+  } else {
+    throw new Error("Invalid period");
+  }
+
+  // Normalize dates to the start of the day
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 999);
+
+  return { startDate, endDate };
+}
+
 export {
   formatCurrency,
   formatDateFetch,
   formatDateTable,
   formatDateToString,
-  parseISODate
+  parseISODate,
+  getDateRange
 }

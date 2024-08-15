@@ -18,7 +18,7 @@ interface PopupProps {
   onButtonClick?: () => void;
 }
 
-const DatePicker: React.FC<PopupProps> = ({
+const PinPopup: React.FC<PopupProps> = ({
   message,
   svgSrc,
   labelButton = '',
@@ -68,4 +68,4 @@ const DatePicker: React.FC<PopupProps> = ({
   );
 };
 
-export default DatePicker;
+export default PinPopup;
