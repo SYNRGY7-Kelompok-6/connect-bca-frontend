@@ -7,6 +7,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { BankStatementProvider } from "./contexts/BankStatementContext";
 import { LoadingProvider } from "./contexts/LoadingContext";
 import { QrisTfProvider } from './contexts/QrisTransferContext';
+import { QrisBrProvider } from './contexts/QrisBayarContext';
 import Beranda from "./pages/Beranda";
 import PrivateRoute from "./routes/PrivateRoutes";
 
@@ -23,6 +24,7 @@ function App() {
         <BankStatementProvider>
           <LoadingProvider>
             <QrisTfProvider>
+              <QrisBrProvider>
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/maintenance" element={<UnderMaintenance />} />
@@ -95,6 +97,7 @@ function App() {
                   />
                 </Route>
               </Routes>
+              </QrisBrProvider>
             </QrisTfProvider>
           </LoadingProvider>
         </BankStatementProvider>
