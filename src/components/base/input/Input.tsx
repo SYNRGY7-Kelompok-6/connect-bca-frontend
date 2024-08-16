@@ -41,7 +41,7 @@ function Input ({
       {
         iconSrc && <img src={iconSrc} alt={iconAlt} className='absolute pointer-events-none mr-3' />
       }
-      <input onKeyDown={onKeyDown} onClick={onClick} id={id} value={value} onChange={onChange} onFocus={onFocus} type={type} placeholder={placeholder} aria-placeholder={placeholder} className={`bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full ${iconPosition === 'left' ? (
+      <input onKeyDown={onKeyDown} onClick={onClick} id={id} value={value} onChange={onChange} onFocus={onFocus} type={type} placeholder={placeholder} aria-placeholder={placeholder} className={`bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-dark-blue font-semibold text-base w-full ${iconPosition === 'left' ? (
         'pl-10'
       ) : (
         'pr-10'

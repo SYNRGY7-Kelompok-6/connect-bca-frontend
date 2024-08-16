@@ -105,6 +105,7 @@
   line-height: 16px;
   font: inherit;
   font-size: 0.833em;
+  border-radius: 999999px;
 }
 
 .react-calendar__tile:disabled {

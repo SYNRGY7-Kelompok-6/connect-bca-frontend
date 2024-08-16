@@ -5,7 +5,6 @@ import { TablePrint } from "../tableprint/TablePrint";
 import { Mutation } from "../../../types/BankStatementTypes";
 import { getDateRange, parseISODate } from "../../../utils/utils";
 import Table from "../table";
-import BalanceSummary from "../balancesummary";
 import SearchForm from "../searchformmutasi";
 
 interface DateRange {
@@ -14,7 +13,7 @@ interface DateRange {
 }
 
 function MutasiLayout() {
-  const { bankStatement, monthlyBankStatement } = useBankStatement();
+  const { bankStatement } = useBankStatement();
   const componentRef = useRef<HTMLDivElement>(null);
   const [period, setPeriod] = useState<DateRange>(getDateRange("1month"));
   const [selectedFilter, setSelectedFilter] = useState<string>('period');
@@ -89,25 +88,27 @@ function MutasiLayout() {
 
   return (
     <div className='flex flex-col gap-3 w-full'>
-        <div id='table-section' className='w-full flex flex-col gap-[50px]'>
-          <div className='flex justify-between'>
-            <div className='flex flex-col justify-center gap-2'>
-              <p aria-label="Mutasi Rekening" className='text-white text-2xl font-bold'>Mutasi Rekening</p>
+        <div id='table-section' className='w-full flex flex-col gap-[60px]'>
+          <div className='flex flex-col rounded-[4px]'>
+            <div className="bg-primary-dark-blue flex justify-between p-[18px] rounded-t-[4px]">
+              <div className='flex flex-col justify-center gap-2'>
+                <p aria-label="Mutasi Rekening" className='text-white text-2xl font-bold'>Mutasi Rekening</p>
+              </div>
+              <div className='flex gap-5 items-end'>
+                <button aria-label="Unduh Mutasi" onClick={handlePrint} className='flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
+                  Unduh Mutasi
+                </button>
+              </div>
             </div>
-            <div className='flex gap-5 items-end'>
-              <button aria-label="Unduh Mutasi" onClick={handlePrint} className='flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
-                Unduh Mutasi
-              </button>
-            </div>
+            <SearchForm selectedFilter={selectedFilter} datePicker={datePicker} setDatePicker={setDatePicker} setDatePickerState={setDatePickerState} datePickerState={datePickerState} handleInputChange={handleInputChange} handleFilterChange={handleFilterChange} handlePeriodChange={handlePeriodChange} handleSearch={handleSearch} />
           </div>
-        <SearchForm selectedFilter={selectedFilter} datePicker={datePicker} setDatePicker={setDatePicker} setDatePickerState={setDatePickerState} datePickerState={datePickerState} handleInputChange={handleInputChange} handleFilterChange={handleFilterChange} handlePeriodChange={handlePeriodChange} handleSearch={handleSearch} />
               {
                 filteredData?.length !== 0 ? (
                   <Table data={filteredData} />
                 ) : (
                   <div className="flex justify-center bg-primary-light-blue rounded-[10px] p-4 text-primary-blue font-semibold text-md gap-[24px]">
-                    <p aria-label="Tidak ada transaksi yang ditemukan">
-                      Tidak ada transaksi yang ditemukan
+                    <p role="alert" aria-label="Mutasi rekening yang Anda cari tidak ditemukan. Pastikan Anda telah memasukkan periode atau informasi yang benar." className="text-center text-secondary-red" >
+                    "Mutasi rekening yang Anda cari tidak ditemukan. Pastikan Anda telah memasukkan periode atau informasi yang benar."
                     </p>
                   </div>
                 )
@@ -116,7 +117,6 @@ function MutasiLayout() {
             <TablePrint aria-hidden="true" periodInfo={period} data={filteredData} ref={componentRef || undefined}/>
           </div>
         </div>
-        <BalanceSummary bankStatement={bankStatement} monthlyBankStatement={monthlyBankStatement} />
       </div>
   );
 }

@@ -71,7 +71,7 @@ function SearchForm({
   };
 
   return (
-    <div className="bg-primary-light-blue p-9 flex flex-col gap-[18px] rounded-[10px]">
+    <div className="bg-neutral-1 p-9 flex flex-col gap-[18px] shadow-box rounded-b-[4px]">
       <p aria-label="Kriteria Pencarian" className="text-primary-dark-blue font-semibold text-[20px]">Kriteria Pencarian</p>
       <div className="flex flex-row gap-[60px]">
         <div className="flex flex-col gap-[18px]">
@@ -94,7 +94,7 @@ function SearchForm({
           <Input ariaLabel="input-rekening" id="rekening" value={`${accInfo.name} - ${accInfo.accNo}`} type="text" disabled />
           <div className="relative flex flex-row items-center justify-end">
             <img src='/Down1.svg' alt="arrow-icon" className='absolute pointer-events-none mr-3' />
-            <select name="input-component" id="periodselect" onChange={handlePeriodChange} className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full" >
+            <select name="input-component" id="periodselect" aria-describedby="pilih periode" onChange={handlePeriodChange} className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-dark-blue font-semibold text-base w-full" >
               <option value="1month">1 Bulan</option>
               <option value="3week">3 Minggu</option>
               <option value="2week">2 Minggu</option>
