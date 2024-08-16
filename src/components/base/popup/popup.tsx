@@ -49,7 +49,7 @@ const Popup: React.FC<PopupProps> = ({
           {message}
         </h1>
         {
-          svgSrc && <img src={svgSrc} alt={svgAlt} width="78" height="80" />
+          svgSrc && <img src={svgSrc} alt={svgAlt} width="100" height="100" />
         }
         {
           button && <Button

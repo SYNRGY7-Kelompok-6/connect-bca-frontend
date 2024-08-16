@@ -9,11 +9,11 @@ const FastMenu: React.FC = () => {
   };
 
   const handleQrisClick = () => {
-    navigate("/transaksi/qris-bayar");
+    navigate("/qris");
   };
 
   const handleInfoSaldoClick = () => {
-    navigate("/saldo-mutasi");
+    navigate("/mutasi-rekening");
   };
 
   return (
