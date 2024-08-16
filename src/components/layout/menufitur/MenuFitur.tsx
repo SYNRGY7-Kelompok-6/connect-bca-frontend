@@ -19,7 +19,7 @@ const MenuFitur: React.FC = () => {
       },
       { name: "Transaksi", path: "/transaksi" },
       { name: "Qris", path: "/qris/qris-transfer" },
-      { name: "Profil", path: "/profil" },
+      { name: "Profil", path: "/profile" },
     ],
     []
   );
