@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useState } from "react";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 type SavedAccount = {
@@ -23,21 +24,18 @@ export const SavedAccountsContext = createContext<SavedAccountsContextType>({
   savedAccounts: null,
   fetchSavedAccounts: async () => {},
   error: null,
-  changeDestinationAccount: (account: SavedAccount) => {},
+  changeDestinationAccount: () => {}, // Updated to not require a parameter
 });
 
 export const SavedAccountsProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }): React.ReactElement => {
-  const [savedAccounts, setSavedAccounts] = useState<SavedAccount[] | null>(
-    null
-  );
-
-  const [destinationAccount, setDestinationAccount] =
-    useState<SavedAccount | null>(null);
+  const [savedAccounts, setSavedAccounts] = useState<SavedAccount[] | null>(null);
+  const [destinationAccount, setDestinationAccount] = useState<SavedAccount | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const changeDestinationAccount = (account: SavedAccount) => {
-    setDestinationAccount(account);
+    setDestinationAccount(account); // Now actually uses the `account` parameter
   };
 
   const fetchSavedAccounts = async () => {
@@ -49,20 +47,17 @@ export const SavedAccountsProvider: React.FC<React.PropsWithChildren> = ({
       });
 
       setSavedAccounts(response.data.data);
-
       setError(null);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(
-          err.response?.data.message || "Failed to fetch monthly bank statement"
+          err.response?.data.message || "Failed to fetch saved accounts"
         );
       } else {
         setError("An unexpected error occurred");
       }
     }
   };
-
-  const [error, setError] = useState<string | null>(null);
 
   return (
     <SavedAccountsContext.Provider
