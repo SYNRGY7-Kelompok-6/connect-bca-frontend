@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useState } from "react";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export type TransferIntrabank = {
@@ -12,22 +13,43 @@ export type TransferIntrabank = {
   };
 };
 
+interface TransferSuccessData {
+  refNumber: string;
+  transactionId: string;
+  amount: {
+    value: number;
+    currency: string;
+  };
+  transactionDate: string;
+  remark: string;
+  desc: string;
+  beneficiaryAccountNumber: string;
+  beneficiaryName: string;
+  sourceAccountNumber: string;
+  sourceName: string;
+}
+
 interface TransferContextType {
   transferIntrabank: TransferIntrabank | null;
   changeTransferIntrabank: (data: TransferIntrabank) => void;
   transferIntrabankError: string | null;
   transferIntrabankLoading: boolean;
   transferIntrabankSuccess: boolean;
-  transferIntrabankSubmit: (data: TransferIntrabank, pin: string) => Promise<void>;
+  transferIntrabankSuccessData: TransferSuccessData | null;
+  transferIntrabankSubmit: (
+    data: TransferIntrabank,
+    pin: string
+  ) => Promise<{ status: number; data?: TransferSuccessData; error?: string }>;
 }
 
 export const TransferContext = createContext<TransferContextType>({
   transferIntrabank: null,
-  changeTransferIntrabank: (data: TransferIntrabank) => {},
+  changeTransferIntrabank: () => {},
   transferIntrabankError: null,
   transferIntrabankLoading: false,
   transferIntrabankSuccess: false,
-  transferIntrabankSubmit: async () => {},
+  transferIntrabankSuccessData: null,
+  transferIntrabankSubmit: async () => ({ status: 500, error: "Not implemented" }),
 });
 
 export const TransferProvider: React.FC<React.PropsWithChildren> = ({
@@ -43,20 +65,25 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
     useState<boolean>(false);
   const [transferIntrabankSuccess, setTransferIntrabankSuccess] =
     useState<boolean>(false);
+  const [transferIntrabankSuccessData, setTransferIntrabankSuccessData] =
+    useState<TransferSuccessData | null>(null);
 
   const changeTransferIntrabank = (data: TransferIntrabank) => {
     setTransferIntrabank(data);
   };
 
-  const transferIntrabankSubmit = async (data: TransferIntrabank, pin: string) => {
+  const transferIntrabankSubmit = async (
+    data: TransferIntrabank,
+    pin: string
+  ): Promise<{ status: number; data?: TransferSuccessData; error?: string }> => {
     setTransferIntrabankLoading(true);
+    setTransferIntrabankError(null);
 
     try {
-      const response = await axios.post(
+      // Validate PIN
+      const pinResponse = await axios.post(
         `${apiUrl}/api/v1.0/auth/validate-pin`,
-        {
-          pin: pin,
-        },
+        { pin },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -64,34 +91,51 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
         }
       );
 
-      const pinToken = response.data.data.pinToken;
-
-      try {
-        const res = await axios.post(
-          `${apiUrl}/api/v1.0/transfer-intrabank`,
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              "X-PIN-TOKEN": pinToken,
-            },
-          }
-        );
-
-        console.log("Transfer intrabank success");
-        console.log(res);
-        setTransferIntrabankSuccess(true);
-      } catch (err) {
-        if (axios.isAxiosError(err)) {
-          setTransferIntrabankError(
-            err.response?.data.message || "Failed to transfer intrabank"
-          );
-        } else {
-          setTransferIntrabankError("An unexpected error occurred");
-        }
+      if (pinResponse.status !== 200) {
+        throw new Error("Invalid PIN");
       }
+
+      const pinToken = pinResponse.data.data.pinToken;
+
+      // Perform transfer
+      const transferResponse = await axios.post(
+        `${apiUrl}/api/v1.0/transfer-intrabank`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            "X-PIN-TOKEN": pinToken,
+          },
+        }
+      );
+
+      if (transferResponse.status !== 200) {
+        throw new Error("Transfer failed");
+      }
+
+      setTransferIntrabankSuccess(true);
+      setTransferIntrabankSuccessData(transferResponse.data);
+
+      return {
+        status: transferResponse.status,
+        data: transferResponse.data,
+      };
     } catch (err) {
-      console.log(err);
+      console.error("Error during transfer:", err);
+
+      let errorMessage = "An unexpected error occurred";
+      if (axios.isAxiosError(err)) {
+        errorMessage = err.response?.data.message || errorMessage;
+      }
+
+      setTransferIntrabankError(errorMessage);
+      setTransferIntrabankSuccess(false);
+      setTransferIntrabankSuccessData(null);
+
+      return {
+        status: (err as { response?: { status?: number } }).response?.status || 500,
+        error: errorMessage,
+      };
     } finally {
       setTransferIntrabankLoading(false);
     }
@@ -104,6 +148,7 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
         transferIntrabankError,
         transferIntrabankLoading,
         transferIntrabankSuccess,
+        transferIntrabankSuccessData,
         changeTransferIntrabank,
         transferIntrabankSubmit,
       }}

@@ -3,6 +3,9 @@ import Button from "../../base/button";
 import { TransferContext } from "../../../contexts/TransferContext";
 import useBankStatement from "../../../contexts/useBankStatement";
 import { SavedAccountsContext } from "../../../contexts/SavedAccountsContext";
+import PopupPin from "../../base/popuppin";
+import SuccessPopup from "../SuccessPopup";
+import Popup from "../../base/popup/popup";
 
 const TransferConfirmation: React.FC = () => {
   const { transferIntrabank, transferIntrabankSubmit, transferIntrabankError } =
@@ -11,46 +14,62 @@ const TransferConfirmation: React.FC = () => {
   const { destinationAccount } = useContext(SavedAccountsContext);
 
   const [showPinModal, setShowPinModal] = useState(false);
-  const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
   const [pinError, setPinError] = useState<string | null>(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // Success popup state
+  const [showErrorPopup, setShowErrorPopup] = useState(false); // Error popup state
 
-  const handlePinChange = (index: number, value: string) => {
-    if (value.length <= 1 && /^\d*$/.test(value)) {
-      const newPin = [...pin];
-      newPin[index] = value;
-      setPin(newPin);
-    }
-  };
-
-  const handleTransferIntrabankSubmit = async () => {
-    if (pin.join('').length === 6 && transferIntrabank) {
-      setPinError(null); // Reset error sebelum mencoba
+  const handlePinSubmit = async (pin: string) => {
+    if (pin.length === 6 && transferIntrabank) {
+      setPinError(null);
       try {
-        await transferIntrabankSubmit(transferIntrabank, pin.join(''));
-        setShowPinModal(false);
-        setPin(['', '', '', '', '', '']); // Reset pin setelah berhasil
+        // Await the response from the submit function
+        const response = await transferIntrabankSubmit(transferIntrabank, pin);
+  
+        // Check if the response status code is 200
+        if (response.status === 200) {
+          setShowPinModal(false);
+          setShowSuccessPopup(true);
+        } else {
+          // Handle other response codes if needed
+          setShowPinModal(false);
+          setShowErrorPopup(true);
+        }
       } catch (error) {
+        console.error("Transfer error:", error);
         setPinError("PIN salah, harap masukkan ulang.");
-        setPin(['', '', '', '', '', '']); // Reset pin setelah gagal
+        setShowPinModal(false);
+        setShowErrorPopup(true);
       }
     } else {
       setPinError("Masukkan 6 digit PIN.");
     }
   };
 
+  const handleCloseSuccessPopup = () => {
+    setShowSuccessPopup(false);
+  };
+
+  const handleCloseErrorPopup = () => {
+    setShowErrorPopup(false);
+  };
+
   return (
     <section
-      className="flex flex-col w-full gap-6"
+      className="flex flex-col w-full shadow-box"
       aria-labelledby="rekening-info-heading"
     >
       <header>
-        <h1 id="rekening-info-heading" className="text-lg font-bold text-white">
+        <h1
+          id="rekening-info-heading"
+          className="text-md text-white font-bold bg-primary-dark-blue w-full p-[18px] rounded-t"
+        >
           Konfirmasi Transfer
         </h1>
       </header>
 
-      <div className="bg-primary-light-blue rounded-[20px] flex flex-col px-[18px] py-6 gap-7">
+      <div className="bg-neutral-1 rounded-b flex flex-col px-[18px] py-6 gap-7">
         <div className="flex flex-col gap-6">
+          {/* Account details */}
           <div className="flex items-center">
             <label className="w-[300px] inline-block font-semibold">
               Ke Rekening
@@ -75,6 +94,7 @@ const TransferConfirmation: React.FC = () => {
             </div>
           </div>
 
+          {/* Other details */}
           <div className="flex items-center">
             <label
               htmlFor="metode-transfer"
@@ -147,6 +167,9 @@ const TransferConfirmation: React.FC = () => {
           </div>
         </div>
 
+        {/* Error display */}
+        {pinError && <div className="text-red-500">{pinError}</div>}
+
         <div className="flex justify-end">
           <Button
             onClick={() => setShowPinModal(true)}
@@ -160,42 +183,38 @@ const TransferConfirmation: React.FC = () => {
       </div>
 
       {showPinModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <h2 className="text-lg font-bold mb-4">Masukkan PIN Anda</h2>
-            {pinError && <p className="text-red-600 mb-2">{pinError}</p>}
-            <div className="flex space-x-2 mb-4">
-              {pin.map((digit, index) => (
-                <input
-                  key={index}
-                  type="password"
-                  value={digit}
-                  onChange={(e) => handlePinChange(index, e.target.value)}
-                  maxLength={1}
-                  className="w-10 h-10 text-center border rounded-lg"
-                />
-              ))}
-            </div>
-            <div className="flex justify-end space-x-2">
-              <Button
-                onClick={() => {
-                  setShowPinModal(false);
-                  setPinError(null); // Reset error saat menutup modal
-                  setPin(['', '', '', '', '', '']); // Reset pin saat menutup modal
-                } }
-                variant="general"
-                colorScheme="secondary" ariaLabel={""}              >
-                Batal
-              </Button>
-              <Button
-                onClick={handleTransferIntrabankSubmit}
-                variant="general"
-                colorScheme="primary" ariaLabel={""}              >
-                Konfirmasi
-              </Button>
-            </div>
-          </div>
-        </div>
+        <PopupPin onPinSubmit={handlePinSubmit} className="w-[490px]" />
+      )}
+
+      {showSuccessPopup && (
+        <SuccessPopup
+          data={{
+            amount: transferIntrabank?.amount || { value: 0, currency: "IDR" },
+            beneficiaryAccountNumber:
+              destinationAccount?.beneficiaryAccountNumber || "",
+            beneficiaryName: destinationAccount?.beneficiaryAccountName || "",
+            desc: transferIntrabank?.desc || "",
+            refNumber: "SomeRefNumber",
+            remark: transferIntrabank?.remark || "",
+            sourceAccountNumber: bankStatement?.accountInfo.accountNo || "",
+            sourceName: bankStatement?.accountInfo.name || "",
+            transactionDate: new Date().toISOString(),
+            transactionId: "SomeTransactionId",
+          }}
+          onClose={handleCloseSuccessPopup}
+        />
+      )}
+
+      {showErrorPopup && (
+        <Popup
+          message={transferIntrabankError || "Terjadi kesalahan."}
+          svgSrc="/AlertError.svg"
+          svgAlt="Error Icon"
+          button={true}
+          buttonText="Tutup"
+          className="w-[490px]"
+          onButtonClick={handleCloseErrorPopup}
+        />
       )}
     </section>
   );
