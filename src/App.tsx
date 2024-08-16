@@ -16,6 +16,7 @@ import { TransferProvider } from "./contexts/TransferContext";
 import Qris from "./pages/qris";
 import QrisBayar from "./pages/qrisbayar";
 import QrisTransfer from "./pages/qristransfer";
+import Profile from "./pages/Profile";
 
 import "./index.css";
 
@@ -118,6 +119,14 @@ function App() {
                           }
                         />
                       </Route>
+                      <Route
+                        path="/profile"
+                        element={
+                          <PrivateRoute>
+                            <Profile />
+                          </PrivateRoute>
+                        }
+                      />
                     </Routes>
                   </QrisBrProvider>
                 </QrisTfProvider>
