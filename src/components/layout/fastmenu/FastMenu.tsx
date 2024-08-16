@@ -17,10 +17,12 @@ const FastMenu: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col col-span-2 items-center gap-[20px] mt-[53px]">
-      <div className="flex flex-col gap-6 justify-center items-center py-[18px] w-full bg-primary-light-blue rounded-[20px]">
-        <h1 className="text-lg text-primary-dark-blue font-bold">Fitur Utama</h1>
-        <div className="flex gap-[40px] mt-[10px]">
+    <div className="md:col-span-2 items-center md:gap-[20px] shadow-box h-fit order-1 md:order-2">
+      <div className="flex flex-col gap-6 justify-center items-center w-full bg-neutral-1 rounded-b ">
+        <h1 className="text-md text-white font-bold bg-primary-dark-blue w-full p-[18px] text-center rounded-t">
+          Fitur Utama
+        </h1>
+        <div className="flex gap-[40px] p-[18px]">
           <ButtonIcon
             ariaLabel="Tombol transfer"
             onClick={handleTransferClick}

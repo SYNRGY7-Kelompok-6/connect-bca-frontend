@@ -64,7 +64,7 @@ const DropdownMonth: React.FC<DropdownMonthProps> = ({ onSelectMonth }) => {
       <button
         id="dropdownDefaultButton"
         onClick={toggleDropdown}
-        className="text-primary-dark-blue border-2 border-primary-dark-blue bg-primary-light-blue font-semibold rounded-2xl text-base px-5 py-3 text-center inline-flex items-center w-full justify-between"
+        className="text-primary-dark-blue border-2 border-primary-dark-blue bg-neutral-1 font-semibold rounded-2xl text-base px-5 py-3 text-center inline-flex items-center w-full justify-between"
         type="button"
         aria-haspopup="true"
         aria-expanded={isOpen}
@@ -94,7 +94,7 @@ const DropdownMonth: React.FC<DropdownMonthProps> = ({ onSelectMonth }) => {
         id="dropdown-menu"
         className={`absolute top-full mt-2 ${
           isOpen ? "block z-50" : "hidden"
-        } bg-primary-light-blue divide-y divide-gray-100 rounded-lg shadow w-full transition ease-out duration-100`}
+        } bg-neutral-1 border divide-y divide-gray-100 rounded-lg shadow w-full transition ease-out duration-100`}
         role="menu"
         aria-label="Daftar bulan"
       >

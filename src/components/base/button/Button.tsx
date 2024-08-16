@@ -28,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
   const getVariantClasses = (variant: string) => {
     switch (variant) {
       case "micro":
-        return "font-medium rounded-[16px] text-sm py-1 w-[125px]";
+        return "font-semibold rounded-lg text-sm py-1 w-[125px]";
       case "general":
         return "font-semibold rounded-[12px] text-base py-[10px] w-[260px]";
       case "puffy":
