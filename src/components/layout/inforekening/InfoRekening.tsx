@@ -16,7 +16,7 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
   const [isBalanceVisible, setIsBalanceVisible] = React.useState(false);
 
   const balanceValue =
-    bankStatement?.accountInfo?.accountBalance?.availableBalance?.value || 0;
+    bankStatement?.accountInfo?.balance?.availableBalance.value || 0;
   const balance = balanceValue.toLocaleString("id-ID", {
     style: "currency",
     currency: "IDR",
