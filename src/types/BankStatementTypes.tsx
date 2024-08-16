@@ -43,7 +43,7 @@ export interface Mutation {
   transactionDate: string;
   remark: string;
   desc: string;
-  type: 'CREDIT' | 'DEBIT';
+  type: "CREDIT" | "DEBIT";
   beneficiaryAccount: BeneficiaryAccount;
   sourceAccount: BeneficiaryAccount;
 }
@@ -58,4 +58,30 @@ export interface ApiResponse<T> {
   status: string;
   message: string;
   data: T;
+}
+
+export interface MutationData {
+  status: string;
+  message: string;
+  data: {
+    mutations: Mutation[];
+  };
+}
+
+export interface AccountMonthlyData {
+  data: {
+    monthlyIncome: {
+      value: number;
+      currency: string;
+    };
+    monthlyOutcome: {
+      value: number;
+      currency: string;
+    };
+  };
+}
+
+export interface MonthlyBankStatementData {
+  monthlyIncome: Currency;
+  monthlyOutcome: Currency;
 }
