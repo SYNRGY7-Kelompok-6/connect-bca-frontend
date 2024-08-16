@@ -3,30 +3,54 @@ import Button from "../button"; // Adjust path as needed
 
 const PopupPin: React.FC<{
   className?: string;
-  propsFunc?: {
-    setPinSubmitted?: (submitted: boolean) => void;
-    setPopupVisible?: (submitted: boolean) => void;
+  onPinSubmit: (pin: string) => void;
+}> = ({ className = "", onPinSubmit }) => {
+  const [pin, setPin] = useState<string[]>(Array(6).fill("")); // Initialize the PIN state
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const newPin = [...pin];
+    const value = e.target.value;
+
+    if (/^\d$/.test(value)) {
+      newPin[index] = value;
+      setPin(newPin);
+
+      // Move to the next input if the current input is filled
+      if (value && index < 5) {
+        (e.target.nextSibling as HTMLInputElement)?.focus();
+      }
+    }
   };
-  onButtonClick?: () => void;
-}
 
-const PinPopup: React.FC<PopupProps> = ({
-  message,
-  svgSrc,
-  labelButton = '',
-  labelPopup,
-  svgAlt,
-  button = true,
-  buttonText,
-  className,
-  propsFunc,
-  onButtonClick,
-}) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (e.key === "Backspace") {
+      if (pin[index]) {
+        const newPin = [...pin];
+        newPin[index] = "";
+        setPin(newPin);
+      } else if (index > 0) {
+        const previousElement = (e.target as HTMLInputElement)
+          .previousElementSibling as HTMLInputElement;
+        if (previousElement) {
+          previousElement.focus();
+        }
+      }
+      e.preventDefault();
+    }
+  };
 
-  const handlePinSubmit = async () => {
-    if (propsFunc?.setPinSubmitted && propsFunc?.setPopupVisible) {
-      propsFunc.setPopupVisible(false);
-      propsFunc.setPinSubmitted(true);
+  const handleSubmit = () => {
+    const pinString = pin.join("");
+    if (pinString.length === 6) {
+      onPinSubmit(pinString); // Pass the PIN value to the parent component
+    } else {
+      console.error("PIN is incomplete");
     }
   };
 
@@ -75,4 +99,4 @@ const PinPopup: React.FC<PopupProps> = ({
   );
 };
 
-export default PinPopup;
+export default PopupPin;
