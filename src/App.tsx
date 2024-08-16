@@ -31,7 +31,10 @@ function App() {
                   <QrisBrProvider>
                     <Routes>
                       <Route path="/login" element={<Login />} />
-                      <Route path="/maintenance" element={<UnderMaintenance />} />
+                      <Route
+                        path="/maintenance"
+                        element={<UnderMaintenance />}
+                      />
                       <Route
                         path="/"
                         element={
@@ -65,13 +68,30 @@ function App() {
                         }
                       >
                         <Route
-                          path="confirmation"
+                          path="rekening"
                           element={
                             <PrivateRoute>
                               <Transaksi />
                             </PrivateRoute>
                           }
                         />
+                        <Route
+                          path="transfer"
+                          element={
+                            <PrivateRoute>
+                              <Transaksi />
+                            </PrivateRoute>
+                          }
+                        >
+                          <Route
+                            path="confirmation"
+                            element={
+                              <PrivateRoute>
+                                <Transaksi />
+                              </PrivateRoute>
+                            }
+                          />
+                        </Route>
                       </Route>
                       <Route
                         path="/qris"
