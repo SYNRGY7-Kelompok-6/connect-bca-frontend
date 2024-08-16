@@ -21,10 +21,10 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div className="relative inline-block text-left w-[262px]">
+    <div className="relative inline-block text-left md:w-[262px] w-full">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex gap-2 items-center w-[262px] px-3 py-[14px] bg-primary-dark-blue text-white font-semibold text-base rounded-t-[10px]"
+        className="flex gap-2 items-center md:w-[262px] w-full px-3 py-[14px] bg-primary-dark-blue text-white font-semibold text-base rounded-t-[10px]"
       >
         <img
           src={isOpen ? "/DropDownClose.svg" : "/DropDownOpen.svg"}
@@ -35,7 +35,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 bg-white rounded-b-[10px] shadow-lg z-10 w-[262px]">
+        <div className="absolute left-0 bg-white rounded-b-[10px] shadow-lg z-10 md:w-[262px] w-full">
           {items.map((item, index) => (
             <a
               key={index}

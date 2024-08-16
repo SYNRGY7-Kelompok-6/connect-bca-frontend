@@ -9,15 +9,15 @@ const FastMenu: React.FC = () => {
   };
 
   const handleQrisClick = () => {
-    navigate("/transaksi/qris-bayar");
+    navigate("/qris");
   };
 
   const handleInfoSaldoClick = () => {
-    navigate("/saldo-mutasi");
+    navigate("/mutasi-rekening");
   };
 
   return (
-    <div className="col-span-2 items-center gap-[20px] shadow-box h-fit">
+    <div className="md:col-span-2 items-center md:gap-[20px] shadow-box h-fit order-1 md:order-2">
       <div className="flex flex-col gap-6 justify-center items-center w-full bg-neutral-1 rounded-b ">
         <h1 className="text-md text-white font-bold bg-primary-dark-blue w-full p-[18px] text-center rounded-t">
           Fitur Utama

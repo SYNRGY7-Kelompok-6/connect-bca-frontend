@@ -3,7 +3,7 @@ import React from "react";
 const Header: React.FC = () => {
   return (
     <>
-      <div className="bg-primary-dark-blue h-[140px]">
+      <div className="bg-primary-dark-blue h-[140px] hidden sm:block ">
         <div className="container mx-auto flex justify-between items-center h-full">
           <div className="flex items-center gap-2">
             <img src="/LogoBCA.svg" alt="Logo Connect by BCA" />

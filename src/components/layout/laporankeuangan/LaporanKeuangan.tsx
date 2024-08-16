@@ -38,7 +38,7 @@ const LaporanKeuangan: React.FC = () => {
 
   return (
     <section
-      className="flex flex-col w-[500px] shadow-box h-fit"
+      className="flex flex-col w-full order-2 shadow-box h-fit md:order-2 md:col-span-2"
       aria-labelledby="financial-report-heading"
     >
       <h1
@@ -57,7 +57,7 @@ const LaporanKeuangan: React.FC = () => {
           </label>
           <DropdownMonth onSelectMonth={handleSelectMonth} />
         </div>
-        <div className="flex flex-row w-full items-center justify-between">
+        <div className="flex flex-col lg:flex-row w-full items-center justify-center gap-10">
           <div className="flex justify-center items-center">
             <PieChart
               aria-label="Grafik Pie yang menunjukkan perbandingan pemasukan dan pengeluaran"

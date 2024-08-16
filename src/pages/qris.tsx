@@ -2,23 +2,21 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import InfoUser from "../components/layout/infouser";
 import MenuFitur from "../components/layout/menufitur";
-import Dropdowntransfer from "../components/layout/dropdowntransfer";
+import Dropdown from "../components/layout/dropdown";
 import QrisBayar from "./qrisbayar";
 import QrisTransfer from "./qristransfer";
 
-const Transaksi: React.FC = () => {
+const Qris: React.FC = () => {
   const location = useLocation();
 
   const renderContent = () => {
     switch (location.pathname) {
-      case "/transaksi/transfer":
-        return <QrisBayar />;
-      case "/transaksi/qris-transfer":
+      case "/qris/qris-transfer":
         return <QrisTransfer />;
-      case "/transaksi/qris-bayar":
+      case "/qris/qris-bayar":
         return <QrisBayar />;
       default:
-        return <QrisBayar />;
+        return <QrisTransfer />;
     }
   };
 
@@ -26,28 +24,20 @@ const Transaksi: React.FC = () => {
     <div className="bg-fill-0 font-jakartasans">
       <InfoUser />
       <MenuFitur />
-      <section className="container mx-auto mt-[50px] pb-[50px]">
-        <div className="flex flex-row gap-[80px]">
+      <section className="container mx-auto md:mt-[50px] mt-5 md:pb-[50px] pb-5 px-4 md:px-0">
+        <div className="flex md:flex-row flex-col gap-[80px]">
           <div className="">
-            <Dropdowntransfer
+            <Dropdown
               buttonLabel="Transaksi Transfer"
               activeItem={location.pathname}
               items={[
                 {
-                  label: "Transfer Antar Bank BCA",
-                  href: "/transfer",
-                }
-              ]}
-              buttonLabel2="Transaksi Qris"
-              activeItem2={location.pathname}
-              items2={[
-                {
                   label: "Qris Transfer",
-                  href: "/transaksi/qris-transfer",
+                  href: "/qris/qris-transfer",
                 },
                 {
                   label: "Qris Bayar",
-                  href: "/transaksi/qris-bayar",
+                  href: "/qris/qris-bayar",
                 },
               ]}
             />
@@ -59,4 +49,4 @@ const Transaksi: React.FC = () => {
   );
 };
 
-export default Transaksi;
+export default Qris;

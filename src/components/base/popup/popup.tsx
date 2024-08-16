@@ -35,7 +35,7 @@ const Popup: React.FC<PopupProps> = ({
   return (
     <div
       role="dialog"  
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 px-4 md:px-0"
       ref={popupRef}
       tabIndex={-1} 
     >
@@ -49,7 +49,7 @@ const Popup: React.FC<PopupProps> = ({
           {message}
         </h1>
         {
-          svgSrc && <img src={svgSrc} alt={svgAlt} width="78" height="80" />
+          svgSrc && <img src={svgSrc} alt={svgAlt} width="100" height="100" />
         }
         {
           button && <Button
