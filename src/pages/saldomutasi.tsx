@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import InfoUser from "../components/layout/infouser";
 import MenuFitur from "../components/layout/menufitur";
@@ -19,9 +19,13 @@ const SaldoMutasi: React.FC = () => {
     useBankStatement();
 
   const [hasFetchedData, setHasFetchedData] = useState(false);
-  const endDate = new Date();
-  const startDate = new Date()
-  startDate.setMonth(new Date().getMonth() - 1)
+
+  const endDate = useMemo(() => new Date(), []);
+  const startDate = useMemo(() => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 1);
+    return date;
+  }, []);
 
   useEffect(() => {
     if (!hasFetchedData) {
@@ -30,7 +34,10 @@ const SaldoMutasi: React.FC = () => {
         try {
           await Promise.all([
             fetchLoginInfo(),
-            fetchBankStatement(formatDateFetch(startDate), formatDateFetch(endDate)),
+            fetchBankStatement(
+              formatDateFetch(startDate),
+              formatDateFetch(endDate)
+            ),
             fetchAccountMonthly(8),
           ]);
           setHasFetchedData(true);
@@ -38,7 +45,7 @@ const SaldoMutasi: React.FC = () => {
           console.error("Error fetching data", err);
         } finally {
           setLoading(false);
-          console.log(bankStatement)
+          console.log(bankStatement);
         }
       };
 
@@ -50,7 +57,9 @@ const SaldoMutasi: React.FC = () => {
     fetchBankStatement,
     fetchAccountMonthly,
     setLoading,
-    bankStatement
+    bankStatement,
+    endDate,
+    startDate,
   ]);
 
   const renderContent = () => {
