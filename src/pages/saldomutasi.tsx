@@ -9,7 +9,6 @@ import useBankStatement from "../contexts/useBankStatement";
 import MutasiRekening from "./MutasiRekening";
 import InfoSaldo from "./InfoSaldo";
 import Preloading from "../components/base/preloading/preloading";
-import { formatDateFetch } from "../utils/utils";
 
 const SaldoMutasi: React.FC = () => {
   const location = useLocation();
@@ -19,9 +18,6 @@ const SaldoMutasi: React.FC = () => {
     useBankStatement();
 
   const [hasFetchedData, setHasFetchedData] = useState(false);
-  const endDate = new Date();
-  const startDate = new Date()
-  startDate.setMonth(new Date().getMonth() - 1)
 
   useEffect(() => {
     if (!hasFetchedData) {
@@ -30,7 +26,7 @@ const SaldoMutasi: React.FC = () => {
         try {
           await Promise.all([
             fetchLoginInfo(),
-            fetchBankStatement(formatDateFetch(startDate), formatDateFetch(endDate)),
+            fetchBankStatement(),
             fetchAccountMonthly(8),
           ]);
           setHasFetchedData(true);

@@ -6,6 +6,7 @@ import useBankStatement from "../contexts/useBankStatement";
 import Preloading from "../components/base/preloading/preloading";
 import InfoUser from "../components/layout/infouser/InfoUser";
 import MenuFitur from "../components/layout/menufitur/MenuFitur";
+import { formatDateFetch } from "../utils/utils";
 
 const MutasiRekening: React.FC = () => {
   const { loading, setLoading } = useLoading();
@@ -14,6 +15,9 @@ const MutasiRekening: React.FC = () => {
     useBankStatement();
 
   const [hasFetchedData, setHasFetchedData] = useState(false);
+  const endDate = new Date();
+  const startDate = new Date()
+  startDate.setMonth(new Date().getMonth() - 1)
 
   useEffect(() => {
     if (!hasFetchedData) {
@@ -22,7 +26,7 @@ const MutasiRekening: React.FC = () => {
         try {
           await Promise.all([
             fetchLoginInfo(),
-            fetchBankStatement("05-08-2024", "05-08-2024"),
+            fetchBankStatement(formatDateFetch(startDate), formatDateFetch(endDate)),
             fetchAccountMonthly(8),
           ]);
           setHasFetchedData(true);
@@ -47,7 +51,7 @@ const MutasiRekening: React.FC = () => {
 
   return (
     <div className="bg-fill0 font-jakartasans">
-      {loading ? (
+      { loading ? (
         <Preloading />
       ) : (
         <>
