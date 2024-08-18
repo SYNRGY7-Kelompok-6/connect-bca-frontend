@@ -207,7 +207,7 @@ const TransferConfirmation: React.FC = () => {
           svgSrc="/AlertError.svg"
           svgAlt="Error Icon"
           button={true}
-          buttonText="Tutup"
+          buttonText="Coba Lagi"
           className="w-[490px]"
           onButtonClick={handleCloseErrorPopup}
         />

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import html2PDF from "jspdf-html2canvas";
 
 interface SuccessPopupProps {
@@ -26,49 +27,59 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
   onClose,
   className,
 }) => {
-  const popupRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (popupRef.current) {
-      popupRef.current.focus();
+    if (titleRef.current) {
+      titleRef.current.focus();
     }
   }, []);
 
   const downloadPDF = () => {
-    if (popupRef.current) {
+    if (titleRef.current) {
       const options = {
-        filename: "success-popup.pdf",
-        html2canvas: { scale: 2 }, // Adjust scale for better quality if needed
+        filename: "success-transfer.pdf",
+        html2canvas: { scale: 2 },
       };
-      html2PDF(popupRef.current, options);
+      html2PDF(titleRef.current, options);
     }
+  };
+
+  const handleClose = () => {
+    onClose(); 
+    navigate("/"); 
   };
 
   return (
     <div
-      role="dialog"
+      role="alertdialog"
       aria-labelledby="success-popup-title"
       aria-describedby="success-popup-description"
       className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ${className}`}
+      aria-live="assertive"
     >
       <div
-        ref={popupRef}
         tabIndex={-1}
         className="bg-neutral-1 p-6 rounded shadow-box max-w-md mx-4 flex flex-col items-center w-full"
       >
-        <img src="/success.svg" alt="Success icon" />
-        <h2
-          id="success-popup-title"
-          className="text-base text-neutral-9 font-bold mb-4"
-        >
-          Transfer Berhasil
-        </h2>
-        <h3 className="text-neutral-9 text-lg font-bold">
-          {new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: data.amount.currency,
-          }).format(data.amount.value)}
-        </h3>
+        <div className="flex flex-col gap-2 items-center">
+          <img src="/success.svg" alt="Success icon" className="w-14" />
+          <h2
+            id="success-popup-title"
+            className="text-base text-neutral-9 font-bold"
+            ref={titleRef}
+            tabIndex={-1}
+          >
+            Transfer Berhasil
+          </h2>
+          <h3 className="text-neutral-9 text-lg font-bold">
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: data.amount.currency,
+            }).format(data.amount.value)}
+          </h3>
+        </div>
         <div
           id="success-popup-description"
           className="flex flex-col gap-1 mb-4 w-full"
@@ -102,9 +113,9 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
             <p>{data.remark}</p>
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 w-full">
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="mt-4 px-4 py-2 bg-primary-blue text-white rounded-lg w-full"
             aria-label="Close"
           >
