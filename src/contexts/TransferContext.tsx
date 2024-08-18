@@ -49,7 +49,10 @@ export const TransferContext = createContext<TransferContextType>({
   transferIntrabankLoading: false,
   transferIntrabankSuccess: false,
   transferIntrabankSuccessData: null,
-  transferIntrabankSubmit: async () => ({ status: 500, error: "Not implemented" }),
+  transferIntrabankSubmit: async () => ({
+    status: 500,
+    error: "Not implemented",
+  }),
 });
 
 export const TransferProvider: React.FC<React.PropsWithChildren> = ({
@@ -75,7 +78,11 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
   const transferIntrabankSubmit = async (
     data: TransferIntrabank,
     pin: string
-  ): Promise<{ status: number; data?: TransferSuccessData; error?: string }> => {
+  ): Promise<{
+    status: number;
+    data?: TransferSuccessData;
+    error?: string;
+  }> => {
     setTransferIntrabankLoading(true);
     setTransferIntrabankError(null);
 
@@ -128,12 +135,18 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
         errorMessage = err.response?.data.message || errorMessage;
       }
 
+      if (errorMessage === "Invalid PIN"
+      ) {
+        errorMessage = "PIN yang anda masukan salah, silahkan coba kembali";
+      }
+
       setTransferIntrabankError(errorMessage);
       setTransferIntrabankSuccess(false);
       setTransferIntrabankSuccessData(null);
 
       return {
-        status: (err as { response?: { status?: number } }).response?.status || 500,
+        status:
+          (err as { response?: { status?: number } }).response?.status || 500,
         error: errorMessage,
       };
     } finally {
