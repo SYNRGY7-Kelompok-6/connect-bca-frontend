@@ -25,9 +25,13 @@ const MenuFitur: React.FC = () => {
   );
 
   useEffect(() => {
-    const currentButton = buttons.find(
-      (button) => button.path === location.pathname
-    );
+    const currentButton = buttons.find((button) => {
+      if (button.path === "/") {
+        return location.pathname === "/";
+      } else {
+        return location.pathname.startsWith(button.path);
+      }
+    });
     if (currentButton) {
       setActiveButton(currentButton.name);
     }
@@ -62,18 +66,26 @@ const MenuFitur: React.FC = () => {
           <Link key={button.name} to={button.path}>
             <button
               className={`text-base font-medium py-1 px-9 rounded-xl mx-2 ${
-                location.pathname === button.path
+                location.pathname === button.path ||
+                (button.path !== "/" &&
+                  location.pathname.startsWith(button.path))
                   ? "bg-primary-blue text-white"
                   : "text-white"
               }`}
               type="button"
               aria-label={
-                location.pathname === button.path
+                location.pathname === button.path ||
+                (button.path !== "/" &&
+                  location.pathname.startsWith(button.path))
                   ? `Anda berada di halaman ${button.name}.`
                   : `Tombol Navigasi ${button.name}`
               }
               aria-current={
-                location.pathname === button.path ? "page" : undefined
+                location.pathname === button.path ||
+                (button.path !== "/" &&
+                  location.pathname.startsWith(button.path))
+                  ? "page"
+                  : undefined
               }
             >
               {button.name}
@@ -101,25 +113,32 @@ const MenuFitur: React.FC = () => {
             />
           </div>
 
-          {/* Spacer untuk menengahkan tombol-tombol */}
           <div className="flex-grow flex h-full items-center">
             <div className="flex flex-col w-full">
               {buttons.map((button) => (
                 <Link key={button.name} to={button.path}>
                   <button
                     className={`text-base font-medium py-2 px-4 rounded-xl ${
-                      location.pathname === button.path
+                      location.pathname === button.path ||
+                      (button.path !== "/" &&
+                        location.pathname.startsWith(button.path))
                         ? "bg-primary-blue text-white w-full"
                         : "text-neutral-9"
                     }`}
                     type="button"
                     aria-label={
-                      location.pathname === button.path
+                      location.pathname === button.path ||
+                      (button.path !== "/" &&
+                        location.pathname.startsWith(button.path))
                         ? `Anda berada di halaman ${button.name}.`
                         : `Tombol Navigasi ${button.name}`
                     }
                     aria-current={
-                      location.pathname === button.path ? "page" : undefined
+                      location.pathname === button.path ||
+                      (button.path !== "/" &&
+                        location.pathname.startsWith(button.path))
+                        ? "page"
+                        : undefined
                     }
                     onClick={() => setIsMenuOpen(false)}
                   >

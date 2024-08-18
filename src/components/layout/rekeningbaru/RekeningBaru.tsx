@@ -14,7 +14,7 @@ const RekeningBaru: React.FC = () => {
         </h1>
       </header>
 
-      <div className="bg-primary-light-blue rounded-[20px] flex flex-col px-[18px] py-6 gap-7">
+      <div className="bg-neutral-1 rounded-b flex flex-col px-[18px] py-6 gap-7">
         <div className="flex flex-col gap-3">
           <div className="flex items-center">
             <label htmlFor="bank-tujuan" className="w-[300px] inline-block">

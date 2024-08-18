@@ -60,10 +60,10 @@ const PopupPin: React.FC<{
       aria-label="PIN Input Popup"
     >
       <div
-        className={`bg-neutral-1 items-center text-center flex flex-col gap-[26px] text-primary-dark-blue justify-center rounded-[20px] p-[40px] w-[490px] ${className}`}
+        className={`bg-neutral-1 items-center text-center flex flex-col gap-[26px] text-primary-dark-blue justify-center rounded-[20px] p-[40px] md:w-[490px] w-full mx-4 md:mx-0 ${className}`}
       >
-        <h1 className="text-lg font-bold">Masukkan PIN Anda</h1>
-        <div className="flex gap-8 mb-4">
+        <h1 className="md:text-lg text-md font-bold">Masukkan PIN Anda</h1>
+        <div className="flex md:gap-8 gap-2 mb-4">
           {pin.map((value, index) => (
             <input
               key={index}
@@ -72,7 +72,7 @@ const PopupPin: React.FC<{
               value={value}
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className={`w-12 h-12 text-center border-2 ${
+              className={`md:w-12 w-10 md:h-12 h-10 text-center border-2 ${
                 value
                   ? "bg-primary-blue border-primary-blue"
                   : "bg-white border-primary-dark-blue"

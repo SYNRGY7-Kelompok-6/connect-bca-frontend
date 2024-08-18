@@ -68,7 +68,7 @@ const Transaksi: React.FC = () => {
         <>
           <InfoUser />
           <MenuFitur />
-          <section className="container mx-auto mt-[50px] pb-[50px]">
+          <section className="container mx-auto mt-[50px] pb-[50px] md:h-full h-screen px-4 md:px-0">
             <div className="flex flex-row gap-[80px]">
               {renderContent()}
             </div>

@@ -37,7 +37,7 @@ const DaftarRekening: React.FC = () => {
         </h1>
       </header>
 
-      <div className="bg-neutral-1 rounded-[20px] flex flex-col w-full px-[18px] py-6 gap-3">
+      <div className="bg-neutral-1 rounded-b flex flex-col w-full px-[18px] py-6 gap-3">
         <div className="flex w-full px-4 py-4 rounded-lg bg-neutral-1 focus-within:outline focus-within:outline-1 outline-slate-900">
           <label htmlFor="search-input" className="sr-only">
             Cari rekening

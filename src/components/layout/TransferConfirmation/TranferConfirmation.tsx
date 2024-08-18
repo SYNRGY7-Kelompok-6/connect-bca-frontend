@@ -15,22 +15,18 @@ const TransferConfirmation: React.FC = () => {
 
   const [showPinModal, setShowPinModal] = useState(false);
   const [pinError, setPinError] = useState<string | null>(null);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // Success popup state
-  const [showErrorPopup, setShowErrorPopup] = useState(false); // Error popup state
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); 
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const handlePinSubmit = async (pin: string) => {
     if (pin.length === 6 && transferIntrabank) {
       setPinError(null);
       try {
-        // Await the response from the submit function
         const response = await transferIntrabankSubmit(transferIntrabank, pin);
-  
-        // Check if the response status code is 200
         if (response.status === 200) {
           setShowPinModal(false);
           setShowSuccessPopup(true);
         } else {
-          // Handle other response codes if needed
           setShowPinModal(false);
           setShowErrorPopup(true);
         }
@@ -70,7 +66,7 @@ const TransferConfirmation: React.FC = () => {
       <div className="bg-neutral-1 rounded-b flex flex-col px-[18px] py-6 gap-7">
         <div className="flex flex-col gap-6">
           {/* Account details */}
-          <div className="flex items-center">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-2">
             <label className="w-[300px] inline-block font-semibold">
               Ke Rekening
             </label>
@@ -82,7 +78,7 @@ const TransferConfirmation: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-2">
             <label className="w-[300px] inline-block font-semibold">
               Dari Rekening
             </label>
@@ -183,7 +179,7 @@ const TransferConfirmation: React.FC = () => {
       </div>
 
       {showPinModal && (
-        <PopupPin onPinSubmit={handlePinSubmit} className="w-[490px]" />
+        <PopupPin onPinSubmit={handlePinSubmit} className="md:w-[490px] w-full" />
       )}
 
       {showSuccessPopup && (
