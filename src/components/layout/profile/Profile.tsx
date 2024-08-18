@@ -25,18 +25,26 @@ const Profile: React.FC = () => {
     <div className="container mx-auto mt-[50px] pb-[50px] px-4">
       <div className="w-full bg-neutral-1 shadow-box p-10 rounded">
         <div className="flex flex-col gap-5 md:gap-4">
-          <div className="flex justify-end">
-            <button
-              onClick={handleEditClick}
-              className="px-14 py-2 bg-primary-dark-blue rounded-xl text-white"
-              aria-label={isEditing ? "Save changes" : "Edit profile"}
-            >
-              {isEditing ? "Simpan" : "Edit"}
-            </button>
-          </div>
+          {/* Tombol Edit di bagian atas */}
+          {!isEditing && (
+            <div className="flex justify-end">
+              <button
+                onClick={handleEditClick}
+                className="px-14 py-2 bg-primary-dark-blue rounded-xl text-white"
+                aria-label="Edit profile"
+              >
+                Edit
+              </button>
+            </div>
+          )}
+
           <div className="flex md:flex-row flex-col gap-10 items-center">
             <div>
-              <img src={profileImage as string} alt="Profile" className="" />
+              <img
+                src={profileImage as string}
+                alt="Profile"
+                className=""
+              />
               {isEditing && (
                 <div className="mt-4 flex text-center">
                   <input
@@ -49,7 +57,7 @@ const Profile: React.FC = () => {
                   />
                   <label
                     htmlFor="upload-image"
-                    className="cursor-pointer px-6 py-2 bg-primary-dark-blue text-white rounded w-full"
+                    className="cursor-pointer px-6 py-2 bg-primary-dark-blue text-white rounded w-full text-center"
                   >
                     Unggah Foto
                   </label>
@@ -57,6 +65,7 @@ const Profile: React.FC = () => {
               )}
             </div>
             <div className="flex flex-col w-full gap-7">
+              {/* Konten Profil */}
               <div className="flex md:flex-row flex-col gap-2 w-full">
                 <label
                   htmlFor="name"
@@ -189,6 +198,19 @@ const Profile: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Tombol Simpan di bagian bawah */}
+          {isEditing && (
+            <div className="flex justify-end">
+              <button
+                onClick={handleEditClick}
+                className="px-14 py-2 bg-primary-dark-blue rounded-xl text-white"
+                aria-label="Save changes"
+              >
+                Simpan
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

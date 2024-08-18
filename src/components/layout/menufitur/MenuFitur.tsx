@@ -17,7 +17,7 @@ const MenuFitur: React.FC = () => {
         name: "Mutasi Rekening",
         path: "/mutasi-rekening",
       },
-      { name: "Transaksi", path: "/transaksi" },
+      { name: "Transfer", path: "/transaksi" },
       { name: "Qris", path: "/qris/qris-transfer" },
       { name: "Profil", path: "/profile" },
     ],
