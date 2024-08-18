@@ -14,7 +14,7 @@ const Information: React.FC = () => {
         <h2 className="text-md text-neutral-9 font-semibold">
           Cari Tahu Lebih Lanjut
         </h2>
-        <div className="flex flex-row gap-9">
+        <div className="w-full flex flex-row gap-9 items-center justify-center">
           <ButtonIcon
             ariaLabel="Tombol Lanjut ke Page FAQ"
             onClick={goToMainternancePage}
@@ -22,7 +22,7 @@ const Information: React.FC = () => {
             imgAlt="FAQ"
             text="FAQ"
             textClassName=""
-            containerClassName="w-full flex-col md:flex-row"
+            containerClassName="flex-col md:flex-row"
           />
 
           <ButtonIcon
@@ -32,7 +32,7 @@ const Information: React.FC = () => {
             imgAlt="Video Demo"
             text="Video Demo"
             textClassName=""
-            containerClassName="w-full flex-col md:flex-row"
+            containerClassName="flex-col md:flex-row"
           />
 
           <ButtonIcon
@@ -42,7 +42,7 @@ const Information: React.FC = () => {
             imgAlt="Syarat & Ketentuan"
             text="Syarat & Ketentuan"
             textClassName=""
-            containerClassName="w-full flex-col md:flex-row"
+            containerClassName="flex-col md:flex-row"
           />
         </div>
       </div>
@@ -75,8 +75,8 @@ const Information: React.FC = () => {
             ariaLabel="Tombol Meminta Bantuan Lewat Whatsapp Connect"
             onClick={goToMainternancePage}
             imgSrc="/Whatsapp.svg"
-            imgAlt="Whatsapp Connect"
-            text="Whatsapp Connect"
+            imgAlt="Whatsapp Call Connect"
+            text="Whatsapp Call Connect"
             textClassName=""
             containerClassName="w-full flex-col md:flex-row"
           />
