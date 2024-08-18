@@ -17,17 +17,21 @@ const MenuFitur: React.FC = () => {
         name: "Mutasi Rekening",
         path: "/mutasi-rekening",
       },
-      { name: "Transaksi", path: "/transaksi" },
+      { name: "Transfer", path: "/transaksi" },
       { name: "Qris", path: "/qris/qris-transfer" },
-      { name: "Profil", path: "/profil" },
+      { name: "Profil", path: "/profile" },
     ],
     []
   );
 
   useEffect(() => {
-    const currentButton = buttons.find(
-      (button) => button.path === location.pathname
-    );
+    const currentButton = buttons.find((button) => {
+      if (button.path === "/") {
+        return location.pathname === "/";
+      } else {
+        return location.pathname.startsWith(button.path);
+      }
+    });
     if (currentButton) {
       setActiveButton(currentButton.name);
     }
@@ -56,24 +60,32 @@ const MenuFitur: React.FC = () => {
       <div
         className={`container mx-auto flex-row hidden md:flex ${
           isMenuOpen ? "block" : "hidden"
-        } md:flex md:justify-center md:gap-16`}
+        } md:flex md:justify-center lg:gap-16`}
       >
         {buttons.map((button) => (
           <Link key={button.name} to={button.path}>
             <button
               className={`text-base font-medium py-1 px-9 rounded-xl mx-2 ${
-                location.pathname === button.path
+                location.pathname === button.path ||
+                (button.path !== "/" &&
+                  location.pathname.startsWith(button.path))
                   ? "bg-primary-blue text-white"
                   : "text-white"
               }`}
               type="button"
               aria-label={
-                location.pathname === button.path
+                location.pathname === button.path ||
+                (button.path !== "/" &&
+                  location.pathname.startsWith(button.path))
                   ? `Anda berada di halaman ${button.name}.`
                   : `Tombol Navigasi ${button.name}`
               }
               aria-current={
-                location.pathname === button.path ? "page" : undefined
+                location.pathname === button.path ||
+                (button.path !== "/" &&
+                  location.pathname.startsWith(button.path))
+                  ? "page"
+                  : undefined
               }
             >
               {button.name}
@@ -84,34 +96,58 @@ const MenuFitur: React.FC = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-[230px] left-0 p-4 w-full bg-primary-dark-blue z-50 ${
+        className={`lg:hidden fixed top-0 w-1/2 h-full left-0 p-4 bg-neutral-1 shadow-box z-50 ${
           isMenuOpen ? "block" : "hidden"
         }`}
       >
-        <div className="container mx-auto flex flex-col">
-          {buttons.map((button) => (
-            <Link key={button.name} to={button.path}>
-              <button
-                className={`text-base font-medium py-2 px-4 rounded-xl ${
-                  location.pathname === button.path
-                    ? "bg-primary-blue text-white"
-                    : "text-white"
-                }`}
-                type="button"
-                aria-label={
-                  location.pathname === button.path
-                    ? `Anda berada di halaman ${button.name}.`
-                    : `Tombol Navigasi ${button.name}`
-                }
-                aria-current={
-                  location.pathname === button.path ? "page" : undefined
-                }
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {button.name}
-              </button>
-            </Link>
-          ))}
+        <div className="container mx-auto flex flex-col h-full">
+          {/* Bagian atas dengan gambar */}
+          <div className="flex flex-row justify-between">
+            <img src="./LogoBCA.svg" alt="" className="w-16" />
+            {/* Tombol Close */}
+            <img
+              src="./close.svg"
+              alt="Tutup Menu"
+              className="cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
+            />
+          </div>
+
+          <div className="flex-grow flex h-full items-center">
+            <div className="flex flex-col w-full">
+              {buttons.map((button) => (
+                <Link key={button.name} to={button.path}>
+                  <button
+                    className={`text-base font-medium py-2 px-4 rounded-xl ${
+                      location.pathname === button.path ||
+                      (button.path !== "/" &&
+                        location.pathname.startsWith(button.path))
+                        ? "bg-primary-blue text-white w-full"
+                        : "text-neutral-9"
+                    }`}
+                    type="button"
+                    aria-label={
+                      location.pathname === button.path ||
+                      (button.path !== "/" &&
+                        location.pathname.startsWith(button.path))
+                        ? `Anda berada di halaman ${button.name}.`
+                        : `Tombol Navigasi ${button.name}`
+                    }
+                    aria-current={
+                      location.pathname === button.path ||
+                      (button.path !== "/" &&
+                        location.pathname.startsWith(button.path))
+                        ? "page"
+                        : undefined
+                    }
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {button.name}
+                  </button>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

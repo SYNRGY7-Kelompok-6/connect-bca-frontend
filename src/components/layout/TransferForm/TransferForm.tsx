@@ -29,8 +29,8 @@ const TransferForm: React.FC = () => {
   );
 
   const [scheduleTransfer, setScheduleTransfer] = useState<boolean>(false);
-  const [showPopup, setShowPopup] = useState<boolean>(false); // Popup state
-  const [popupMessage, setPopupMessage] = useState<string>(""); // Popup message
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [popupMessage, setPopupMessage] = useState<string>(""); 
 
   const handleContinue = () => {
     if (transferIntrabank.amount.value <= 100) {
@@ -63,7 +63,7 @@ const TransferForm: React.FC = () => {
 
       <div className="bg-neutral-1 rounded-[20px] flex flex-col px-[18px] py-6 gap-7">
         <div className="flex flex-col gap-6">
-          <div className="flex items-center">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-2 items-center">
             <label htmlFor="ke-rekening" className="w-[300px] inline-block">
               Ke Rekening
             </label>
@@ -78,7 +78,7 @@ const TransferForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-2 items-center">
             <label htmlFor="dari-rekening" className="w-[300px] inline-block">
               Dari Rekening
             </label>
@@ -93,7 +93,7 @@ const TransferForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-2 items-center">
             <label htmlFor="mata-uang" className="w-[300px] inline-block">
               Mata Uang Tujuan
             </label>
@@ -103,7 +103,7 @@ const TransferForm: React.FC = () => {
                 type="number"
                 id="mata-uang"
                 placeholder="Masukan Nominal Anda"
-                className="px-4 py-2 bg-transparent border-b border-primary-blue w-full"
+                className="px-4 py-2 bg-transparent border-b border-primary-blue w-full focus:outline-primary-blue"
                 value={transferIntrabank?.amount.value || ""}
                 onChange={(e) =>
                   setTransferIntrabank({
@@ -119,7 +119,7 @@ const TransferForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-2 items-center">
             <label htmlFor="berita" className="w-[300px] inline-block">
               Berita
             </label>
@@ -127,7 +127,7 @@ const TransferForm: React.FC = () => {
               type="text"
               id="berita"
               placeholder="Pembayaran"
-              className="w-full px-4 py-2 bg-transparent border-b border-primary-blue"
+              className="w-full px-4 py-2 bg-transparent border-b border-primary-blue focus:outline-primary-blue"
               value={transferIntrabank?.desc}
               onChange={(e) =>
                 setTransferIntrabank({
@@ -139,7 +139,7 @@ const TransferForm: React.FC = () => {
             />
           </div>
 
-          <div className="flex items-center">
+          <div className="flex md:flex-row flex-col md:gap-0 gap-2 items-center">
             <label htmlFor="jenis-transfer" className="w-[300px] inline-block">
               Jenis Transfer
             </label>

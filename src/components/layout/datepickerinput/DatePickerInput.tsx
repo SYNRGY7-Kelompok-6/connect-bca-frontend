@@ -37,11 +37,13 @@ function DatePickerInput({
   return (
     <>
       <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue content-center">
-        <input type="radio" checked={selectedFilter === 'datepicker'}  onChange={handleFilterChange} name="filter-group" id="datepicker" value='datepicker' className="h-5 w-5" />
-        <div className="flex md:flex-row flex-col md:items-center w-full md:gap-16 gap-3">
-          <label htmlFor="tanggal-awal" className="whitespace-nowrap w-[215px]">
-            Tanggal Awal (dd/mm/yy)
-          </label>
+        <div className="flex md:flex-row flex-col md:items-center w-full gap-3 lg:gap-16">
+          <div className='w-full md:w-[480px] lg:w-[536px] xl:w-[305px] flex justify-start gap-2 content-center'>
+            <input type="radio" checked={selectedFilter === 'datepicker'}  onChange={handleFilterChange} name="filter-group" id="datepicker" value='datepicker' className="h-5 w-5" />
+            <label htmlFor="tanggal-awal" className="whitespace-nowrap w-[215px] md:w-full">
+              Tanggal Awal (dd/mm/yy)
+            </label>
+          </div>
           <div className="w-full">
             <Input
               aria-haspopup='true'
@@ -54,15 +56,17 @@ function DatePickerInput({
               iconSrc="/Calendar2.svg"
               iconAlt="icon kalender"
             />
-            <DatePicker labelPopup="Popup Pilih tanggal kalender" isShow={datePickerState.startDatePicker} handleClose={() => handleCloseCalendar('startDatePicker')} dateType='startDate' handleSubmit={handleSubmitCalendar} />
+            <DatePicker labelPopup="Popup Pilih tanggal kalender" isShow={datePickerState.startDatePicker} handleClose={() => handleCloseCalendar('startDatePicker')} dateType='startDate' handleSubmit={handleSubmitCalendar} className='' />
           </div>
         </div>
       </div>
 
-      <div className="flex md:flex-row flex-col md:items-center font-semibold text-base text-primary-dark-blue content-center md:gap-16 ml-7 md:ml-0 gap-3">
-        <label htmlFor="tanggal-akhir" className="whitespace-nowrap md:ml-7 w-[215px]">
-          Tanggal Akhir (dd/mm/yy)
-        </label>
+      <div className="flex md:flex-row flex-col md:items-center font-semibold text-base text-primary-dark-blue content-center ml-0 md:ml-0 gap-3 lg:gap-16">
+        <div className='w-full md:w-[480px] lg:w-[536px] xl:w-[305px] flex justify-start gap-2 content-center'>
+          <label htmlFor="tanggal-akhir" className="whitespace-nowrap md:ml-7 w-[215px] md:w-full">
+            Tanggal Akhir (dd/mm/yy)
+          </label>
+        </div>
         <div className="w-full">
           <Input aria-haspopup='true'
             placeholder="dd/mm/yyyy" onClick={() => handleFocus('endDatePicker')}

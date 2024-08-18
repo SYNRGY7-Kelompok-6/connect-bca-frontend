@@ -24,19 +24,16 @@ const InfoUser: React.FC = () => {
         <div className="flex flex-col gap-2">
           {bankStatement && (
             <h1
-            id="info-user-heading"
-            className="text-neutral-9 text-md md:text-lg font-bold"
-          >
-            <div className="flex flex-col md:flex-row md:items-center">
-              <span>Selamat Datang,</span>
-              <span
-                aria-label="Nama Akun"
-                className="md:ml-2 mt-1 md:mt-0"
-              >
-                {bankStatement.accountInfo.name}
-              </span>
-            </div>
-          </h1>
+              id="info-user-heading"
+              className="text-neutral-9 text-md md:text-lg font-bold"
+            >
+              <div className="flex flex-col md:flex-row md:items-center">
+                <span>Selamat Datang,</span>
+                <span aria-label="Nama Akun" className="md:ml-2 mt-1 md:mt-0">
+                  {bankStatement.accountInfo.name}
+                </span>
+              </div>
+            </h1>
           )}
           <div className="flex flex-row gap-4">
             {loginInfo && (
@@ -57,14 +54,11 @@ const InfoUser: React.FC = () => {
           <button
             onClick={handleLogout}
             className="text-neutral-9 text-base font-semibold underline flex gap-2"
-            aria-label="Logout"
+            aria-label="Keluar"
             type="button"
           >
-            <img
-              src="./logout.svg"
-              alt="Logout Icon"
-            />
-            Logout
+            <img src="./logout.svg" alt="Logout Icon" />
+            Keluar
           </button>
         </div>
       </div>

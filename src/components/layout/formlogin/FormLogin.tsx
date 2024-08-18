@@ -151,7 +151,7 @@ const FormLogin: React.FC = () => {
             melakukan Registrasi Internet melalui ATM BCA.
             <br />
             <br />
-            Untuk informasi lebih lanjut hubungi Halo BCA 1500888.
+            Untuk informasi lebih lanjut hubungi Halo Connect 1500888.
           </p>
           <div className="flex gap-9 mt-[35px] justify-center">
             <ButtonIcon

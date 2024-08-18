@@ -84,11 +84,13 @@ function SearchForm({
             </div>
           </div>
           <div className="flex items-center gap-2 font-semibold text-base text-primary-dark-blue content-center">
-            <input type="radio" checked={selectedFilter === 'period'} onChange={handleFilterChange} name="filter-group" id="period" value='period' className="h-5 w-5 border-primary-dark-blue" />
-            <div className="flex md:flex-row flex-col items-center w-full md:gap-16 gap-3">
-              <label htmlFor="periodselect" className="lg:w-[260px] md:w-[330px] w-full">
-                Periode
-              </label>
+            <div className="flex md:flex-row flex-col items-center w-full gap-3 lg:gap-16">
+              <div className='w-full md:w-[480px] lg:w-[305px] flex justify-start gap-2 content-center'>
+                <input type="radio" checked={selectedFilter === 'period'} onChange={handleFilterChange} name="filter-group" id="period" value='period' className="h-5 w-5 border-primary-dark-blue" />
+                <label htmlFor="periodselect" className="w-full">
+                  Periode
+                </label>
+              </div>
               <div className="relative flex flex-row items-center justify-end w-full">
                 <img
                   src="/Down1.svg"
@@ -100,12 +102,12 @@ function SearchForm({
                   id="periodselect"
                   aria-describedby="pilih periode"
                   onChange={handlePeriodChange}
-                  className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-blue font-semibold text-base w-full"
+                  className="bg-white p-[10px] gap-[10px] border border-primary-dark-blue rounded-[10px] flex text-primary-dark-blue font-semibold text-base w-full"
                 >
-                  <option value="1month">1 Bulan</option>
-                  <option value="3week">3 Minggu</option>
-                  <option value="2week">2 Minggu</option>
-                  <option value="1week">1 Minggu</option>
+                  <option value="1month">1 Bulan yang lalu</option>
+                  <option value="3week">3 Minggu yang lalu</option>
+                  <option value="2week">2 Minggu yang lalu</option>
+                  <option value="1week">1 Minggu yang lalu</option>
                 </select>
               </div>
             </div>
