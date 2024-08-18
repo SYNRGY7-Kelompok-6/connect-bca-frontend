@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MutasiLayout from "../components/layout/MutasiLayout";
 import { useLoading } from "../contexts/useLoading";
 import { useAuth } from "../contexts/useAuth";
@@ -6,6 +6,7 @@ import useBankStatement from "../contexts/useBankStatement";
 import Preloading from "../components/base/preloading/preloading";
 import InfoUser from "../components/layout/infouser/InfoUser";
 import MenuFitur from "../components/layout/menufitur/MenuFitur";
+import { formatDateFetch } from "../utils/utils";
 
 const MutasiRekening: React.FC = () => {
   const { loading, setLoading } = useLoading();
@@ -14,6 +15,12 @@ const MutasiRekening: React.FC = () => {
     useBankStatement();
 
   const [hasFetchedData, setHasFetchedData] = useState(false);
+  const endDate = useMemo(() => new Date(), []);
+  const startDate = useMemo(() => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 1);
+    return date;
+  }, []);
 
   useEffect(() => {
     if (!hasFetchedData) {
@@ -22,7 +29,10 @@ const MutasiRekening: React.FC = () => {
         try {
           await Promise.all([
             fetchLoginInfo(),
-            fetchBankStatement("05-08-2024", "05-08-2024"),
+            fetchBankStatement(
+              formatDateFetch(startDate),
+              formatDateFetch(endDate)
+            ),
             fetchAccountMonthly(8),
           ]);
           setHasFetchedData(true);
@@ -30,7 +40,6 @@ const MutasiRekening: React.FC = () => {
           console.error("Error fetching data", err);
         } finally {
           setLoading(false);
-          console.log(bankStatement);
         }
       };
 
@@ -47,7 +56,7 @@ const MutasiRekening: React.FC = () => {
 
   return (
     <div className="bg-fill0 font-jakartasans">
-      {loading ? (
+      { loading ? (
         <Preloading />
       ) : (
         <>

@@ -95,7 +95,7 @@ function MutasiLayout() {
                 <p aria-label="Mutasi Rekening" className='text-white text-2xl font-bold'>Mutasi Rekening</p>
               </div>
               <div className='flex gap-5 items-end'>
-                <button aria-label="Unduh Mutasi" onClick={handlePrint} className='flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
+                <button aria-label="Unduh Mutasi" onClick={handlePrint} className='flex gap-4 bg-primary-blue px-3 py-2 md:px-[36.5px] md:py-[10px] rounded-xl text-white font-semibold'>
                   Unduh Mutasi
                 </button>
               </div>
