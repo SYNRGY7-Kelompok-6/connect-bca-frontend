@@ -57,7 +57,7 @@ const DaftarRekening: React.FC = () => {
           </span>
         </div>
 
-        <Link to="/transaksi/rekening-baru">
+        <Link to="/transaksi/rekening">
           <div
             className="flex gap-3 px-4 py-4 transition cursor-pointer bg-primary-blue rounded-xl hover:bg-primary-dark-blue"
             role="button"
