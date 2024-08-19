@@ -151,7 +151,7 @@ const QrisBayar: React.FC = () => {
   }
 
   return (
-    <div className="flex md:flex-row flex-col md:gap-[80px] gap-5">
+    <div className="flex lg:flex-row flex-col md:gap-[80px] gap-5">
       <BankStatementSection
         bankStatement={bankStatement}
         buttonText={buttonText}
