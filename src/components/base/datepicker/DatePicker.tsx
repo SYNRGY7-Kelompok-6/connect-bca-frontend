@@ -42,16 +42,22 @@ const DatePicker: React.FC<PopupProps> = ({
         aria-modal="true"
       >
         <div
-          className={`bg-primary-light-blue items-center text-center flex flex-col justify-end text-primary-dark-blue w-max ${className}`}
+          className={`bg-primary-light-blue items-center text-center flex flex-col justify-end text-primary-dark-blue max-w-max w-full m-auto rounded-xl ${className}`}
         >
           <h1 aria-label="">{message}</h1>
           {svgSrc && <img src={svgSrc} alt={svgAlt} width="78" height="80" />}
           <Calendar
             onChange={setValue}
             value={value}
-            className="border-none !font-sans"
+            className="border-none !font-sans p-[18px]"
+            showNavigation
+            prev2Label={null}
+            next2Label={null}
+            nextAriaLabel="Bulan selanjutnya"
+            prevAriaLabel="Bulan sebelumnya"
+            maxDate={new Date()}
           />
-          <div className="w-full flex gap-1 p-[18px] justify-end">
+          <div className="w-full flex gap-3 p-[18px] justify-center sm:justify-end">
             <button
               aria-label="tombol keluar popup"
               type="button"
