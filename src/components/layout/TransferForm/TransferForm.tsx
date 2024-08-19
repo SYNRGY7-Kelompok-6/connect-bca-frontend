@@ -30,7 +30,8 @@ const TransferForm: React.FC = () => {
 
   const [scheduleTransfer, setScheduleTransfer] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
-  const [popupMessage, setPopupMessage] = useState<string>(""); 
+  const [popupMessage, setPopupMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleContinue = () => {
     if (transferIntrabank.amount.value <= 100) {
@@ -39,6 +40,19 @@ const TransferForm: React.FC = () => {
       return;
     }
 
+    if (
+      !bankStatement ||
+      !bankStatement.accountInfo ||
+      !bankStatement.accountInfo.balance ||
+      !bankStatement.accountInfo.balance.availableBalance ||
+      transferIntrabank.amount.value >
+        bankStatement.accountInfo.balance.availableBalance.value
+    ) {
+      setPopupMessage("Saldo tidak mencukupi untuk melakukan transfer");
+      setShowPopup(true);
+      return;
+    }
+    setLoading(true);
     changeTransferIntrabank(transferIntrabank);
     navigate("/transaksi/transfer/confirmation");
   };
@@ -104,16 +118,17 @@ const TransferForm: React.FC = () => {
                 id="mata-uang"
                 placeholder="Masukan Nominal Anda"
                 className="px-4 py-2 bg-transparent border-b border-primary-blue w-full focus:outline-primary-blue"
-                value={transferIntrabank?.amount.value || ""}
-                onChange={(e) =>
+                value={transferIntrabank.amount.value || ""}
+                onChange={(e) => {
+                  const inputValue = parseInt(e.target.value) || 0;
                   setTransferIntrabank({
                     ...transferIntrabank,
                     amount: {
                       ...transferIntrabank.amount,
-                      value: parseInt(e.target.value) || 0,
+                      value: inputValue < 0 ? 0 : inputValue,
                     },
-                  })
-                }
+                  });
+                }}
                 aria-labelledby="mata-uang-label"
               />
             </div>
@@ -193,7 +208,11 @@ const TransferForm: React.FC = () => {
         <div className="flex justify-end">
           <button onClick={handleContinue}>
             <Button ariaLabel="lanjut" variant="general" colorScheme="primary">
-              Lanjut
+              {loading ? (
+                <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
+              ) : (
+                "Lanjut"
+              )}
             </Button>
           </button>
         </div>

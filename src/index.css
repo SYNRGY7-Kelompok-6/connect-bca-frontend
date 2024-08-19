@@ -2,22 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-tbody:before {
-  line-height:9px;
-  content:"-";
-  color:transparent;
-  display:block;
-}
-*/
-/*
-tbody:after {
-  line-height:9px;
-  content:"-";
-  color:transparent;
-  display:block;
-} */
-
 @media print {
   .hidden-print {
     display: block !important; /* Ensure the table is shown during printing */
@@ -28,11 +12,6 @@ tbody:after {
   .hidden-print {
     display: none; /* Hide the table on the screen */
   }
-}
-
-.react-calendar button {
-  border-radius: 99999px;
-  width: 24px;
 }
 
 /* Chrome, Safari, Edge, Opera */

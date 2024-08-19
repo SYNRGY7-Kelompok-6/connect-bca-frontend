@@ -38,7 +38,7 @@ const DaftarRekening: React.FC = () => {
       </header>
 
       <div className="bg-neutral-1 rounded-b flex flex-col w-full px-[18px] py-6 gap-3">
-        <div className="flex w-full px-4 py-4 rounded-lg bg-neutral-1 focus-within:outline focus-within:outline-1 outline-slate-900">
+        <div className="flex w-full px-4 py-4 rounded-lg bg-neutral-1 focus-within:outline focus-within:outline-1 outline-primary-blue outline outline-1">
           <label htmlFor="search-input" className="sr-only">
             Cari rekening
           </label>
@@ -57,7 +57,7 @@ const DaftarRekening: React.FC = () => {
           </span>
         </div>
 
-        <Link to="/transaksi/rekening-baru">
+        <Link to="/transaksi/rekening">
           <div
             className="flex gap-3 px-4 py-4 transition cursor-pointer bg-primary-blue rounded-xl hover:bg-primary-dark-blue"
             role="button"
