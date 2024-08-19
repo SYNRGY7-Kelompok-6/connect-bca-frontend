@@ -19,7 +19,10 @@ const BankStatementSection: React.FC<BankStatementSectionProps> = ({
 }) => {
   return (
     <div className="bg-neutran-1 shadow-box h-full rounded flex flex-col p-5 gap-2.5 mt-16 md:mt-0">
-      <div className="text-base text-primary-blue mb-[18px]">Dari Rekening</div>
+      <div className="text-base text-primary-blue mb-[18px]"
+      aria-label="Dari rekening">
+        Dari Rekening
+        </div>
       {loading ? (
         <>
           <Skeleton className="h-6" />
@@ -36,16 +39,22 @@ const BankStatementSection: React.FC<BankStatementSectionProps> = ({
         </div>
       )}
       <div className="mb-[24px] w-full">
-        <div className="text-base text-primary-blue mb-[12px]">Catatan</div>
+        <div className="text-base text-primary-blue mb-[12px]"
+          aria-label="Catatan">
+          Catatan
+        </div>
         <div className="flex w-full">
           <div className="w-[12px] h-[12px] rounded-[50px] bg-primary-dark-blue mt-[6px]"></div>
-          <div className="ml-[12px] text-base text-primary-blue w-[343px]">
+          <div className="ml-[12px] text-base text-primary-blue w-[343px]"
+            aria-label="QRIS akan ditampikan untuk melakukan pembayaran ">
             QRIS akan ditampikan untuk melakukan pembayaran
           </div>
         </div>
         <div className="flex w-full">
           <div className="w-[12px] h-[12px] rounded-[50px] bg-primary-dark-blue mt-[6px]"></div>
-          <div className="text-base ml-[12px] text-primary-blue w-[343px]">
+          <div className="text-base ml-[12px] text-primary-blue w-[343px]"
+            aria-label="  Pastikan nominal transaksi sudah sesuai. Transaksi dengan QRIS akan
+            langsung mendebet rekening anda">
             Pastikan nominal transaksi sudah sesuai. Transaksi dengan QRIS akan
             langsung mendebet rekening anda
           </div>
@@ -65,6 +74,7 @@ const BankStatementSection: React.FC<BankStatementSectionProps> = ({
           onClick={handleEndQrisPay}
           className="text-[18px] text-white bg-primary-blue w-[100%] justify-between items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
           style={{ fontFamily: "Outfit, sans-serif" }}
+          aria-label="Selesai"
         >
           Selesai
         </button>

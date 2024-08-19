@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useBankStatement from "../../../contexts/useBankStatement";
 import useQrisTransfer from '../../../../src/contexts/useQrisTransfer';
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import QrisModal from './qrismodal';
 import QrisInfo from './qrisinfo';
 import QrisImage from './qrisimage';
 import QrisButton from './qrisbutton';
 import Skeleton from "../../base/skeletonloading";
-import logoBca from "../../../../public/LogoBCA.png";
 import logoQris from "../../../../public/logo qris.svg";
 import { formatToIDR, formatNumber } from '../../hooks/formatRp';
 import { useTimeout } from '../../hooks/changeToTime';
@@ -48,6 +49,36 @@ const QrisTransfer: React.FC = () => {
     setExpiresTime(false);
   };
 
+  const handleDownload = async () => {
+    const element = document.querySelector(".pdf-content") as HTMLElement;
+    if (!element) return;
+    const padding = 10;
+  
+    try {
+      const canvas = await html2canvas(element, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+  
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4' 
+      });
+  
+      const a4Width = 210; 
+      const a4Height = 297; 
+      const paddingMm = padding * 25.4 / 96;
+  
+      const imgWidth = a4Width - 2 * paddingMm;
+      const imgHeight = a4Height - 2 * paddingMm;
+  
+      pdf.addImage(imgData, "PNG", paddingMm, paddingMm, imgWidth, imgHeight);
+      
+      pdf.save("download.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -90,10 +121,9 @@ const QrisTransfer: React.FC = () => {
   };
 
   return (
-    <div className="bg-neutran-1 shadow-box rounded flex flex-col md:w-96 w-full p-5 gap-2.5 mt-16 md:mt-0">
-      <div className="flex justify-between">
+    <div className="pdf-content bg-neutran-1 shadow-box rounded flex flex-col md:w-96 w-full p-5 gap-2.5 mt-16 md:mt-0">
+      <div className="flex justify-between h-[55px]">
         <img src={logoQris} alt="logoQris" />
-        <img src={logoBca} alt="logoBca" />
       </div>
       <div className="flex flex-col justify-center text-center items-center">
         {loading ? (
@@ -106,6 +136,7 @@ const QrisTransfer: React.FC = () => {
               buttonText={buttonText}
               handleOpenModal={handleOpenModal}
               handleRefresh={handleRefresh}
+              handleDownlaod={handleDownload}
               timeLeft={buttonExpiredInfo ? `Masa Berlaku : ${timeLeft}` : "QR berlaku untuk 1 kali transaksi"}
             />
           </>
