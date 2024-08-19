@@ -24,7 +24,8 @@ const QrisModal: React.FC<QrisModalProps> = ({ isOpen, qrImage, timeLeft}) => {
               alt="logoQrisTransfer"
               aria-label="Barcode Qris"
             />
-            <div className="text-base text-primary-blue">
+            <div className="text-base text-primary-blue"
+              aria-label="Masa Berlaku">
               Masa Berlaku : {timeLeft}
             </div>
           </>

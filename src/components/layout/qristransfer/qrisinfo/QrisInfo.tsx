@@ -18,7 +18,8 @@ const QrisInfo: React.FC<QrisInfoProps> = ({ bankStatement }) => (
         <div className="text-lg text-primary-dark-blue font-bold">
           {bankStatement.accountInfo.name}
         </div>
-        <div className="text-base text-primary-dark-blue">
+        <div className="text-base text-primary-dark-blue"
+          aria-label="BCA">
           BCA -&nbsp;{bankStatement.accountInfo.accountNo}
         </div>
       </>

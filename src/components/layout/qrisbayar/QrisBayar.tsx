@@ -118,6 +118,7 @@ const QrisBayar: React.FC = () => {
   const handleConfirmPin = async () => {
     const pinFinal = pin.join("");
     const hasil = await fetchPin(pinFinal);
+    setModalHandleWrongPin(false);
 
     if (pinFinal.length === 6 && hasil !== "pinSalah") {
       setModalHandlePin(false);

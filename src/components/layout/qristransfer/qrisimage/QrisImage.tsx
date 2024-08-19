@@ -12,6 +12,7 @@ const QrisImage: React.FC<QrisImageProps> = ({ qrImage, expiresTime }) => (
     className="mt-[28px]"
     style={{ width: '150px', height: '150px' }}
     alt="logoQrisTransfer"
+    aria-label="Qris Transfer"
   />
 );
 

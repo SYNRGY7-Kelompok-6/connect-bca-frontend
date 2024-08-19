@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/useAuth";
 import useBankStatement from "../../../contexts/useBankStatement";
+import logoutIcon from "../../../../public/logout.svg";
 
 const InfoUser: React.FC = () => {
   const { bankStatement } = useBankStatement();
@@ -57,7 +58,7 @@ const InfoUser: React.FC = () => {
             aria-label="Keluar"
             type="button"
           >
-            <img src="./logout.svg" alt="Logout Icon" />
+            <img src={logoutIcon} alt="Logout Icon" />
             Keluar
           </button>
         </div>
