@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import Button from "../../base/button";
 import { SavedAccountsContext } from "../../../contexts/SavedAccountsContext";
 import Popup from "../../base/popup/popup";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RekeningBaru: React.FC = () => {
   const [accountNumber, setAccountNumber] = useState<string>("");
@@ -10,6 +10,7 @@ const RekeningBaru: React.FC = () => {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const { addSavedAccount, error, changeDestinationAccount } =
     useContext(SavedAccountsContext);
+  const navigate = useNavigate(); // Use navigate for redirection
 
   const handleAddAccount = async () => {
     if (!accountNumber) {
@@ -22,6 +23,7 @@ const RekeningBaru: React.FC = () => {
       if (newAccount) {
         changeDestinationAccount(newAccount);
         setAccountNumber("");
+        navigate("/transaksi/transfer"); // Redirect to TransferForm
       }
     } finally {
       setLoading(false);
@@ -78,22 +80,20 @@ const RekeningBaru: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-end">
-          <Link to="/transaksi/transfer">
-            <Button
-              ariaLabel="lanjut"
-              variant="general"
-              colorScheme="primary"
-              onClick={handleAddAccount}
-              disabled={loading}
-              className="flex items-center"
-            >
-              {loading ? (
-                <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
-              ) : (
-                "Lanjut"
-              )}
-            </Button>
-          </Link>
+          <Button
+            ariaLabel="lanjut"
+            variant="general"
+            colorScheme="primary"
+            onClick={handleAddAccount}
+            disabled={loading}
+            className="flex items-center"
+          >
+            {loading ? (
+              <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
+            ) : (
+              "Lanjut"
+            )}
+          </Button>
         </div>
       </div>
 
