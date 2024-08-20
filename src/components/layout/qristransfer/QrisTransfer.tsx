@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import useBankStatement from "../../../contexts/useBankStatement";
 import useQrisTransfer from '../../../../src/contexts/useQrisTransfer';
 import html2canvas from "html2canvas";
@@ -21,8 +21,8 @@ const QrisTransfer: React.FC = () => {
   const [buttonExpiredInfo, setButtonExpiredInfo] = useState(false)
   const { bankStatement, fetchBankStatement } = useBankStatement();
   const { qrImage, generateQRIS, expiresAt } = useQrisTransfer();
-
   const timeLeft = useTimeout(expiresAt);
+  const qrisTransferRef = useRef(null);
 
   const fetchQrisTransfer = useCallback(async () => {
     try {
@@ -49,24 +49,39 @@ const QrisTransfer: React.FC = () => {
   };
 
   const handleDownload = async () => {
-    const element = document.querySelector(".png-selector") as HTMLElement;
-    if (!element) return;
+    if (!qrisTransferRef.current) return;
 
     try {
-      const canvas = await html2canvas(element, {
-        scale: 2,
+      const canvas = await html2canvas(qrisTransferRef.current, {
         useCORS: true,
+        scale: 2, 
       });
 
-      const imgData = canvas.toDataURL("image/png");
+      const resizedCanvas = document.createElement('canvas');
+      const ctx = resizedCanvas.getContext('2d');
+
+      const desiredWidth = 450;
+      const desiredHeight = 600;
+
+      resizedCanvas.width = desiredWidth;
+      resizedCanvas.height = desiredHeight;
+
+      if (ctx) {
+        ctx.drawImage(canvas, 0, 0, desiredWidth, desiredHeight);
+      }
+
+      const imgData = resizedCanvas.toDataURL('image/png');
+
       const link = document.createElement('a');
       link.href = imgData;
-      link.download = "qris.png";
+      link.download = 'qris-image.png'; 
+
       document.body.appendChild(link);
       link.click();
+
       document.body.removeChild(link);
     } catch (error) {
-      console.error("Error generating PNG:", error);
+      console.error('Error generating PNG:', error);
     }
   };
 
@@ -113,7 +128,8 @@ const QrisTransfer: React.FC = () => {
 
   return (
     <>
-      <div className="png-selector bg-neutran-1 shadow-box rounded flex flex-col md:w-96 w-full p-5 gap-2.5 mt-16 md:mt-0">
+      <div className="bg-neutran-1 shadow-box rounded flex flex-col md:w-96 w-full p-5 gap-2.5 mt-16 md:mt-0"
+        ref={qrisTransferRef} >
         <div className="flex justify-between items-center h-[55px] border-b"
           style={{
             borderColor: '#0a3967'
