@@ -53,31 +53,22 @@ const QrisTransfer: React.FC = () => {
     if (!element) return;
 
     try {
-      // Capture the element as a PNG image
       const canvas = await html2canvas(element, {
-        scale: 2, // Increase the scale for better image quality
-        useCORS: true, // Use CORS to handle images from different origins if needed
+        scale: 2,
+        useCORS: true,
       });
 
-      // Convert canvas to PNG data URL
       const imgData = canvas.toDataURL("image/png");
-
-      // Create a link element and simulate a click to download the image
       const link = document.createElement('a');
       link.href = imgData;
       link.download = "qris.png";
-
-      // Append link to the body and click it to start the download
       document.body.appendChild(link);
       link.click();
-
-      // Remove the link from the body after download
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error generating PNG:", error);
     }
   };
-
 
   useEffect(() => {
     const fetchData = async () => {
