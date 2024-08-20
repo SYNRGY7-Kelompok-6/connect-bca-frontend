@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useBankStatement from "../../../contexts/useBankStatement";
 import useQrisTransfer from '../../../../src/contexts/useQrisTransfer';
-import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import QrisModal from './qrismodal';
 import QrisInfo from './qrisinfo';
@@ -50,35 +49,36 @@ const QrisTransfer: React.FC = () => {
   };
 
   const handleDownload = async () => {
-    const element = document.querySelector(".pdf-content") as HTMLElement;
+    const element = document.querySelector(".png-selector") as HTMLElement;
     if (!element) return;
-    const padding = 10;
-  
+
     try {
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
-  
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4' 
+      // Capture the element as a PNG image
+      const canvas = await html2canvas(element, {
+        scale: 2, // Increase the scale for better image quality
+        useCORS: true, // Use CORS to handle images from different origins if needed
       });
-  
-      const a4Width = 210; 
-      const a4Height = 297; 
-      const paddingMm = padding * 25.4 / 96;
-  
-      const imgWidth = a4Width - 2 * paddingMm;
-      const imgHeight = a4Height - 2 * paddingMm;
-  
-      pdf.addImage(imgData, "PNG", paddingMm, paddingMm, imgWidth, imgHeight);
-      
-      pdf.save("download.pdf");
+
+      // Convert canvas to PNG data URL
+      const imgData = canvas.toDataURL("image/png");
+
+      // Create a link element and simulate a click to download the image
+      const link = document.createElement('a');
+      link.href = imgData;
+      link.download = "qris.png";
+
+      // Append link to the body and click it to start the download
+      document.body.appendChild(link);
+      link.click();
+
+      // Remove the link from the body after download
+      document.body.removeChild(link);
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      console.error("Error generating PNG:", error);
     }
   };
-  
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -121,37 +121,43 @@ const QrisTransfer: React.FC = () => {
   };
 
   return (
-    <div className="pdf-content bg-neutran-1 shadow-box rounded flex flex-col md:w-96 w-full p-5 gap-2.5 mt-16 md:mt-0">
-      <div className="flex justify-between h-[55px]">
-        <img src={logoQris} alt="logoQris" />
+    <>
+      <div className="png-selector bg-neutran-1 shadow-box rounded flex flex-col md:w-96 w-full p-5 gap-2.5 mt-16 md:mt-0">
+        <div className="flex justify-between items-center h-[55px] border-b"
+          style={{
+            borderColor: '#0a3967'
+          }}>
+          <img src={logoQris} alt="logoQris" className="h-[24px]" />
+        </div>
+        <div className="flex flex-col justify-center text-center items-center">
+          {loading ? (
+            <Skeleton className="h-6 w-48" />
+          ) : (
+            <>
+              <QrisInfo bankStatement={bankStatement || undefined} />
+              <QrisImage qrImage={qrImage || undefined} expiresTime={expiresTime} />
+              <QrisButton
+                buttonText={buttonText}
+                handleOpenModal={handleOpenModal}
+                handleRefresh={handleRefresh}
+                handleDownlaod={handleDownload}
+                timeLeft={buttonExpiredInfo ? `Masa Berlaku : ${timeLeft}` : "QR berlaku untuk 1 kali transaksi"}
+              />
+            </>
+          )}
+        </div>
       </div>
-      <div className="flex flex-col justify-center text-center items-center">
-        {loading ? (
-          <Skeleton className="h-6 w-48" />
-        ) : (
-          <>
-            <QrisInfo bankStatement={bankStatement || undefined} />
-            <QrisImage qrImage={qrImage || undefined} expiresTime={expiresTime} />
-            <QrisButton
-              buttonText={buttonText}
-              handleOpenModal={handleOpenModal}
-              handleRefresh={handleRefresh}
-              handleDownlaod={handleDownload}
-              timeLeft={buttonExpiredInfo ? `Masa Berlaku : ${timeLeft}` : "QR berlaku untuk 1 kali transaksi"}
-            />
-          </>
+      <div>
+        {modalOpen && (
+          <QrisModal
+            handleCloseModal={handleCloseModal}
+            handleQrisTransfer={handleQrisTransfer}
+            nominal={nominal}
+            handleNominalChange={handleNominalChange}
+          />
         )}
       </div>
-
-      {modalOpen && (
-        <QrisModal
-          handleCloseModal={handleCloseModal}
-          handleQrisTransfer={handleQrisTransfer}
-          nominal={nominal}
-          handleNominalChange={handleNominalChange}
-        />
-      )}
-    </div>
+    </>
   );
 };
 
