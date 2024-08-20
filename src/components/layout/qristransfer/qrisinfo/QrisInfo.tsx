@@ -15,7 +15,7 @@ const QrisInfo: React.FC<QrisInfoProps> = ({ bankStatement }) => (
   <>
     {bankStatement && (
       <>
-        <div className="text-lg text-primary-dark-blue font-bold">
+        <div className="text-lg text-primary-dark-blue font-bold mt-[12px]">
           {bankStatement.accountInfo.name}
         </div>
         <div className="text-base text-primary-dark-blue"
