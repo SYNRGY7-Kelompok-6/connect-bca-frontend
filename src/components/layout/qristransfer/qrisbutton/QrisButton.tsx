@@ -1,5 +1,4 @@
 import React from 'react';
-import logoShare from "../../../../../public/share.svg";
 import logoDownload from "../../../../../public/download.svg";
 import logoRefresh from "../../../../../public/refresh.svg";
 
@@ -7,10 +6,11 @@ interface QrisButtonProps {
     buttonText: string;
     handleOpenModal: () => void;
     handleRefresh: () => void;
+    handleDownlaod: () => void;
     timeLeft: string;
 }
 
-const QrisButton: React.FC<QrisButtonProps> = ({ buttonText, handleOpenModal, handleRefresh,timeLeft }) => (
+const QrisButton: React.FC<QrisButtonProps> = ({ buttonText, handleOpenModal, handleRefresh, handleDownlaod, timeLeft }) => (
     <>
         <button
             onClick={handleOpenModal}
@@ -22,9 +22,13 @@ const QrisButton: React.FC<QrisButtonProps> = ({ buttonText, handleOpenModal, ha
             {timeLeft}
         </div>
         <div className="flex justify-between mt-[24px] w-[100%]">
-            <div className="flex justify-between w-[98px]">
-                <img src={logoShare} aria-label="Tombol Bagikan Qris" alt="shareQrisTf" />
-                <img src={logoDownload} aria-label="Tombol Unduh Qris" alt="downloadQrisTf" />
+            <div className="flex justify-between w-[98px]"
+                aria-label="Tombol Download">
+                <img src={logoDownload}
+                    aria-label="Tombol Unduh Qris"
+                    alt="downloadQrisTf"
+                    onClick={handleDownlaod}
+                    style={{ cursor: "pointer" }} />
             </div>
             <img
                 src={logoRefresh}

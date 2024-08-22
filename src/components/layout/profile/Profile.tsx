@@ -1,31 +1,114 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import useProfile from "../../../contexts/useProfile";
+import { ProfileData } from "../../../contexts/ProfileContext";
+import Button from "../../base/button/Button";
+
+const formatDateForBackend = (date: string) => {
+  const [day, month, year] = date.split("-");
+  return `${year}-${month}-${day}`;
+};
+
+const formatDateForDisplay = (date: string) => {
+  const [year, month, day] = date.split("-");
+  return `${day}-${month}-${year}`;
+};
 
 const Profile: React.FC = () => {
+  const { profile, updateProfile } = useProfile();
   const [isEditing, setIsEditing] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(
-    "./Profile.png"
-  );
+  const [formData, setFormData] = useState<Partial<ProfileData>>({
+    name: "",
+    email: "",
+    phone: "",
+    birth: "",
+    address: "",
+  });
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        name: profile.name,
+        email: profile.email,
+        phone: profile.phone,
+        birth: profile.birth ? formatDateForDisplay(profile.birth) : "",
+        address: profile.address,
+      });
+      setImagePreview(profile.imageUrl || null);
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    if (image) {
+      const previewUrl = URL.createObjectURL(image);
+      setImagePreview(previewUrl);
+      return () => URL.revokeObjectURL(previewUrl);
+    } else {
+      setImagePreview(profile?.imageUrl || null);
+    }
+  }, [image, profile?.imageUrl]);
 
   const handleEditClick = () => {
-    setIsEditing(!isEditing);
+    setIsEditing(true);
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const handleCancelClick = () => {
+    if (profile) {
+      setFormData({
+        name: profile.name,
+        email: profile.email,
+        phone: profile.phone,
+        birth: profile.birth ? formatDateForDisplay(profile.birth) : "",
+        address: profile.address,
+      });
+      setImage(null); // Reset the image
+      setImagePreview(profile.imageUrl || null);
+    }
+    setIsEditing(false);
+  };
+
+  const handleSaveClick = async () => {
+    setIsLoading(true);
+    try {
+      const formattedBirth = formData.birth
+        ? formatDateForBackend(formData.birth)
+        : profile?.birth;
+      await updateProfile(
+        { ...formData, birth: formattedBirth },
+        image || undefined
+      );
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to update profile", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+    }
+  };
+
+  if (!profile) return <div>Loading...</div>;
 
   return (
     <div className="container mx-auto mt-[50px] pb-[50px] px-4">
       <div className="w-full bg-neutral-1 shadow-box p-10 rounded">
         <div className="flex flex-col gap-5 md:gap-4">
-          {/* Tombol Edit di bagian atas */}
           {!isEditing && (
             <div className="flex justify-end">
               <button
@@ -41,16 +124,16 @@ const Profile: React.FC = () => {
           <div className="flex md:flex-row flex-col gap-10 items-center">
             <div>
               <img
-                src={profileImage as string}
+                src={imagePreview || "/path/to/default/image.png"}
                 alt="Profile"
-                className=""
+                className="w-[223px] h-[279px] object-cover rounded-xl"
               />
               {isEditing && (
                 <div className="mt-4 flex text-center">
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleImageUpload}
+                    onChange={handleImageChange}
                     className="hidden"
                     id="upload-image"
                     aria-label="Upload profile image"
@@ -65,7 +148,7 @@ const Profile: React.FC = () => {
               )}
             </div>
             <div className="flex flex-col w-full gap-7">
-              {/* Konten Profil */}
+              {/* Profile Content */}
               <div className="flex md:flex-row flex-col gap-2 w-full">
                 <label
                   htmlFor="name"
@@ -78,16 +161,14 @@ const Profile: React.FC = () => {
                     <input
                       id="name"
                       type="text"
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      defaultValue="Budi Santoso"
+                      className="border-b pb-2 border-primary-dark-blue w-full focus:outline focus:outline-2 focus:rounded focus:outline-primary-blue px-2"
+                      value={formData.name || ""}
+                      onChange={handleChange}
                       aria-label="Nama"
                     />
                   ) : (
-                    <p
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      aria-label="Nama: Budi Santoso"
-                    >
-                      Budi Santoso
+                    <p className="border-b pb-2 border-primary-dark-blue w-full">
+                      {profile.name}
                     </p>
                   )}
                 </div>
@@ -104,16 +185,14 @@ const Profile: React.FC = () => {
                     <input
                       id="email"
                       type="email"
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      defaultValue="budisantoso@gmail.com"
+                      className="border-b pb-2 border-primary-dark-blue w-full focus:outline focus:outline-2 focus:rounded focus:outline-primary-blue px-2"
+                      value={formData.email || ""}
+                      onChange={handleChange}
                       aria-label="Email"
                     />
                   ) : (
-                    <p
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      aria-label="Email: budisantoso@gmail.com"
-                    >
-                      budisantoso@gmail.com
+                    <p className="border-b pb-2 border-primary-dark-blue w-full">
+                      {profile.email}
                     </p>
                   )}
                 </div>
@@ -130,23 +209,21 @@ const Profile: React.FC = () => {
                     <input
                       id="phone"
                       type="text"
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      defaultValue="087171239818"
+                      className="border-b pb-2 border-primary-dark-blue w-full focus:outline focus:outline-2 focus:rounded focus:outline-primary-blue px-2"
+                      value={formData.phone || ""}
+                      onChange={handleChange}
                       aria-label="Nomor Handphone"
                     />
                   ) : (
-                    <p
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      aria-label="Nomor Handphone: 087171239818"
-                    >
-                      087171239818
+                    <p className="border-b pb-2 border-primary-dark-blue w-full">
+                      {profile.phone}
                     </p>
                   )}
                 </div>
               </div>
               <div className="flex md:flex-row flex-col gap-2 w-full">
                 <label
-                  htmlFor="dob"
+                  htmlFor="birth"
                   className="text-base text-primary-dark-blue w-60"
                 >
                   Tanggal Lahir
@@ -154,18 +231,16 @@ const Profile: React.FC = () => {
                 <div className="text-base w-full">
                   {isEditing ? (
                     <input
-                      id="dob"
+                      id="birth"
                       type="date"
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      defaultValue="2021-11-20"
+                      className="border-b pb-2 border-primary-dark-blue w-full focus:outline focus:outline-2 focus:rounded focus:outline-primary-blue px-2"
+                      value={formData.birth || ""}
+                      onChange={handleChange}
                       aria-label="Tanggal Lahir"
                     />
                   ) : (
-                    <p
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      aria-label="Tanggal Lahir: 20/11/2021"
-                    >
-                      20/11/2021
+                    <p className="border-b pb-2 border-primary-dark-blue w-full">
+                      {formatDateForDisplay(profile.birth || "")}
                     </p>
                   )}
                 </div>
@@ -181,36 +256,51 @@ const Profile: React.FC = () => {
                   {isEditing ? (
                     <textarea
                       id="address"
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      defaultValue="Jalan Nangka No. 1, Desa Baru, Kab. Merindu, Prov. Sana Dikit"
+                      className="border-b pb-2 border-primary-dark-blue w-full focus:outline focus:outline-2 focus:rounded focus:outline-primary-blue px-2"
+                      value={formData.address || ""}
+                      onChange={handleChange}
                       aria-label="Alamat"
                     />
                   ) : (
-                    <p
-                      className="border-b pb-2 border-primary-dark-blue w-full"
-                      aria-label="Alamat: Jalan Nangka No. 1, Desa Baru, Kab. Merindu, Prov. Sana Dikit"
-                    >
-                      Jalan Nangka No. 1, Desa Baru, Kab. Merindu, Prov. Sana
-                      Dikit
+                    <p className="border-b pb-2 border-primary-dark-blue w-full">
+                      {profile.address}
                     </p>
                   )}
                 </div>
               </div>
+              {/* Action Buttons */}
+              {isEditing && (
+                <div className="flex justify-end gap-4">
+                  <Button
+                    type="submit"
+                    ariaLabel="Simpan profile"
+                    variant="general"
+                    colorScheme="primary"
+                    state="active"
+                    isLoading={isLoading}
+                    onClick={handleSaveClick}
+                  >
+                    {isLoading ? (
+                      <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
+                    ) : (
+                      "Simpan"
+                    )}
+                  </Button>
+                  <Button
+                    type="submit"
+                    ariaLabel="Batal Edit"
+                    variant="general"
+                    colorScheme="reset"
+                    state="active"
+                    isLoading={isLoading}
+                    onClick={handleCancelClick}
+                  >
+                    Batal
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
-
-          {/* Tombol Simpan di bagian bawah */}
-          {isEditing && (
-            <div className="flex justify-end">
-              <button
-                onClick={handleEditClick}
-                className="px-14 py-2 bg-primary-dark-blue rounded-xl text-white"
-                aria-label="Save changes"
-              >
-                Simpan
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>

@@ -58,32 +58,36 @@ const MenuFitur: React.FC = () => {
 
       {/* Desktop Menu */}
       <div
-        className={`container mx-auto flex-row hidden md:flex ${
-          isMenuOpen ? "block" : "hidden"
-        } md:flex md:justify-center lg:gap-16`}
+        className={`container mx-auto flex-row hidden md:flex ${isMenuOpen ? "block" : "hidden"
+          } md:flex md:justify-center lg:gap-16`}
       >
         {buttons.map((button) => (
           <Link key={button.name} to={button.path}>
             <button
-              className={`text-base font-medium py-1 px-9 rounded-xl mx-2 ${
-                location.pathname === button.path ||
-                (button.path !== "/" &&
-                  location.pathname.startsWith(button.path))
+              className={`text-base font-medium py-1 px-9 rounded-xl mx-2 ${location.pathname === button.path ||
+                  (button.path !== "/informasi-saldo-rekening" &&
+                    button.path !== "/"&&
+                    button.path !== "/mutasi-rekening"&&
+                    button.path !== "/transaksi"&&
+                    button.path !== "/profile"&&
+                    location.pathname === "/qris/qris-bayar") ||
+                  (button.path !== "/" &&
+                    location.pathname.startsWith(button.path))
                   ? "bg-primary-blue text-white"
                   : "text-white"
-              }`}
+                }`}
               type="button"
               aria-label={
                 location.pathname === button.path ||
-                (button.path !== "/" &&
-                  location.pathname.startsWith(button.path))
+                  (button.path !== "/" &&
+                    location.pathname.startsWith(button.path))
                   ? `Anda berada di halaman ${button.name}.`
                   : `Tombol Navigasi ${button.name}`
               }
               aria-current={
                 location.pathname === button.path ||
-                (button.path !== "/" &&
-                  location.pathname.startsWith(button.path))
+                  (button.path !== "/" &&
+                    location.pathname.startsWith(button.path))
                   ? "page"
                   : undefined
               }
@@ -96,9 +100,8 @@ const MenuFitur: React.FC = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-0 w-1/2 h-full left-0 p-4 bg-neutral-1 shadow-box z-50 ${
-          isMenuOpen ? "block" : "hidden"
-        }`}
+        className={`lg:hidden fixed top-0 w-1/2 h-full left-0 p-4 bg-neutral-1 shadow-box z-50 ${isMenuOpen ? "block" : "hidden"
+          }`}
       >
         <div className="container mx-auto flex flex-col h-full">
           {/* Bagian atas dengan gambar */}
@@ -118,25 +121,24 @@ const MenuFitur: React.FC = () => {
               {buttons.map((button) => (
                 <Link key={button.name} to={button.path}>
                   <button
-                    className={`text-base font-medium py-2 px-4 rounded-xl ${
-                      location.pathname === button.path ||
-                      (button.path !== "/" &&
-                        location.pathname.startsWith(button.path))
+                    className={`text-base font-medium py-2 px-4 rounded-xl ${location.pathname === button.path ||
+                        (button.path !== "/" &&
+                          location.pathname.startsWith(button.path))
                         ? "bg-primary-blue text-white w-full"
                         : "text-neutral-9"
-                    }`}
+                      }`}
                     type="button"
                     aria-label={
                       location.pathname === button.path ||
-                      (button.path !== "/" &&
-                        location.pathname.startsWith(button.path))
+                        (button.path !== "/" &&
+                          location.pathname.startsWith(button.path))
                         ? `Anda berada di halaman ${button.name}.`
                         : `Tombol Navigasi ${button.name}`
                     }
                     aria-current={
                       location.pathname === button.path ||
-                      (button.path !== "/" &&
-                        location.pathname.startsWith(button.path))
+                        (button.path !== "/" &&
+                          location.pathname.startsWith(button.path))
                         ? "page"
                         : undefined
                     }

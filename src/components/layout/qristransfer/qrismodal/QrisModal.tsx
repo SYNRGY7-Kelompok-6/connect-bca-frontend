@@ -1,6 +1,6 @@
 import React from 'react';
 import logoClose from "../../../../../public/closebutton.svg";
-import logoBca from "../../../../../public/LogoBCA.png";
+import logoQris from "../../../../../public/logo qris.svg";
 
 interface QrisModalProps {
   handleCloseModal: () => void;
@@ -13,7 +13,7 @@ const QrisModal: React.FC<QrisModalProps> = ({ handleCloseModal, handleQrisTrans
   <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
     <div className="bg-primary-light-blue rounded flex flex-col w-96 p-5 gap-2.5" onClick={(e) => e.stopPropagation()}>
       <div className="flex justify-between h-14 border-b border-primary-dark-blue">
-        <img src={logoBca} alt="logoBca" />
+        <img src={logoQris} alt="logoBca" />
         <img
           src={logoClose}
           style={{ height: "30px", marginTop: "10px", cursor: "pointer" }}

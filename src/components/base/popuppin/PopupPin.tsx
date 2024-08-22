@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import Button from "../button"; // Adjust path as needed
+import Button from "../button"; 
 
 const PopupPin: React.FC<{
   className?: string;
-  onPinSubmit: (pin: string) => void;
+  onPinSubmit: (pin: string) => Promise<void>;
 }> = ({ className = "", onPinSubmit }) => {
-  const [pin, setPin] = useState<string[]>(Array(6).fill("")); // Initialize the PIN state
+  const [pin, setPin] = useState<string[]>(Array(6).fill(""));
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -18,7 +19,6 @@ const PopupPin: React.FC<{
       newPin[index] = value;
       setPin(newPin);
 
-      // Move to the next input if the current input is filled
       if (value && index < 5) {
         (e.target.nextSibling as HTMLInputElement)?.focus();
       }
@@ -45,10 +45,17 @@ const PopupPin: React.FC<{
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const pinString = pin.join("");
     if (pinString.length === 6) {
-      onPinSubmit(pinString); // Pass the PIN value to the parent component
+      setLoading(true);
+      try {
+        await onPinSubmit(pinString);
+      } catch (error) {
+        console.error("Error during PIN submission", error);
+      } finally {
+        setLoading(false);
+      }
     } else {
       console.error("PIN is incomplete");
     }
@@ -92,7 +99,11 @@ const PopupPin: React.FC<{
           onClick={handleSubmit}
           ariaLabel=""
         >
-          Konfirmasi
+          {loading ? (
+            <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
+          ) : (
+            "Konfirmasi"
+          )}
         </Button>
       </div>
     </div>
