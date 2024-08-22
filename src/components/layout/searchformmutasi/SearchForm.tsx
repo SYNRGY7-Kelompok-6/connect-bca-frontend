@@ -60,9 +60,19 @@ function SearchForm({
   };
 
   const handleSubmitCalendar = (key: 'startDate' | 'endDate', value: Date) => {
+    let adjustedValue: Date;
+
+    if (key === 'startDate') {
+      adjustedValue = new Date(value);
+      adjustedValue.setHours(0, 0, 0, 0);
+    } else if (key === 'endDate') {
+      adjustedValue = new Date(value);
+      adjustedValue.setHours(23, 59, 59, 999);
+    }
+
     setDatePicker((prevState) => ({
       ...prevState,
-      [key]: value,
+      [key]: adjustedValue,
     }));
     setDatePickerState((prevState) => ({
       ...prevState,
