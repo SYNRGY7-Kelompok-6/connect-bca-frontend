@@ -15,14 +15,14 @@ const TransferConfirmation: React.FC = () => {
 
   const [showPinModal, setShowPinModal] = useState(false);
   const [pinError, setPinError] = useState<string | null>(null);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false); 
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const handlePinSubmit = async (pin: string) => {
     if (pin.length === 6 && transferIntrabank) {
       setPinError(null);
       try {
-        const response = await transferIntrabankSubmit(transferIntrabank, pin);
+        const response = await transferIntrabankSubmit(transferIntrabank, pin, true);
         if (response.status === 200) {
           setShowPinModal(false);
           setShowSuccessPopup(true);
@@ -157,7 +157,11 @@ const TransferConfirmation: React.FC = () => {
             <input
               type="text"
               id="jenis-transfer"
-              value="Transfer Sekarang"
+              value={
+                transferIntrabank?.scheduleDate
+                  ? `Transfer pada  ${new Date(transferIntrabank.scheduleDate).toLocaleDateString("id-ID")}`
+                  : "Transfer Sekarang"
+              }
               className="w-full px-4 py-2 font-semibold bg-transparent"
             />
           </div>
