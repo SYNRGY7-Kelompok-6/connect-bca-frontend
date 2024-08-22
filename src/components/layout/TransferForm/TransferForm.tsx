@@ -3,10 +3,7 @@ import Button from "../../base/button";
 import { useNavigate } from "react-router-dom";
 import { SavedAccountsContext } from "../../../contexts/SavedAccountsContext";
 import useBankStatement from "../../../contexts/useBankStatement";
-import {
-  TransferContext,
-  TransferIntrabank,
-} from "../../../contexts/TransferContext";
+import { TransferContext, TransferIntrabank } from "../../../contexts/TransferContext";
 import Popup from "../../base/popup";
 
 const TransferForm: React.FC = () => {
@@ -15,18 +12,16 @@ const TransferForm: React.FC = () => {
   const { bankStatement } = useBankStatement();
   const { changeTransferIntrabank } = useContext(TransferContext);
 
-  const [transferIntrabank, setTransferIntrabank] = useState<TransferIntrabank>(
-    {
-      beneficiaryAccountNumber:
-        destinationAccount?.beneficiaryAccountNumber || "",
-      remark: "Transfer",
-      desc: "",
-      amount: {
-        currency: "IDR",
-        value: 0,
-      },
-    }
-  );
+  const [transferIntrabank, setTransferIntrabank] = useState<TransferIntrabank>({
+    beneficiaryAccountNumber: destinationAccount?.beneficiaryAccountNumber || "",
+    remark: "Transfer",
+    desc: "",
+    amount: {
+      currency: "IDR",
+      value: 0,
+    },
+    scheduleDate: undefined, // Tambahkan field ini untuk mengelola tanggal transfer
+  });
 
   const [scheduleTransfer, setScheduleTransfer] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -52,25 +47,46 @@ const TransferForm: React.FC = () => {
       setShowPopup(true);
       return;
     }
+
     setLoading(true);
-    changeTransferIntrabank(transferIntrabank);
+
+    // Ambil tanggal transfer dari input jika diperlukan
+    const transferDate = scheduleTransfer ? new Date((document.getElementById('tanggal-transfer') as HTMLInputElement)?.value) : undefined;
+    console.log("Transfer Date:", transferDate);
+    console.log("Transfer Date ISO String:", transferDate ? transferDate.toISOString() : undefined);
+    // Mengatur data transferIntrabank
+    setTransferIntrabank(prevState => ({
+      ...prevState,
+      scheduleDate: transferDate ? transferDate.toISOString() : undefined, // Set scheduleDate jika ada
+    }));
+
+    // Logika untuk menentukan apakah transfer dijadwalkan atau segera
+    if (scheduleTransfer && transferDate) {
+      // Lakukan transfer yang dijadwalkan
+      changeTransferIntrabank({
+        ...transferIntrabank,
+        scheduleDate: transferDate ? transferDate.toISOString() : undefined,
+      });
+    } else {
+      // Lakukan transfer segera
+      changeTransferIntrabank({
+        ...transferIntrabank,
+        scheduleDate: undefined
+      });
+    }
+
     navigate("/transaksi/transfer/confirmation");
   };
+
 
   const closePopup = () => {
     setShowPopup(false);
   };
 
   return (
-    <section
-      className="flex flex-col w-full shadow-box"
-      aria-labelledby="transfer-form-heading"
-    >
+    <section className="flex flex-col w-full shadow-box" aria-labelledby="transfer-form-heading">
       <header>
-        <h1
-          id="transfer-form-heading"
-          className="text-md text-white font-bold bg-primary-dark-blue w-full p-[18px] rounded-t"
-        >
+        <h1 id="transfer-form-heading" className="text-md text-white font-bold bg-primary-dark-blue w-full p-[18px] rounded-t">
           Transfer ke Rekening BCA
         </h1>
       </header>
@@ -161,11 +177,7 @@ const TransferForm: React.FC = () => {
             <div className="flex w-full gap-2">
               <button
                 onClick={() => setScheduleTransfer(false)}
-                className={`flex-auto py-2 font-medium border rounded-lg border-primary-blue ${
-                  !scheduleTransfer
-                    ? "bg-primary-blue text-white"
-                    : "text-primary-blue"
-                }`}
+                className={`flex-auto py-2 font-medium border rounded-lg border-primary-blue ${!scheduleTransfer ? "bg-primary-blue text-white" : "text-primary-blue"}`}
                 aria-pressed={!scheduleTransfer}
                 aria-controls="tanggal-transfer"
               >
@@ -173,11 +185,7 @@ const TransferForm: React.FC = () => {
               </button>
               <button
                 onClick={() => setScheduleTransfer(true)}
-                className={`flex-auto py-2 font-medium ${
-                  scheduleTransfer
-                    ? "bg-primary-blue text-white"
-                    : "border rounded-lg border-primary-blue text-primary-blue"
-                }`}
+                className={`flex-auto py-2 font-medium ${scheduleTransfer ? "bg-primary-blue text-white" : "border rounded-lg border-primary-blue text-primary-blue"}`}
                 aria-pressed={scheduleTransfer}
                 aria-controls="tanggal-transfer"
               >
@@ -188,10 +196,7 @@ const TransferForm: React.FC = () => {
 
           {scheduleTransfer && (
             <div className="flex items-center">
-              <label
-                htmlFor="tanggal-transfer"
-                className="w-[300px] inline-block"
-              >
+              <label htmlFor="tanggal-transfer" className="w-[300px] inline-block">
                 Tanggal Transfer
               </label>
               <input

@@ -11,6 +11,7 @@ export type TransferIntrabank = {
     currency: string;
     value: number;
   };
+  scheduleDate?: string; // Tambahan untuk jadwal transfer
 };
 
 interface TransferSuccessData {
@@ -38,7 +39,8 @@ interface TransferContextType {
   transferIntrabankSuccessData: TransferSuccessData | null;
   transferIntrabankSubmit: (
     data: TransferIntrabank,
-    pin: string
+    pin: string,
+    scheduleTransfer?: boolean
   ) => Promise<{ status: number; data?: TransferSuccessData; error?: string }>;
 }
 
@@ -77,7 +79,8 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
 
   const transferIntrabankSubmit = async (
     data: TransferIntrabank,
-    pin: string
+    pin: string,
+    scheduleTransfer: boolean = false
   ): Promise<{
     status: number;
     data?: TransferSuccessData;
@@ -104,17 +107,47 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
 
       const pinToken = pinResponse.data.data.pinToken;
 
-      // Perform transfer
-      const transferResponse = await axios.post(
-        `${apiUrl}/api/v1.0/transfer-intrabank`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            "X-PIN-TOKEN": pinToken,
+      let transferResponse;
+
+      if (scheduleTransfer && data.scheduleDate) {
+        // Perform scheduled transfer
+        console.log({
+          beneficiaryAccountNumber: data.beneficiaryAccountNumber,
+          amount: data.amount.value,
+          description: data.desc,
+          frequency: "sekali",
+          schedule: data.scheduleDate,
+        });
+
+        transferResponse = await axios.post(
+          `${apiUrl}/api/v1.0/transfer-scheduler`,
+          {
+            beneficiaryAccountNumber: data.beneficiaryAccountNumber,
+            amount: data.amount.value,
+            description: data.desc,
+            frequency: "sekali", // Asumsikan satu kali, sesuaikan jika berbeda
+            schedule: data.scheduleDate,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              "X-PIN-TOKEN": pinToken,
+            },
+          }
+        );
+      } else {
+        // Perform regular transfer
+        transferResponse = await axios.post(
+          `${apiUrl}/api/v1.0/transfer-intrabank`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              "X-PIN-TOKEN": pinToken,
+            },
+          }
+        );
+      }
 
       if (transferResponse.status !== 200) {
         throw new Error("Transfer failed");
@@ -135,8 +168,7 @@ export const TransferProvider: React.FC<React.PropsWithChildren> = ({
         errorMessage = err.response?.data.message || errorMessage;
       }
 
-      if (errorMessage === "Invalid PIN"
-      ) {
+      if (errorMessage === "Invalid PIN") {
         errorMessage = "PIN yang anda masukan salah, silahkan coba kembali";
       }
 
