@@ -63,6 +63,7 @@ function MutasiLayout() {
   };
 
   async function handleSearch() {
+  console.log(filteredData)
     if (selectedFilter === "period") {
       const fromDate = period.startDate;
       const toDate = period.endDate;
