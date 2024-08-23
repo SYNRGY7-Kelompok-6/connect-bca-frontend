@@ -84,8 +84,8 @@ export const TablePrint = React.forwardRef<HTMLDivElement, TablePrintProps>(({ d
                       </div>
                       <div className="flex flex-col w-full font-normal">
                         <span aria-label="Jumlah Saldo Awal">: Rp. {formatCurrency(bankStatement?.accountBalance?.startingBalance?.value) ?? 'N/A'}</span>
-                        <span aria-label="Jumlah Mutasi Kredit">: Rp. {formatCurrency(monthlyBankStatement?.monthlyIncome?.value)}</span>
-                        <span aria-label="Jumlah Mutasi Debit">: Rp. {formatCurrency(monthlyBankStatement?.monthlyOutcome?.value)}</span>
+                        <span aria-label="Jumlah Mutasi Kredit" className="text-secondary-green">: Rp. {formatCurrency(monthlyBankStatement?.monthlyIncome?.value)}</span>
+                        <span aria-label="Jumlah Mutasi Debit" className="text-secondary-red">: Rp. {formatCurrency(monthlyBankStatement?.monthlyOutcome?.value)}</span>
                         <span aria-label="Jumlah Saldo Akhir">: Rp. {formatCurrency(bankStatement?.accountBalance?.endingBalance?.value) ?? 'N/A'}</span>
                       </div>
                     </>
@@ -118,7 +118,13 @@ export const TablePrint = React.forwardRef<HTMLDivElement, TablePrintProps>(({ d
                     <td className='py-1 border border-white border-collapse p-[10px]'>{formatDateTable(data.transactionDate)}</td>
                     <td className='border border-white border-collapse p-[10px]'>{data.beneficiaryAccount.beneficiaryAccountName}</td>
                     <td className="border border-white border-collapse p-[10px]">{data.beneficiaryAccount.beneficiaryAccountNumber}</td>
-                    <td className="border border-white border-collapse p-[10px]">Rp. {formatCurrency(data.amount.value)}</td>
+                    {
+                      data.type === 'CREDIT' ? (
+                        <td className="border border-white border-collapse p-[10px] text-secondary-green">+Rp. {formatCurrency(data.amount.value)}</td>
+                      ) : (
+                        <td className="border border-white border-collapse p-[10px] text-secondary-red">-Rp. {formatCurrency(data.amount.value)}</td>
+                      )
+                    }
                     <td className="border border-white border-collapse text-left p-[10px]">{data.desc}</td>
                   </tr>
                 ))}
