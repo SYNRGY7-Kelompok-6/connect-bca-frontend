@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom'; // for additional matchers
 import ButtonIcon from '../buttonicon';

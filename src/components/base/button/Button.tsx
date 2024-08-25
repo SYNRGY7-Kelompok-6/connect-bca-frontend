@@ -5,7 +5,7 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   ariaLabel: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   variant?: "micro" | "general" | "puffy";
   colorScheme?: "primary" | "secondary" | "reset";
@@ -23,14 +23,14 @@ const Button: React.FC<ButtonProps> = ({
   variant = "",
   colorScheme = "",
   state = "",
-  isLoading = false
+  isLoading = false,
 }) => {
   const getVariantClasses = (variant: string) => {
     switch (variant) {
       case "micro":
-        return "font-medium rounded-[16px] text-sm py-1 w-[125px]";
+        return "font-semibold rounded-lg text-sm py-1 w-[125px]";
       case "general":
-        return "font-semibold rounded-[12px] text-base py-[10px] w-[260px]";
+        return "font-semibold rounded-[12px] text-base py-[10px] px-[56px]";
       case "puffy":
         return "font-bold text-lg rounded-[12px] py-[32px] w-[500px]";
       default:
@@ -42,16 +42,16 @@ const Button: React.FC<ButtonProps> = ({
     switch (colorScheme) {
       case "primary":
         return state === "active"
-          ? "bg-primary-dark-blue text-white"
-          : "bg-primary-blue text-white";
+          ? "bg-primary-blue text-white hover:bg-primary-dark-blue"
+          : "bg-primary-blue text-white hover:bg-primary-dark-blue";
       case "secondary":
         return state === "active"
-          ? "bg-secondary-red text-white"
-          : "bg-secondary-red text-white";
+          ? "bg-secondary-red text-white hover:bg-secondary-dark-red"
+          : "bg-secondary-red text-white hover:bg-secondary-dark-red";
       case "reset":
         return state === "active"
-          ? "bg-secondary-red text-white"
-          : "bg-secondary-red text-white";
+          ? "bg-secondary-red text-white hover:bg-secondary-dark-red"
+          : "bg-secondary-red text-white hover:bg-secondary-dark-red";
       default:
         return "";
     }
@@ -65,7 +65,10 @@ const Button: React.FC<ButtonProps> = ({
       aria-label={ariaLabel}
       className={`flex items-center justify-center ${getVariantClasses(
         variant
-      )} ${getColorSchemeClasses(colorScheme, state)} ${className}`}
+      )} ${getColorSchemeClasses(
+        colorScheme,
+        state
+      )} ${className} transition-colors duration-100`}
     >
       {children}
     </button>
