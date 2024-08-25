@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Button from "../../base/button";
 import { SavedAccountsContext } from "../../../contexts/SavedAccountsContext";
 import Popup from "../../base/popup/popup";
@@ -8,14 +8,18 @@ const RekeningBaru: React.FC = () => {
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
-  const { addSavedAccount, error, changeDestinationAccount } =
+  const [inputError, setInputError] = useState<string | null>(null); // New state for input error
+  const { addSavedAccount, error, changeDestinationAccount, clearError } =
     useContext(SavedAccountsContext);
-  const navigate = useNavigate(); // Use navigate for redirection
+  const navigate = useNavigate();
 
   const handleAddAccount = async () => {
     if (!accountNumber) {
+      setInputError("No. Rekening tidak boleh kosong"); // Set error message if input is empty
       return;
     }
+
+    setInputError(null); // Clear any existing input errors
 
     setLoading(true);
     try {
@@ -23,8 +27,10 @@ const RekeningBaru: React.FC = () => {
       if (newAccount) {
         changeDestinationAccount(newAccount);
         setAccountNumber("");
-        navigate("/transaksi/transfer"); // Redirect to TransferForm
+        navigate("/transaksi/transfer");
       }
+    } catch (e) {
+      // Optionally handle specific errors if needed
     } finally {
       setLoading(false);
     }
@@ -32,10 +38,10 @@ const RekeningBaru: React.FC = () => {
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
+    clearError();
   };
 
-  // Show popup if there's an error
-  React.useEffect(() => {
+  useEffect(() => {
     if (error) {
       setIsPopupOpen(true);
     }
@@ -69,14 +75,21 @@ const RekeningBaru: React.FC = () => {
             <label htmlFor="no-rekening" className="w-[300px] inline-block">
               No. Rekening
             </label>
-            <input
-              type="text"
-              id="no-rekening"
-              placeholder="Nomor Rekening"
-              className="px-4 py-2 bg-transparent border-b border-primary-blue w-full focus:outline-primary-blue"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
-            />
+            <div className="w-full">
+              <input
+                type="text"
+                id="no-rekening"
+                placeholder="Nomor Rekening"
+                className={`px-4 py-2 bg-transparent border-b border-primary-blue w-full focus:outline-primary-blue ${
+                  inputError ? "border-red-500" : ""
+                }`}
+                value={accountNumber}
+                onChange={(e) => setAccountNumber(e.target.value)}
+              />
+              {inputError && (
+                <p className="text-secondary-red text-base mt-1">{inputError}</p> // Display error message
+              )}
+            </div>
           </div>
         </div>
         <div className="flex justify-end">
