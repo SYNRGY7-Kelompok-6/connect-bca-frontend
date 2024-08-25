@@ -22,7 +22,11 @@ const TransferConfirmation: React.FC = () => {
     if (pin.length === 6 && transferIntrabank) {
       setPinError(null);
       try {
-        const response = await transferIntrabankSubmit(transferIntrabank, pin, true);
+        const response = await transferIntrabankSubmit(
+          transferIntrabank,
+          pin,
+          true
+        );
         if (response.status === 200) {
           setShowPinModal(false);
           setShowSuccessPopup(true);
@@ -47,6 +51,10 @@ const TransferConfirmation: React.FC = () => {
 
   const handleCloseErrorPopup = () => {
     setShowErrorPopup(false);
+  };
+
+  const handleClosePinModal = () => {
+    setShowPinModal(false);
   };
 
   return (
@@ -159,7 +167,9 @@ const TransferConfirmation: React.FC = () => {
               id="jenis-transfer"
               value={
                 transferIntrabank?.scheduleDate
-                  ? `Transfer pada  ${new Date(transferIntrabank.scheduleDate).toLocaleDateString("id-ID")}`
+                  ? `Transfer pada  ${new Date(
+                      transferIntrabank.scheduleDate
+                    ).toLocaleDateString("id-ID")}`
                   : "Transfer Sekarang"
               }
               className="w-full px-4 py-2 font-semibold bg-transparent"
@@ -183,7 +193,11 @@ const TransferConfirmation: React.FC = () => {
       </div>
 
       {showPinModal && (
-        <PopupPin onPinSubmit={handlePinSubmit} className="md:w-[490px] w-full" />
+        <PopupPin
+          onPinSubmit={handlePinSubmit}
+          onClose={handleClosePinModal}
+          className="md:w-[490px] w-full"
+        />
       )}
 
       {showSuccessPopup && (

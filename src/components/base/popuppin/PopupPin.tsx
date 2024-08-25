@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import Button from "../button"; 
+import Button from "../button";
 
 const PopupPin: React.FC<{
   className?: string;
   onPinSubmit: (pin: string) => Promise<void>;
-}> = ({ className = "", onPinSubmit }) => {
+  onClose: () => void;
+}> = ({ className = "", onPinSubmit, onClose }) => {
   const [pin, setPin] = useState<string[]>(Array(6).fill(""));
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -63,6 +64,7 @@ const PopupPin: React.FC<{
 
   return (
     <div
+      role="dialog"
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
       aria-label="PIN Input Popup"
     >
@@ -90,21 +92,34 @@ const PopupPin: React.FC<{
             />
           ))}
         </div>
-        <Button
-          type="button"
-          aria-label="Konfirmasi PIN"
-          variant="general"
-          state="active"
-          className="bg-primary-blue text-white hover:bg-primary-dark-blue"
-          onClick={handleSubmit}
-          ariaLabel=""
-        >
-          {loading ? (
-            <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
-          ) : (
-            "Konfirmasi"
-          )}
-        </Button>
+        <div className="flex flex-row gap-2">
+          <Button
+            type="button"
+            aria-label="Konfirmasi PIN"
+            variant="general"
+            state="active"
+            className="bg-primary-blue text-white hover:bg-primary-dark-blue"
+            onClick={handleSubmit}
+            ariaLabel="Tombol Konfirmasi"
+          >
+            {loading ? (
+              <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
+            ) : (
+              "Konfirmasi"
+            )}
+          </Button>
+          <Button
+            type="button"
+            aria-label="Tombol Batal"
+            variant="general"
+            state="active"
+            onClick={onClose}
+            ariaLabel="Tombol Batal"
+            colorScheme="reset"
+          >
+            Batal
+          </Button>
+        </div>
       </div>
     </div>
   );
