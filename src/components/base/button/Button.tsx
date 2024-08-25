@@ -23,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({
   variant = "",
   colorScheme = "",
   state = "",
-  isLoading = false
+  isLoading = false,
 }) => {
   const getVariantClasses = (variant: string) => {
     switch (variant) {
@@ -42,16 +42,16 @@ const Button: React.FC<ButtonProps> = ({
     switch (colorScheme) {
       case "primary":
         return state === "active"
-          ? "bg-primary-dark-blue text-white"
-          : "bg-primary-blue text-white";
+          ? "bg-primary-blue text-white hover:bg-primary-dark-blue"
+          : "bg-primary-blue text-white hover:bg-primary-dark-blue";
       case "secondary":
         return state === "active"
-          ? "bg-secondary-red text-white"
-          : "bg-secondary-red text-white";
+          ? "bg-secondary-red text-white hover:bg-secondary-dark-red"
+          : "bg-secondary-red text-white hover:bg-secondary-dark-red";
       case "reset":
         return state === "active"
-          ? "bg-secondary-red text-white"
-          : "bg-secondary-red text-white";
+          ? "bg-secondary-red text-white hover:bg-secondary-dark-red"
+          : "bg-secondary-red text-white hover:bg-secondary-dark-red";
       default:
         return "";
     }
@@ -65,7 +65,10 @@ const Button: React.FC<ButtonProps> = ({
       aria-label={ariaLabel}
       className={`flex items-center justify-center ${getVariantClasses(
         variant
-      )} ${getColorSchemeClasses(colorScheme, state)} ${className}`}
+      )} ${getColorSchemeClasses(
+        colorScheme,
+        state
+      )} ${className} transition-colors duration-100`}
     >
       {children}
     </button>

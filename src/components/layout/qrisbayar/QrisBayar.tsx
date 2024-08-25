@@ -7,14 +7,15 @@ import QrisModal from "./qrismodal";
 import WrongPinModal from "../wrongpinmodal";
 import BankStatementSection from "./qrisbayarhandler";
 import QrisModalAmount from "./qrismodalamount";
-import { formatNumber } from '../../hooks/formatRp';
-import { useTimeout } from '../../hooks/changeToTime';
+import { formatNumber } from "../../hooks/formatRp";
+import { useTimeout } from "../../hooks/changeToTime";
 
 const apiUrl1 = import.meta.env.VITE_API_URL;
 interface pinConnect {
   data: {
     pinToken: string;
-  };}
+  };
+}
 
 const QrisBayar: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -37,8 +38,9 @@ const QrisBayar: React.FC = () => {
     try {
       await generateQRIS(price, "IDR", getPinToken);
     } catch (err) {
-      console.error('Error generating QRIS:', err);
-    }};
+      console.error("Error generating QRIS:", err);
+    }
+  };
   const fetchPin = async (pinAuth: string): Promise<string> => {
     try {
       const response = await axios.post<pinConnect>(
@@ -46,25 +48,32 @@ const QrisBayar: React.FC = () => {
         { pin: pinAuth },
         {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },});
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
       setError(null);
       console.log(error);
       return response.data.data.pinToken;
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.error('Axios Error:', err.message);
-        console.error('Axios Error Data:', err.response?.data);
+        console.error("Axios Error:", err.message);
+        console.error("Axios Error Data:", err.response?.data);
         setError(err.response?.data.message || "Failed to fetch PIN");
         return "pinSalah";
       } else {
-        console.error('Unexpected Error:', err);
+        console.error("Unexpected Error:", err);
         setError("An unexpected error occurred");
       }
-      return "";}};
+      return "";
+    }
+  };
 
-  const handlePinChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePinChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value;
     if (/^\d*$/.test(value) && value.length <= 1) {
       const newPin = [...pin];
@@ -75,16 +84,26 @@ const QrisBayar: React.FC = () => {
         const nextInput = document.getElementById(`pin-input-${index + 1}`);
         if (nextInput) {
           (nextInput as HTMLInputElement).focus();
-        }}}};
+        }
+      }
+    }
+  };
 
-  const handleKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace') {
-      if (pin[index] === '') {
+  const handleKeyDown = (
+    index: number,
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Backspace") {
+      if (pin[index] === "") {
         if (index > 0) {
           const prevInput = document.getElementById(`pin-input-${index - 1}`);
           if (prevInput) {
             (prevInput as HTMLInputElement).focus();
-          }}}}};
+          }
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,7 +113,8 @@ const QrisBayar: React.FC = () => {
         console.error("Error fetching data", err);
       } finally {
         setLoading(false);
-      }};
+      }
+    };
     fetchData();
   }, [fetchBankStatement]);
 
@@ -113,13 +133,15 @@ const QrisBayar: React.FC = () => {
       setModalQrisOpen(true);
       setButtonText(false);
       setModalOpen(false);
-      setModalHandleWrongPin(false);}
-    else if (pinFinal.length === 6 && hasil === "pinSalah") {
+      setModalHandleWrongPin(false);
+    } else if (pinFinal.length === 6 && hasil === "pinSalah") {
       setModalWrongPin(true);
-      setModalOpen(false);}
-    else {
-      setModalHandlePin(true);}
-    setPin(["", "", "", "", "", ""]);};
+      setModalOpen(false);
+    } else {
+      setModalHandlePin(true);
+    }
+    setPin(["", "", "", "", "", ""]);
+  };
 
   const handleNominalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -139,7 +161,7 @@ const QrisBayar: React.FC = () => {
     }
   };
   const handleCloseModal = () => {
-    setModalQrisAmountOpen(false)
+    setModalQrisAmountOpen(false);
     setNominal("");
     setPrice(0);
   };
@@ -152,13 +174,16 @@ const QrisBayar: React.FC = () => {
     setModalWrongPin(false);
     setModalHandlePin(false);
     setModalHandleWrongPin(true);
-  }
+  };
   const handleEndQrisPay = () => {
     setButtonText(true);
     setModalQrisOpen(false);
     setNominal("");
     setPrice(0);
-  }
+  };
+  const handlePinModalClose = () => {
+    setModalOpen(false);
+  };
   return (
     <div className="flex lg:flex-row flex-col md:gap-[80px] gap-5">
       <BankStatementSection
@@ -188,11 +213,9 @@ const QrisBayar: React.FC = () => {
         handleConfirmPin={handleConfirmPin}
         modalHandlePin={modalHandlePin}
         modalHandleWrongPin={modalHandleWrongPin}
+        onClose={handlePinModalClose}
       />
-      <WrongPinModal
-        isOpen={modalWrongPin}
-        handleTryAgain={handleTryAgain}
-      />
+      <WrongPinModal isOpen={modalWrongPin} handleTryAgain={handleTryAgain} />
     </div>
   );
 };

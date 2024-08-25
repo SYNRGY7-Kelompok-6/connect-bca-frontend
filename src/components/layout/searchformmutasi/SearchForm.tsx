@@ -137,7 +137,7 @@ function SearchForm({
         <div className="flex flex-col gap-[18px] w-full">
           <div className="flex flex-col gap-[18px] items-end">
             <span aria-description="Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir." className="font-medium text-sm text-primary-dark-blue">Maksimum rentang Tanggal Awal dan Akhir mutasi adalah 31 hari dan harus masuk dalam periode 6 bulan transaksi terakhir.</span>
-            <button onClick={handleSearch} className='w-[179px] justify-center flex gap-4 bg-primary-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
+            <button onClick={handleSearch} className='w-[179px] justify-center flex gap-4 bg-primary-blue hover:bg-primary-dark-blue px-[36.5px] py-[10px] rounded-xl text-white font-semibold'>
               Cari
             </button>
           </div>
