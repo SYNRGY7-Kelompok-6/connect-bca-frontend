@@ -19,11 +19,12 @@ const QrisImage: React.FC<QrisImageProps> = ({
         </div>
       )}
       <div className="flex flex-col items-center">
+        <div className="w-64 h-64 flex justify-center items-center ">
         {qrImage ? (
           <img
             src={qrImage}
             alt="QRIS"
-            className={`w-auto h-auto ${
+            className={`w-52 h-52 ${
               expiresTime ? "opacity-50" : "opacity-100"
             }`}
           />
@@ -32,6 +33,7 @@ const QrisImage: React.FC<QrisImageProps> = ({
             <span>QR Code Tidak Tersedia</span>
           </div>
         )}
+        </div>
         <div className="mt-2 text-base text-neutral-9">
           {expiresTime ? `QR Code kadaluarsa` : `Sisa waktu: ${timeLeft}`}
         </div>

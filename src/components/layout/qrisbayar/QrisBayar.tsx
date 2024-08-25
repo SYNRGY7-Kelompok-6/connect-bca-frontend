@@ -190,6 +190,8 @@ const QrisBayar: React.FC = () => {
   };
   const handlePinModalClose = () => {
     setModalOpen(false);
+    setModalHandlePin(false);
+    setModalHandleWrongPin(false);
   };
   return (
     <div className="flex lg:flex-row flex-col md:gap-[80px] gap-5">
