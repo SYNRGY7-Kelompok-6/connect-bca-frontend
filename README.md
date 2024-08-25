@@ -33,7 +33,7 @@ List the key features of project:
 Outline the technologies used in the project:
 
 - **Frontend:** React, TypeScript, Vite
-- **Styling:** Tailwind CSS and Material UI
+- **Styling:** Tailwind CSS, Material UI and SweartAlert2
 - **State Management:** Context API
 - **Testing:** Jest, React Testing Library
 - **Tooling:** ESLint, Prettier
