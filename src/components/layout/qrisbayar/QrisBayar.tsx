@@ -22,6 +22,7 @@ const QrisBayar: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalQrisOpen, setModalQrisOpen] = useState(false);
   const [modalQrisAmoutOpen, setModalQrisAmountOpen] = useState(false);
+  const [modalHandleAmount, setModalHandleAmount] = useState(false);
   const [modalWrongPin, setModalWrongPin] = useState(false);
   const [modalHandlePin, setModalHandlePin] = useState(false);
   const [modalHandleWrongPin, setModalHandleWrongPin] = useState(false);
@@ -166,8 +167,14 @@ const QrisBayar: React.FC = () => {
     setPrice(0);
   };
   const handleQrisBayar = async () => {
-    setModalQrisAmountOpen(false);
-    setModalOpen(true);
+    if (price <= 100) {
+      setModalHandleAmount(true)
+    }
+    else {
+      setModalHandleAmount(false)
+      setModalQrisAmountOpen(false);
+      setModalOpen(true);
+    }
   };
   const handleTryAgain = () => {
     setModalOpen(true);
@@ -200,6 +207,7 @@ const QrisBayar: React.FC = () => {
       />
       <QrisModalAmount
         isOpen={modalQrisAmoutOpen}
+        modalHandleAmount={modalHandleAmount}
         handleCloseModal={handleCloseModal}
         handleQrisBayar={handleQrisBayar}
         nominal={nominal}
