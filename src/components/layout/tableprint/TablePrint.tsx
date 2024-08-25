@@ -23,10 +23,10 @@ export const TablePrint = React.forwardRef<HTMLDivElement, TablePrintProps>(({ d
 
   return (
       <div ref={ref || undefined} className="flex flex-col gap-3 min-h-screen" >
-        <header className="bg-primary-blue w-full p-4 mb-8">
+        <header className="bg-primary-dark-blue w-full p-4 mb-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <img src="/LogoBCA.png" alt="Logo Connect by BCA" />
+              <img src="/LogoBCA.svg" alt="Logo Connect by BCA" />
               <div className="flex flex-col gap-1.5">
                 <h1
                   className="font-semibold text-white text-lg"
@@ -103,7 +103,7 @@ export const TablePrint = React.forwardRef<HTMLDivElement, TablePrintProps>(({ d
           <div>
           {data?.length !== 0 ? (
             <table id="table" className="border border-collapse table-auto bg-primary-light-blue w-full rounded-t-[20px] rounded-b-[20px]">
-              <thead className='bg-primary-blue text-primary-light-blue'>
+              <thead className='bg-primary-dark-blue text-primary-light-blue'>
                 <tr className="h-11">
                   <th className='first:rounded-ss-[10px] py-2 border border-white border-collapse text-base font-semibold'>Tanggal</th>
                   <th className="border border-white border-collapse text-base font-semibold">Nama</th>
@@ -139,10 +139,10 @@ export const TablePrint = React.forwardRef<HTMLDivElement, TablePrintProps>(({ d
           )}
           </div>
         </div>
-        <footer className="bg-primary-blue w-full p-4 mt-8 absolute bottom-0">
+        <footer className="bg-primary-dark-blue w-full p-4 mt-8 absolute bottom-0">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <img src="/LogoBCA.png" alt="Logo Connect by BCA" />
+              <img src="/LogoBCA.svg" alt="Logo Connect by BCA" />
               <div className="flex flex-col gap-1.5">
                 <h1
                   className="font-semibold text-white text-lg"
