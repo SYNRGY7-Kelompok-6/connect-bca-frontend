@@ -20,6 +20,7 @@ const QrisModal: React.FC<QrisModalProps> = ({
   handleNominalChange,
 }) => {
   if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
       <div
@@ -35,14 +36,21 @@ const QrisModal: React.FC<QrisModalProps> = ({
             onClick={handleCloseModal}
           />
         </div>
-        <div className="flex gap-4 mt-[24px] mb-[24px]">
-          <div className="text-base font-semibold text-neutral-9">Nominal</div>
+        <div className="flex gap-4 mt-[24px] mb-[24px] items-center">
+          <label
+            className="text-base font-semibold text-neutral-9"
+            htmlFor="nominal-input"
+          >
+            Nominal
+          </label>
           <input
-            className="h-8 w-full px-2 focus:outline focus:outline-1 focus:outline-primary-blue rounded"
+            id="nominal-input"
+            className="h-8 w-full px-2 border border-neutral-6 focus:outline focus:outline-1 focus:outline-primary-blue rounded"
             value={nominal}
             type="text"
             maxLength={12}
             onChange={handleNominalChange}
+            placeholder="Masukkan nominal"
           />
         </div>
         {modalHandleAmount&& (
