@@ -147,7 +147,7 @@ const FormLogin: React.FC = () => {
         <div className="flex flex-col">
           <p className="text-sm font-medium text-neutral-9 text-justify lg:w-[320px]">
             Informasi :<br />
-            USER ID dan PIN Internet Banking dapat diperoleh pada saat Anda
+            USER ID dan Password Internet Banking dapat diperoleh pada saat Anda
             melakukan Registrasi Internet melalui ATM BCA.
             <br />
             <br />
