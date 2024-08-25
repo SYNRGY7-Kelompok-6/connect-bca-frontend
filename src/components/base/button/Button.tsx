@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
       case "micro":
         return "font-semibold rounded-lg text-sm py-1 w-[125px]";
       case "general":
-        return "font-semibold rounded-[12px] text-base py-[10px] w-[260px]";
+        return "font-semibold rounded-[12px] text-base py-[10px] px-[56px]";
       case "puffy":
         return "font-bold text-lg rounded-[12px] py-[32px] w-[500px]";
       default:

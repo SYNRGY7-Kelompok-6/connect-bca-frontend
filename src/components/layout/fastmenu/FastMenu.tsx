@@ -9,7 +9,7 @@ const FastMenu: React.FC = () => {
   };
 
   const handleQrisClick = () => {
-    navigate("/qris");
+    navigate("/qris/qris-transfer");
   };
 
   const handleInfoSaldoClick = () => {
@@ -35,11 +35,11 @@ const FastMenu: React.FC = () => {
             backgroundClassName="bg-fill4"
           />
           <ButtonIcon
-            ariaLabel="Tombol QRIS Bayar"
+            ariaLabel="Tombol QRIS"
             onClick={handleQrisClick}
             imgSrc="/QRIS.svg"
-            imgAlt="Tombol QRIS Bayar"
-            text="QRIS Bayar"
+            imgAlt="Tombol QRIS"
+            text="QRIS"
             imgClassName="w-[40px]"
             textClassName="text-primary-dark-blue"
             containerClassName="flex-col"
