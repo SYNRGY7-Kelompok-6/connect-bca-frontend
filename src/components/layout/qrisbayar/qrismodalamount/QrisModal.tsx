@@ -4,6 +4,7 @@ import logoQris from "../../../../../public/logo qris.svg";
 
 interface QrisModalProps {
   isOpen: boolean;
+  modalHandleAmount:boolean;
   handleCloseModal: () => void;
   handleQrisBayar: () => void;
   nominal: string;
@@ -12,6 +13,7 @@ interface QrisModalProps {
 
 const QrisModal: React.FC<QrisModalProps> = ({
   isOpen,
+  modalHandleAmount,
   handleCloseModal,
   handleQrisBayar,
   nominal,
@@ -43,6 +45,18 @@ const QrisModal: React.FC<QrisModalProps> = ({
             onChange={handleNominalChange}
           />
         </div>
+        {modalHandleAmount&& (
+        <div
+            className="text-base text-center top-[57.5%] md:top-[53.5%] left-[36%] md:left-[43.4%]"
+            aria-label="Pin Harus 6 Digit"
+            style={{
+              color: "red",
+              position: "absolute",
+            }}
+          >
+            Nominal Harus Lebih dari 100
+          </div>
+        )}
         <button
           onClick={handleQrisBayar}
           className="text-sm text-white w-full items-center border rounded-[12px] bg-primary-blue hover:bg-primary-dark-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
