@@ -45,17 +45,17 @@ const QrisTransfer: React.FC = () => {
         useCORS: true,
         scale: 2,
       });
+      const contentWidth = canvas.width;
+      const contentHeight = canvas.height;
 
       const resizedCanvas = document.createElement("canvas");
       const ctx = resizedCanvas.getContext("2d");
-      const desiredWidth = 450;
-      const desiredHeight = 600;
 
-      resizedCanvas.width = desiredWidth;
-      resizedCanvas.height = desiredHeight;
+      resizedCanvas.width = contentWidth;
+      resizedCanvas.height = contentHeight;
 
       if (ctx) {
-        ctx.drawImage(canvas, 0, 0, desiredWidth, desiredHeight);
+        ctx.drawImage(canvas, 0, 0);
       }
 
       const imgData = resizedCanvas.toDataURL("image/png");
@@ -67,7 +67,7 @@ const QrisTransfer: React.FC = () => {
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error("Error generating PNG:", error);
+      console.error("Error generating PNG: ", error);
     }
   };
 
