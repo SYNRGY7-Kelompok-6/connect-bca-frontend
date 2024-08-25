@@ -9,11 +9,13 @@ import QrisImage from "./qrisimage";
 import Skeleton from "../../base/skeletonloading";
 import logoQris from "../../../../public/logo qris.svg";
 import { useTimeout } from "../../hooks/changeToTime";
+import Swal from "sweetalert2";
 
 const QrisTransfer: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [expiresTime, setExpiresTime] = useState(false);
   const [buttonExpiredInfo, setButtonExpiredInfo] = useState(false);
+  const [previousBalance, setPreviousBalance] = useState<number | null>(null); // State untuk saldo sebelumnya
   const { bankStatement, fetchBankStatement } = useBankStatement();
   const { fetchLoginInfo } = useAuth();
   const { qrImage, generateQRIS, expiresAt } = useQrisTransfer();
@@ -95,6 +97,29 @@ const QrisTransfer: React.FC = () => {
       setExpiresTime(false);
     }
   }, [timeLeft]);
+
+  useEffect(() => {
+    if (bankStatement && previousBalance === null) {
+      // Inisialisasi saldo sebelumnya saat data pertama kali diambil
+      setPreviousBalance(bankStatement.accountInfo.balance.availableBalance.value);
+    } else if (bankStatement) {
+      const currentBalance = bankStatement.accountInfo.balance.availableBalance.value;
+
+      if (previousBalance !== null && currentBalance > previousBalance) {
+        const amountReceived = currentBalance - previousBalance;
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Horee, ada uang masuk sebesar RP ${amountReceived.toLocaleString('id-ID')}`,
+          showConfirmButton: false,
+          timer: 2000
+        });
+
+        // Update saldo sebelumnya setelah notifikasi
+        setPreviousBalance(currentBalance);
+      }
+    }
+  }, [bankStatement, previousBalance]);
 
   return (
     <div
