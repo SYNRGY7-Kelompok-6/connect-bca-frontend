@@ -38,11 +38,11 @@ const DaftarRekening: React.FC = () => {
       </header>
 
       <div className="bg-neutral-1 rounded-b flex flex-col w-full px-[18px] py-6 gap-3">
-        <div className="flex w-full px-4 py-4 rounded-lg bg-neutral-1 focus-within:outline focus-within:outline-1 outline-primary-blue outline outline-1">
+        <div className="flex w-full px-4 py-4 rounded-lg bg-neutral-1 focus-within:outline focus-within:outline-1 outline-primary-blue outline outline-1" aria-label="pencarian rekening">
           <label htmlFor="search-input" className="sr-only">
             Cari rekening
           </label>
-          <img src="/Search.svg" alt="Search icon" className="w-6 h-6" />
+          <img src="/Search.svg" alt="Search rekening" className="w-6 h-6" />
           <input
             id="search-input"
             type="text"

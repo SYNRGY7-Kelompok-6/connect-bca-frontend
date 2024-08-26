@@ -14,7 +14,7 @@ const QrisButton: React.FC<QrisButtonProps> = ({
   timeLeft,
 }) => (
   <>
-    <div className="text-base mt-[12px] text-primary-dark-blue">{timeLeft}</div>
+    <div className="text-base mt-[12px] text-primary-dark-blue"  aria-label="barcode QRIS berlaku untuk 1 kali">{timeLeft}</div>
     <div className="flex justify-between mt-[24px] w-[100%]">
       <div
         className="flex justify-between w-[98px]"
