@@ -19,7 +19,7 @@ const InfoAkun: React.FC = () => {
             <p className="w-48 lg:w-[215px] text-primary-dark-blue text-sm font-semibold">
               Masa Berlaku Pin (hari)
             </p>
-            <p className="text-primary-dark-blue text-sm font-semibold">
+            <p className="text-primary-dark-blue text-sm font-semibold" aria-label="masa berlaku pin">
               : {bankStatement.accountInfo.pinExpiredTimeLeft}
             </p>
           </div>
@@ -27,7 +27,7 @@ const InfoAkun: React.FC = () => {
             <p className="w-48 lg:w-[215px] text-primary-dark-blue text-sm font-semibold">
               Tanggal Terakhir Gagal Login
             </p>
-            <p className="text-primary-dark-blue text-sm font-semibold">
+            <p className="text-primary-dark-blue text-sm font-semibold" aria-label="tanggal terakhir gagal login">
               :{" "}
               {new Date(
                 loginInfo.failedLoginAttempt.timestamp
@@ -38,7 +38,7 @@ const InfoAkun: React.FC = () => {
             <p className="w-48 lg:w-[215px] text-primary-dark-blue text-sm font-semibold">
               Lokasi Terakhir Akun Terhubung
             </p>
-            <p className="text-primary-dark-blue text-sm font-semibold">
+            <p className="text-primary-dark-blue text-sm font-semibold" aria-label="lokasi akun terakhir terhubung">
               : {loginInfo.lastSuccessfullLoginAttempt.location}
             </p>
           </div>
