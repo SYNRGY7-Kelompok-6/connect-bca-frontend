@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useProfile from "../../../contexts/useProfile";
 import { ProfileData } from "../../../contexts/ProfileContext";
 import Button from "../../base/button/Button";
+import Popup from "../../base/popup/popup";
 
 const formatDateForBackend = (date: string) => {
   const [day, month, year] = date.split("-");
@@ -26,6 +27,7 @@ const Profile: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null); // State for error message
 
   useEffect(() => {
     if (profile) {
@@ -71,6 +73,32 @@ const Profile: React.FC = () => {
 
   const handleSaveClick = async () => {
     setIsLoading(true);
+    setError(null);
+
+    const maxNameLength = 50;
+    const nameRegex = /^[a-zA-Z\s.]+$/;
+
+    if (formData.name && formData.name.length > maxNameLength) {
+      setError(`Nama tidak boleh lebih dari ${maxNameLength} karakter.`);
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.name && !nameRegex.test(formData.name)) {
+      setError("Nama tidak boleh terdapat angka.");
+      setIsLoading(false);
+      return;
+    }
+    const currentYear = new Date().getFullYear();
+    const birthYear = formData.birth
+      ? parseInt(formData.birth.split("-")[0], 10)
+      : null;
+
+    if (birthYear && birthYear > currentYear) {
+      setError("Tahun lahir tidak boleh lebih dari tahun saat ini.");
+      setIsLoading(false);
+      return;
+    }
     try {
       const formattedBirth = formData.birth
         ? formatDateForBackend(formData.birth)
@@ -81,6 +109,7 @@ const Profile: React.FC = () => {
       );
       setIsEditing(false);
     } catch (error) {
+      setError("Failed to update profile. Please try again.");
       console.error("Failed to update profile", error);
     } finally {
       setIsLoading(false);
@@ -148,7 +177,6 @@ const Profile: React.FC = () => {
               )}
             </div>
             <div className="flex flex-col w-full gap-7">
-              {/* Profile Content */}
               <div className="flex md:flex-row flex-col gap-2 w-full">
                 <label
                   htmlFor="name"
@@ -268,41 +296,53 @@ const Profile: React.FC = () => {
                   )}
                 </div>
               </div>
-              {/* Action Buttons */}
-              {isEditing && (
-                <div className="flex justify-end gap-4">
-                  <Button
-                    type="submit"
-                    ariaLabel="Simpan profile"
-                    variant="general"
-                    colorScheme="primary"
-                    state="active"
-                    isLoading={isLoading}
-                    onClick={handleSaveClick}
-                  >
-                    {isLoading ? (
-                      <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
-                    ) : (
-                      "Simpan"
-                    )}
-                  </Button>
-                  <Button
-                    type="submit"
-                    ariaLabel="Batal Edit"
-                    variant="general"
-                    colorScheme="reset"
-                    state="active"
-                    isLoading={isLoading}
-                    onClick={handleCancelClick}
-                  >
-                    Batal
-                  </Button>
-                </div>
-              )}
             </div>
           </div>
+
+          {isEditing && (
+            <div className="flex justify-end gap-2 mt-10">
+              <Button
+                type="submit"
+                ariaLabel="Simpan profile"
+                variant="general"
+                colorScheme="primary"
+                state="active"
+                isLoading={isLoading}
+                onClick={handleSaveClick}
+              >
+                {isLoading ? (
+                  <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
+                ) : (
+                  "Simpan"
+                )}
+              </Button>
+              <Button
+                type="submit"
+                ariaLabel="Batal Edit"
+                variant="general"
+                colorScheme="reset"
+                state="active"
+                isLoading={isLoading}
+                onClick={handleCancelClick}
+              >
+                Batal
+              </Button>
+            </div>
+          )}
         </div>
       </div>
+
+      {error && (
+        <Popup
+          svgSrc="/AlertError.svg"
+          svgAlt="Alert Error"
+          message={error}
+          button={true}
+          buttonText="Tutup"
+          labelButton="Tutup error"
+          onButtonClick={() => setError(null)}
+        />
+      )}
     </div>
   );
 };
