@@ -1,5 +1,3 @@
-// SavedAccountsContext.tsx
-
 import axios from "axios";
 import React, { createContext, useState } from "react";
 
@@ -21,6 +19,7 @@ export interface SavedAccountsContextType {
   addSavedAccount: (accountNumber: string) => Promise<SavedAccount | null>;
   error: string | null;
   changeDestinationAccount: (account: SavedAccount) => void;
+  clearError: () => void; // Ensure this is included
 }
 
 export const SavedAccountsContext = createContext<SavedAccountsContextType>({
@@ -31,11 +30,12 @@ export const SavedAccountsContext = createContext<SavedAccountsContextType>({
   addSavedAccount: async () => null,
   error: null,
   changeDestinationAccount: () => {},
+  clearError: () => {}, // Provide a default implementation
 });
 
 export const SavedAccountsProvider: React.FC<React.PropsWithChildren> = ({
   children,
-}): React.ReactElement => {
+}) => {
   const [savedAccounts, setSavedAccounts] = useState<SavedAccount[] | null>(
     null
   );
@@ -132,7 +132,7 @@ export const SavedAccountsProvider: React.FC<React.PropsWithChildren> = ({
                 "Field 'beneficiaryAccountNumber': account number's length must be 10"
               )
             ) {
-              setError("Panjang PIN harus 10 digit");
+              setError("Panjang No. Rekening harus 10 digit");
             } else {
               setError(message || "Failed to add saved account");
             }
@@ -155,6 +155,10 @@ export const SavedAccountsProvider: React.FC<React.PropsWithChildren> = ({
     }
   };
 
+  const clearError = () => {
+    setError(null); // Clear the error
+  };
+
   return (
     <SavedAccountsContext.Provider
       value={{
@@ -165,6 +169,7 @@ export const SavedAccountsProvider: React.FC<React.PropsWithChildren> = ({
         error,
         destinationAccount,
         changeDestinationAccount,
+        clearError, // Include the clearError method
       }}
     >
       {children}

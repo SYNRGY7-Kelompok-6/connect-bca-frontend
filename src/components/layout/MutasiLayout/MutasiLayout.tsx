@@ -21,8 +21,8 @@ function MutasiLayout() {
   const [filteredData, setFilteredData] = useState<Mutation[]>(mutation || []);
 
   const [datePicker, setDatePicker] = useState<DateRange>({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date(new Date().setHours(0, 0, 0, 0)),
+    endDate: new Date(new Date().setHours(23, 59, 59, 999)),
   });
 
   const [datePickerState, setDatePickerState] = useState({

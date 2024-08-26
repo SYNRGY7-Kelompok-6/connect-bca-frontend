@@ -26,7 +26,13 @@ function Table({ data }: Readonly<TableProps>) {
                 <td className='bg-neutral-1 whitespace-nowrap sm:whitespace-normal py-1 p-[10px]'>{formatDateTable(data.transactionDate)}</td>
                 <td className='bg-neutral-1 whitespace-nowrap sm:whitespace-normal p-[10px]'>{data.beneficiaryAccount.beneficiaryAccountName}</td>
                 <td className="bg-neutral-1 whitespace-nowrap sm:whitespace-normal p-[10px]">{data.beneficiaryAccount.beneficiaryAccountNumber}</td>
-                <td className="bg-neutral-1 whitespace-nowrap sm:whitespace-normal p-[10px]">Rp. {formatCurrency(data.amount.value)}</td>
+                {
+                  data.type === 'CREDIT' ? (
+                    <td className='bg-neutral-1 whitespace-nowrap sm:whitespace-normal p-[10px] text-secondary-green'>+Rp. {formatCurrency(data.amount.value)}</td>
+                  ) : (
+                    <td className='bg-neutral-1 whitespace-nowrap sm:whitespace-normal p-[10px] text-secondary-red'>-Rp. {formatCurrency(data.amount.value)}</td>
+                  )
+                }
                 <td className="bg-neutral-1 whitespace-nowrap sm:whitespace-normal text-left p-[10px]">{data.desc}</td>
               </tr>
             ))

@@ -63,7 +63,7 @@ const BankStatementSection: React.FC<BankStatementSectionProps> = ({
       {buttonText ? (
         <button
           onClick={handleStartQrisPay}
-          className="text-[18px] text-white bg-primary-blue w-[100%] justify-between items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
+          className="text-[18px] text-white bg-primary-blue hover:bg-primary-dark-blue w-full justify-between items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
           style={{ fontFamily: "Outfit, sans-serif" }}
           aria-label="Tombol Lanjutkan"
         >
@@ -72,7 +72,7 @@ const BankStatementSection: React.FC<BankStatementSectionProps> = ({
       ) : (
         <button
           onClick={handleEndQrisPay}
-          className="text-[18px] text-white bg-primary-blue w-[100%] justify-between items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
+          className="text-[18px] text-white bg-primary-blue w-full justify-between items-center border rounded-[12px] border-primary-blue pt-[8px] pr-[18px] pb-[8px] pl-[18px]"
           style={{ fontFamily: "Outfit, sans-serif" }}
           aria-label="Selesai"
         >

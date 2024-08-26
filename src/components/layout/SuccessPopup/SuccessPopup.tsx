@@ -27,28 +27,41 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
   onClose,
   className,
 }) => {
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const buttonGroupRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (titleRef.current) {
-      titleRef.current.focus();
+    if (contentRef.current) {
+      contentRef.current.focus();
     }
   }, []);
 
   const downloadPDF = () => {
-    if (titleRef.current) {
+    if (contentRef.current) {
+      // Sembunyikan tombol sementara
+      if (buttonGroupRef.current) {
+        buttonGroupRef.current.style.display = "none";
+      }
+
       const options = {
         filename: "success-transfer.pdf",
         html2canvas: { scale: 2 },
       };
-      html2PDF(titleRef.current, options);
+
+      // Generate PDF
+      html2PDF(contentRef.current, options).then(() => {
+        // Tampilkan kembali tombol setelah PDF selesai dibuat
+        if (buttonGroupRef.current) {
+          buttonGroupRef.current.style.display = "flex";
+        }
+      });
     }
   };
 
   const handleClose = () => {
-    onClose(); 
-    navigate("/"); 
+    onClose();
+    navigate("/");
   };
 
   return (
@@ -60,6 +73,7 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
       aria-live="assertive"
     >
       <div
+        ref={contentRef}
         tabIndex={-1}
         className="bg-neutral-1 p-6 rounded shadow-box max-w-md mx-4 flex flex-col items-center w-full"
       >
@@ -68,7 +82,6 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
           <h2
             id="success-popup-title"
             className="text-base text-neutral-9 font-bold"
-            ref={titleRef}
             tabIndex={-1}
           >
             Transfer Berhasil
@@ -84,36 +97,36 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
           id="success-popup-description"
           className="flex flex-col gap-1 mb-4 w-full"
         >
-          <div className="flex flex-col gap-1 text-base neutral-9">
+          <div className="flex flex-col gap-1 text-base text-neutral-9">
             <p>No Ref:</p>
             <p>{data.transactionId}</p>
           </div>
-          <div className="flex flex-col gap-1 text-base neutral-9">
+          <div className="flex flex-col gap-1 text-base text-neutral-9">
             <p>Tanggal Transaksi:</p>
             <p>{new Date(data.transactionDate).toLocaleString()}</p>
           </div>
-          <div className="flex flex-col gap-1 text-base neutral-9">
+          <div className="flex flex-col gap-1 text-base text-neutral-9">
             <p>Nama Penerima:</p>
             <p>{data.beneficiaryName}</p>
           </div>
-          <div className="flex flex-col gap-1 text-base neutral-9">
+          <div className="flex flex-col gap-1 text-base text-neutral-9">
             <p>Rekening Tujuan:</p>
             <p>{data.beneficiaryAccountNumber}</p>
           </div>
-          <div className="flex flex-col gap-1 text-base neutral-9">
+          <div className="flex flex-col gap-1 text-base text-neutral-9">
             <p>Dari Rekening:</p>
             <p>{data.sourceAccountNumber}</p>
           </div>
-          <div className="flex flex-col gap-1 text-base neutral-9">
+          <div className="flex flex-col gap-1 text-base text-neutral-9">
             <p>Deskripsi:</p>
             <p>{data.desc}</p>
           </div>
-          <div className="flex flex-col gap-1 text-base neutral-9">
+          <div className="flex flex-col gap-1 text-base text-neutral-9">
             <p>Remark:</p>
             <p>{data.remark}</p>
           </div>
         </div>
-        <div className="flex gap-4 w-full">
+        <div ref={buttonGroupRef} className="flex gap-4 w-full">
           <button
             onClick={handleClose}
             className="mt-4 px-4 py-2 bg-primary-blue text-white rounded-lg w-full"
@@ -123,7 +136,7 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
           </button>
           <button
             onClick={downloadPDF}
-            className="mt-4 px-4 py-2 bg-secondary-green text-white rounded-lg w-full"
+            className="mt-4 px-4 py-2 bg-secondary-red text-white rounded-lg w-full"
             aria-label="Download PDF"
           >
             Unduh PDF
