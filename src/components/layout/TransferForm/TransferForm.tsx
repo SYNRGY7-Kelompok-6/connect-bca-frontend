@@ -211,15 +211,13 @@ const TransferForm: React.FC = () => {
         </div>
 
         <div className="flex justify-end">
-          <button onClick={handleContinue}>
-            <Button ariaLabel="lanjut" variant="general" colorScheme="primary">
+            <Button onClick={handleContinue} ariaLabel="lanjut" variant="general" colorScheme="primary">
               {loading ? (
                 <span className="h-4 w-4 border-2 border-t-2 border-t-transparent border-white rounded-full animate-spin"></span>
               ) : (
                 "Lanjut"
               )}
             </Button>
-          </button>
         </div>
 
         {showPopup && (

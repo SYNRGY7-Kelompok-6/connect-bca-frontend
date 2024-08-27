@@ -4,7 +4,7 @@ import logoQris from "../../../../../public/logo qris.svg";
 
 interface QrisModalProps {
   isOpen: boolean;
-  modalHandleAmount:boolean;
+  modalHandleAmount: boolean;
   handleCloseModal: () => void;
   handleQrisBayar: () => void;
   nominal: string;
@@ -28,11 +28,11 @@ const QrisModal: React.FC<QrisModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between h-14 border-b border-primary-dark-blue">
-          <img src={logoQris} alt="logoBca" />
+          <img src={logoQris} alt="Logo Qris" />
           <img
             src={logoClose}
             style={{ height: "30px", marginTop: "10px", cursor: "pointer" }}
-            alt="close"
+            alt="keluar"
             onClick={handleCloseModal}
           />
         </div>
@@ -40,6 +40,7 @@ const QrisModal: React.FC<QrisModalProps> = ({
           <label
             className="text-base font-semibold text-neutral-9"
             htmlFor="nominal-input"
+            aria-label="label-nominal"
           >
             Nominal
           </label>
@@ -51,10 +52,11 @@ const QrisModal: React.FC<QrisModalProps> = ({
             maxLength={12}
             onChange={handleNominalChange}
             placeholder="Masukkan nominal"
+            aria-label="masukan-nominal"
           />
         </div>
-        {modalHandleAmount&& (
-        <div
+        {modalHandleAmount && (
+          <div
             className="text-base text-center top-[57.5%] md:top-[53.5%] left-[36%] md:left-[43.4%]"
             aria-label="Pin Harus 6 Digit"
             style={{

@@ -35,7 +35,7 @@ const QrisTransfer: React.FC = () => {
     setButtonExpiredInfo(false);
     await fetchQrisTransfer();
     setExpiresTime(false);
-  }
+  };
 
   const handleDownload = async () => {
     if (!qrisTransferRef.current) return;
@@ -101,18 +101,23 @@ const QrisTransfer: React.FC = () => {
   useEffect(() => {
     if (bankStatement && previousBalance === null) {
       // Inisialisasi saldo sebelumnya saat data pertama kali diambil
-      setPreviousBalance(bankStatement.accountInfo.balance.availableBalance.value);
+      setPreviousBalance(
+        bankStatement.accountInfo.balance.availableBalance.value
+      );
     } else if (bankStatement) {
-      const currentBalance = bankStatement.accountInfo.balance.availableBalance.value;
+      const currentBalance =
+        bankStatement.accountInfo.balance.availableBalance.value;
 
       if (previousBalance !== null && currentBalance > previousBalance) {
         const amountReceived = currentBalance - previousBalance;
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `Horee, ada uang masuk sebesar RP ${amountReceived.toLocaleString('id-ID')}`,
+          title: `Horee, ada uang masuk sebesar RP ${amountReceived.toLocaleString(
+            "id-ID"
+          )}`,
           showConfirmButton: false,
-          timer: 2000
+          timer: 2000,
         });
 
         // Update saldo sebelumnya setelah notifikasi
@@ -142,6 +147,7 @@ const QrisTransfer: React.FC = () => {
               qrImage={qrImage || undefined}
               expiresTime={expiresTime}
               timeLeft={timeLeft}
+
             />
             <QrisButton
               handleRefresh={handleRefresh}

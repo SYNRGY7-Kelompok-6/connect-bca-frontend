@@ -31,7 +31,7 @@ const BankStatementSection: React.FC<BankStatementSectionProps> = ({
           </div>
         </>
       ) : (
-        <div className="text-base text-primary-blue bg-white rounded-[10px] mb-[24px] border border-primary-blue w-full h-[40px] pt-2 pr-3 pb-2 pl-3">
+        <div className="text-base text-primary-blue bg-white rounded-[10px] mb-[24px] border border-primary-blue w-full h-[40px] pt-2 pr-3 pb-2 pl-3" aria-label="kolom-nomer-rekening">
           {bankStatement.accountInfo.accountNo}&nbsp;-&nbsp;
           <span className="text-base text-primary-dark-blue">
             {bankStatement.accountInfo.accountType}
