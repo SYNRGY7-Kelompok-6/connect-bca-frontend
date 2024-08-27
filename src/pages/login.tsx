@@ -1,19 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/layout/header";
 import FormLogin from "../components/layout/formlogin";
 import Carousel from "../components/layout/carousel";
 import Information from "../components/layout/information";
-import { useLocation } from "react-router-dom";
 import Popup from "../components/base/popup";
+import { useLocation } from "react-router-dom";
 
 const Login: React.FC = () => {
   const location = useLocation();
-  const [isPopupVisible, setPopupVisible] = useState(
-    location.state?.showPopup || false
-  );
+  const [isPopupVisible, setPopupVisible] = useState(false);
+
+  useEffect(() => {
+    const showPopup =
+      location.state?.showPopup || localStorage.getItem("showPopup") === "true";
+    if (showPopup) {
+      setPopupVisible(true);
+    }
+  }, [location.state?.showPopup]);
 
   const handleClosePopup = () => {
     setPopupVisible(false);
+    localStorage.removeItem("showPopup");
   };
 
   return (
