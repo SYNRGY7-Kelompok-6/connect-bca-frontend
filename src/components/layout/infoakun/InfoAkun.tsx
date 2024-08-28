@@ -1,10 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/useAuth";
 import useBankStatement from "../../../contexts/useBankStatement";
 
 const InfoAkun: React.FC = () => {
   const { bankStatement } = useBankStatement();
   const { loginInfo } = useAuth();
+  const [userLocation, setUserLocation] = useState<string>("");
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=id`
+          );
+          const data = await response.json();
+
+          if (data && data.address) {
+            const city =
+              data.address.city || data.address.town || data.address.village;
+            const state = data.address.state;
+
+            setUserLocation(`${city}, ${state}`);
+          } else {
+            setUserLocation("Lokasi tidak ditemukan");
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setUserLocation("Tidak dapat mengambil lokasi");
+        }
+      );
+    } else {
+      setUserLocation("Geolocation tidak didukung");
+    }
+  }, []);
 
   return (
     <div className="flex flex-col mt-5 md:mt-10 shadow-box w-full lg:w-[416px]">
@@ -55,7 +86,7 @@ const InfoAkun: React.FC = () => {
               className="text-primary-dark-blue text-sm font-semibold"
               aria-label="lokasi akun terakhir terhubung"
             >
-              : {loginInfo.lastSuccessfullLoginAttempt.location}
+              : {userLocation || loginInfo.lastSuccessfullLoginAttempt.location}
             </p>
           </div>
         </div>
