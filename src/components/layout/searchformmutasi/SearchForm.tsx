@@ -104,7 +104,10 @@ function SearchForm({
                 aria-label="input-rekening"
                 id="rekening"
               >
-                {accInfo.name} - {accInfo.accNo}
+                {accInfo.name} -
+                <span style={{ letterSpacing: "-0.09em" }}>
+                  {accInfo.accNo?.split("").join(" ") ?? "No Account Number"}
+                </span>
               </div>
             </div>
           </div>

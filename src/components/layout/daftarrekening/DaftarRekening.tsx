@@ -89,7 +89,11 @@ const DaftarRekening: React.FC = () => {
                 aria-label={`Pilih rekening ${account.beneficiaryAccountNumber} - ${account.beneficiaryAccountName}`}
               >
                 <p>
-                  {`${account.beneficiaryAccountNumber} - ${account.beneficiaryAccountName}`}
+                  <span style={{ letterSpacing: "-0.09em" }}>
+                    {account.beneficiaryAccountNumber.split("").join(" ")}
+                  </span>
+                  {" - "}
+                  {account.beneficiaryAccountName}
                 </p>
               </button>
             ))}

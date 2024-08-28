@@ -140,7 +140,11 @@ const TransferForm: React.FC = () => {
               <span className="font-bold text-primary-blue">
                 {destinationAccount?.beneficiaryAccountName} -{" "}
               </span>
-              {destinationAccount?.beneficiaryAccountNumber}
+              <span style={{ letterSpacing: "-0.09em" }}>
+                {destinationAccount?.beneficiaryAccountNumber
+                  .split("")
+                  .join(" ")}
+              </span>
             </div>
           </div>
 
@@ -155,7 +159,9 @@ const TransferForm: React.FC = () => {
               <span className="font-bold text-primary-blue">
                 {bankStatement?.accountInfo.name} -{" "}
               </span>
-              {bankStatement?.accountInfo.accountNo}
+              <span style={{ letterSpacing: "-0.09em" }}>
+                {bankStatement?.accountInfo.accountNo.split("").join(" ")}
+              </span>
             </div>
           </div>
 

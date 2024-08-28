@@ -48,10 +48,11 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
             </p>
             <div className="flex justify-between" aria-label="Nomor Rekening">
               <span
+                style={{ letterSpacing: "-0.07em" }}
                 className="text-md text-primary-dark-blue font-semibold"
                 aria-label={`Nomor Rekening: ${formattedAccountNo}`}
               >
-                {accountNo}
+                {formattedAccountNo}
               </span>
             </div>
           </div>
