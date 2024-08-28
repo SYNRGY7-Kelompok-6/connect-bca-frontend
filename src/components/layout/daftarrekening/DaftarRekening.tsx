@@ -38,13 +38,18 @@ const DaftarRekening: React.FC = () => {
       </header>
 
       <div className="bg-neutral-1 rounded-b flex flex-col w-full px-[18px] py-6 gap-3">
-        <div className="flex w-full px-4 py-4 rounded-lg bg-neutral-1 focus-within:outline focus-within:outline-1 outline-primary-blue outline outline-1" aria-label="pencarian rekening">
+        <div
+          className="flex w-full px-4 py-4 rounded-lg bg-neutral-1 focus-within:outline focus-within:outline-1 outline-primary-blue outline outline-1"
+          aria-label="pencarian rekening"
+          role="search"
+        >
           <label htmlFor="search-input" className="sr-only">
             Cari rekening
           </label>
           <img src="/Search.svg" alt="Search rekening" className="w-6 h-6" />
           <input
             id="search-input"
+            onMouseEnter={(e) => e.currentTarget.focus()}
             type="text"
             className="w-full px-2 text-base bg-transparent placeholder-primary-blue focus-within:outline-none"
             placeholder="Search"

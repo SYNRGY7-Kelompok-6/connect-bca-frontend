@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../button";
 
 const PopupPin: React.FC<{
@@ -8,6 +8,11 @@ const PopupPin: React.FC<{
 }> = ({ className = "", onPinSubmit, onClose }) => {
   const [pin, setPin] = useState<string[]>(Array(6).fill(""));
   const [loading, setLoading] = useState<boolean>(false);
+  const [isPinComplete, setIsPinComplete] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsPinComplete(pin.join("").length === 6);
+  }, [pin]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -66,12 +71,18 @@ const PopupPin: React.FC<{
     <div
       role="dialog"
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-      aria-label="PIN Input Popup"
+      aria-labelledby="pin-popup-title"
+      aria-describedby="pin-popup-description"
     >
       <div
         className={`bg-neutral-1 items-center text-center flex flex-col gap-[26px] text-primary-dark-blue justify-center rounded-[20px] p-[40px] md:w-[490px] w-full mx-4 md:mx-0 ${className}`}
       >
-        <h1 className="md:text-lg text-md font-bold">Masukkan PIN Anda</h1>
+        <h1 id="pin-popup-title" className="md:text-lg text-md font-bold">
+          Masukkan PIN Anda
+        </h1>
+        <p id="pin-popup-description" className="sr-only">
+          Masukkan 6 digit PIN Anda untuk melanjutkan.
+        </p>
         <div className="flex md:gap-8 gap-2 mb-4">
           {pin.map((value, index) => (
             <input
@@ -86,7 +97,8 @@ const PopupPin: React.FC<{
                   ? "bg-primary-blue border-primary-blue"
                   : "bg-white border-primary-dark-blue"
               } focus:outline-none rounded-full`}
-              placeholder=""
+              aria-label={`Digit PIN ${index + 1}`}
+              aria-invalid={value ? "false" : "true"}
               inputMode="numeric"
               pattern="[0-9]*"
             />
@@ -100,6 +112,8 @@ const PopupPin: React.FC<{
             state="active"
             className="bg-primary-blue text-white hover:bg-primary-dark-blue"
             onClick={handleSubmit}
+            aria-disabled={!isPinComplete}
+            disabled={!isPinComplete}
             ariaLabel="Tombol Konfirmasi"
           >
             {loading ? (

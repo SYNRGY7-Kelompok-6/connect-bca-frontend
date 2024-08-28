@@ -26,24 +26,33 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
     setIsBalanceVisible(!isBalanceVisible);
   };
 
+  const accountNo = bankStatement?.accountInfo?.accountNo || "";
+  const formattedAccountNo = accountNo.split("").join(" ");
+
   return (
-    <div className="flex flex-col order-2 md:order-1 w-full md:col-span-2 lg:col-span-1" aria-labelledby="rekening-info-heading">
+    <div
+      className="flex flex-col order-2 md:order-1 w-full md:col-span-2 lg:col-span-1"
+      aria-labelledby="rekening-info-heading"
+    >
       <div className="bg-neutral-1 flex flex-col lg:w-[416px] w-full shadow-box rounded">
-        <h1
+        <span
           id="rekening-info-heading"
           className="bg-primary-dark-blue w-full lg:w-[416px] p-[18px] text-md text-white font-bold rounded-t"
         >
           Informasi Rekening
-        </h1>
+        </span>
         <div className="flex flex-col gap-[18px] p-[18px]">
           <div className="flex flex-col">
             <p className="text-primary-dark-blue text-sm font-semibold">
               Rekening
             </p>
             <div className="flex justify-between" aria-label="Nomor Rekening">
-              <h2 className="text-md text-primary-dark-blue font-semibold">
-                {bankStatement?.accountInfo?.accountNo || ""}
-              </h2>
+              <span
+                className="text-md text-primary-dark-blue font-semibold"
+                aria-label={`Nomor Rekening: ${formattedAccountNo}`}
+              >
+                {accountNo}
+              </span>
             </div>
           </div>
           <div className="flex flex-col">
@@ -54,9 +63,15 @@ const InfoRekening: React.FC<InfoRekeningProps> = ({
               className="flex justify-between items-center"
               aria-label="Saldo Rekening"
             >
-              <h2 className="text-md text-primary-dark-blue font-semibold">
-                {isBalanceVisible ? balance : "IDR ********"}
-              </h2>
+              <span
+                className="text-md text-primary-dark-blue font-semibold"
+                aria-live="polite"
+                aria-label={
+                  isBalanceVisible ? balance : "Saldo saat ini disembunyikan"
+                }
+              >
+                {isBalanceVisible ? balance : "Rp ********"}
+              </span>
               <button
                 type="button"
                 onClick={toggleBalanceVisibility}

@@ -83,7 +83,10 @@ const LaporanKeuangan: React.FC = () => {
                 className="text-neutral-9 text-md font-bold"
                 aria-live="polite"
               >
-                Rp {selisih.toLocaleString()}
+                {selisih.toLocaleString("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                })}
               </h4>
             </div>
             <div className="flex flex-row gap-2 items-center">
@@ -98,7 +101,10 @@ const LaporanKeuangan: React.FC = () => {
                   className="text-neutral-9 text-md font-bold"
                   aria-live="polite"
                 >
-                  Rp {monthlyIncome.toLocaleString()}
+                  {monthlyIncome.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  })}
                 </h4>
               </div>
             </div>
@@ -114,7 +120,10 @@ const LaporanKeuangan: React.FC = () => {
                   className="text-neutral-9 text-md font-bold"
                   aria-live="polite"
                 >
-                  Rp {monthlyOutcome.toLocaleString()}
+                  {monthlyOutcome.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  })}
                 </h4>
               </div>
             </div>

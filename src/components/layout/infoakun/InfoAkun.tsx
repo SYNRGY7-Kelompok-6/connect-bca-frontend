@@ -8,7 +8,10 @@ const InfoAkun: React.FC = () => {
 
   return (
     <div className="flex flex-col mt-5 md:mt-10 shadow-box w-full lg:w-[416px]">
-      <h1 className="bg-primary-dark-blue w-full lg:w-[416px] p-[18px] text-md text-white font-bold rounded-t" aria-label="informasi akun">
+      <h1
+        className="bg-primary-dark-blue w-full lg:w-[416px] p-[18px] text-md text-white font-bold rounded-t"
+        aria-label="informasi akun"
+      >
         Informasi Akun
       </h1>
       {!loginInfo || !bankStatement ? (
@@ -19,7 +22,10 @@ const InfoAkun: React.FC = () => {
             <p className="w-48 lg:w-[215px] text-primary-dark-blue text-sm font-semibold">
               Masa Berlaku Pin (hari)
             </p>
-            <p className="text-primary-dark-blue text-sm font-semibold" aria-label="masa berlaku pin">
+            <p
+              className="text-primary-dark-blue text-sm font-semibold"
+              aria-label="masa berlaku pin"
+            >
               : {bankStatement.accountInfo.pinExpiredTimeLeft}
             </p>
           </div>
@@ -27,18 +33,28 @@ const InfoAkun: React.FC = () => {
             <p className="w-48 lg:w-[215px] text-primary-dark-blue text-sm font-semibold">
               Tanggal Terakhir Gagal Login
             </p>
-            <p className="text-primary-dark-blue text-sm font-semibold" aria-label="tanggal terakhir gagal login">
+            <p
+              className="text-primary-dark-blue text-sm font-semibold"
+              aria-label="tanggal terakhir gagal login"
+            >
               :{" "}
               {new Date(
                 loginInfo.failedLoginAttempt.timestamp
-              ).toLocaleDateString()}
+              ).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </p>
           </div>
           <div className="flex gap-2">
             <p className="w-48 lg:w-[215px] text-primary-dark-blue text-sm font-semibold">
               Lokasi Terakhir Akun Terhubung
             </p>
-            <p className="text-primary-dark-blue text-sm font-semibold" aria-label="lokasi akun terakhir terhubung">
+            <p
+              className="text-primary-dark-blue text-sm font-semibold"
+              aria-label="lokasi akun terakhir terhubung"
+            >
               : {loginInfo.lastSuccessfullLoginAttempt.location}
             </p>
           </div>

@@ -106,11 +106,13 @@ const DropdownMonth: React.FC<DropdownMonthProps> = ({ onSelectMonth }) => {
             <li key={month.monthNumber}>
               <button
                 onClick={() => handleSelectMonth(month.monthNumber)}
+                onMouseEnter={(e) => e.currentTarget.focus()}
                 className="block px-4 py-2 hover:bg-primary-blue hover:text-primary-light-blue text-base font-semibold w-full text-left"
                 role="menuitem"
                 aria-label={`Pilih bulan ${month.month}`}
+                aria-labelledby={`pilih bulan-${month.monthNumber}`}
               >
-                {month.month}
+                <span id={`month-${month.monthNumber}`}>{month.month}</span>
               </button>
             </li>
           ))}

@@ -45,7 +45,11 @@ const InfoUser: React.FC = () => {
                 >
                   {new Date(
                     loginInfo.lastSuccessfullLoginAttempt.timestamp
-                  ).toLocaleDateString()}
+                  ).toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </time>
               </p>
             )}

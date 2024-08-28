@@ -25,7 +25,7 @@ interface SuccessPopupProps {
 const SuccessPopup: React.FC<SuccessPopupProps> = ({
   data,
   onClose,
-  className,
+  className = "",
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const buttonGroupRef = useRef<HTMLDivElement>(null);
@@ -39,7 +39,6 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
 
   const downloadPDF = () => {
     if (contentRef.current) {
-      // Sembunyikan tombol sementara
       if (buttonGroupRef.current) {
         buttonGroupRef.current.style.display = "none";
       }
@@ -49,9 +48,7 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
         html2canvas: { scale: 2 },
       };
 
-      // Generate PDF
       html2PDF(contentRef.current, options).then(() => {
-        // Tampilkan kembali tombol setelah PDF selesai dibuat
         if (buttonGroupRef.current) {
           buttonGroupRef.current.style.display = "flex";
         }
@@ -64,9 +61,10 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
     navigate("/");
   };
 
+  
   return (
     <div
-      role="alertdialog"
+      role="dialog"
       aria-labelledby="success-popup-title"
       aria-describedby="success-popup-description"
       className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ${className}`}
@@ -78,7 +76,12 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
         className="bg-neutral-1 p-6 rounded shadow-box max-w-md mx-4 flex flex-col items-center w-full"
       >
         <div className="flex flex-col gap-2 items-center">
-          <img src="/success.svg" alt="Success icon" className="w-14" />
+          <img
+            src="/success.svg"
+            alt="Ikon berhasil"
+            className="w-14"
+            aria-hidden="true"
+          />
           <h2
             id="success-popup-title"
             className="text-base text-neutral-9 font-bold"
@@ -130,14 +133,14 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({
           <button
             onClick={handleClose}
             className="mt-4 px-4 py-2 bg-primary-blue text-white rounded-lg w-full"
-            aria-label="Close"
+            aria-label="Tombol Selesai"
           >
             Selesai
           </button>
           <button
             onClick={downloadPDF}
             className="mt-4 px-4 py-2 bg-secondary-red text-white rounded-lg w-full"
-            aria-label="Download PDF"
+            aria-label="Tombol Unduh PDF"
           >
             Unduh PDF
           </button>

@@ -79,15 +79,26 @@ const RekeningBaru: React.FC = () => {
               <input
                 type="text"
                 id="no-rekening"
+                onMouseEnter={(e) => e.currentTarget.focus()}
                 placeholder="Nomor Rekening"
                 className={`px-4 py-2 bg-transparent border-b border-primary-blue w-full focus:outline-primary-blue ${
                   inputError ? "border-red-500" : ""
                 }`}
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
+                aria-label="Masukan nomor rekening baru"
+                aria-invalid={inputError ? "true" : "false"} 
+                aria-describedby={
+                  inputError ? "account-number-error" : undefined
+                } 
               />
               {inputError && (
-                <p className="text-secondary-red text-base mt-1">{inputError}</p> // Display error message
+                <p
+                  id="account-number-error"
+                  className="text-secondary-red text-base mt-1"
+                >
+                  {inputError}
+                </p>
               )}
             </div>
           </div>

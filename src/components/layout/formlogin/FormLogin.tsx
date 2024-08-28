@@ -79,6 +79,7 @@ const FormLogin: React.FC = () => {
                 id="userID"
                 type="text"
                 value={username}
+                onMouseEnter={(e) => e.currentTarget.focus()}
                 onChange={(e) => setUsername(e.target.value)}
                 name="userID"
                 placeholder="Masukan User ID Anda"
@@ -104,6 +105,7 @@ const FormLogin: React.FC = () => {
                 type="password"
                 name="password"
                 value={password}
+                onMouseEnter={(e) => e.currentTarget.focus()}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Masukan Pasword Anda"
                 autoComplete="current-password"
